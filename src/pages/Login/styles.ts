@@ -1,11 +1,6 @@
 import styled from 'styled-components';
-import { transparentize, shade } from 'polished';
+import { transparentize } from 'polished';
 
-import {
-  primaryColor,
-  secondaryColor,
-  tertiaryColor,
-} from '../../styles/paletsColorers';
 import capaLogin from '../../assets/capaLogin_1.jpg';
 
 export const Container = styled.div`

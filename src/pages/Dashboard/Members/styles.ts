@@ -1,12 +1,8 @@
 import styled, { css } from 'styled-components';
 
-import { transparentize, shade } from 'polished';
 import {
   secondaryBackground,
-  primaryColor,
-  secondaryColor,
   titleColor,
-  tertiaryColor,
 } from '../../../styles/paletsColorers';
 
 interface SectionProps {

@@ -4,7 +4,6 @@ import {
   primaryColor,
   secondaryColor,
   tertiaryColor,
-  secondaryBackground,
 } from '../../styles/paletsColorers';
 
 interface IPropsItemMenu {

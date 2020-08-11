@@ -3,7 +3,6 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import {
   FaLinkedinIn,
   FaEnvelope,
-  FaPhoneAlt,
   FaGithubSquare,
   FaRegCalendarAlt,
   FaGithub,
@@ -11,8 +10,6 @@ import {
   FaListUl,
   FaMedal,
 } from 'react-icons/fa';
-import { SelectItem } from '../../../myTypes/SelectItem';
-import { ImageProps } from '../../../myTypes/Images';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
 
 import api from '../../services/api';

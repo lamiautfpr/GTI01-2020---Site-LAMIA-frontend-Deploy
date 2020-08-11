@@ -6,7 +6,6 @@ import {
   FaFacebook,
   FaStreetView,
   FaPhoneAlt,
-  FaMobileAlt,
   FaMailBulk,
   FaCopyright,
   FaQuoteLeft,

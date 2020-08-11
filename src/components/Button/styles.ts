@@ -1,10 +1,6 @@
 import styled, { css } from 'styled-components';
-import { transparentize, shade } from 'polished';
-import {
-  primaryColor,
-  secondaryColor,
-  tertiaryColor,
-} from '../../styles/paletsColorers';
+import { shade } from 'polished';
+import { tertiaryColor } from '../../styles/paletsColorers';
 
 interface ContainerProps {
   width?: string;

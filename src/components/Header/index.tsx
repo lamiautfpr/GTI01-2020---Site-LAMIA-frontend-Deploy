@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import imgLogo from '../../assets/logo.jpg';
+// import imgLogo from '../../assets/logo.jpg';
 
 import { Title } from './style';
 

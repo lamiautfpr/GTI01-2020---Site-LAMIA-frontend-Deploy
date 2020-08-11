@@ -3,11 +3,7 @@ import styled, { css } from 'styled-components';
 import Select from 'react-select';
 
 import { shade } from 'polished';
-import {
-  secondaryColor,
-  primaryColor,
-  errorColor,
-} from '../../styles/paletsColorers';
+import { primaryColor, errorColor } from '../../styles/paletsColorers';
 import Tooltip from '../Tooltip';
 
 interface ContentProps {

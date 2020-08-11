@@ -2,7 +2,7 @@ import { Form } from '@unform/web';
 import React, { useCallback, useRef } from 'react';
 
 import { FormHandles } from '@unform/core';
-import { RiArrowDownSLine, RiArrowLeftLine } from 'react-icons/ri';
+import { RiArrowLeftLine } from 'react-icons/ri';
 import { MdLock, MdMail } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -25,35 +25,40 @@ const Login: React.FC = () => {
   const { addToast } = useToast();
   const { signIn } = useAuth();
 
-  const handleSubmit = useCallback(async (data: ISingInFormData) => {
-    console.log(data);
-    try {
-      formRef.current?.setErrors({});
+  const handleSubmit = useCallback(
+    async (data: ISingInFormData) => {
+      console.log(data);
+      try {
+        formRef.current?.setErrors({});
 
-      const schema = Yup.object().shape({
-        login: Yup.string().required('Como deseja logar sem email ou Login? '),
-        password: Yup.string().required('Como deseja logar sem senha? '),
-      });
+        const schema = Yup.object().shape({
+          login: Yup.string().required(
+            'Como deseja logar sem email ou Login? ',
+          ),
+          password: Yup.string().required('Como deseja logar sem senha? '),
+        });
 
-      await schema.validate(data, {
-        abortEarly: false,
-      });
+        await schema.validate(data, {
+          abortEarly: false,
+        });
 
-      const { login, password } = data;
-      signIn({ login, password });
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(err);
+        const { login, password } = data;
+        signIn({ login, password });
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
 
-        formRef.current?.setErrors(errors);
+          formRef.current?.setErrors(errors);
+        }
+        addToast({
+          type: 'error',
+          title: 'Erro na autenticação',
+          description: 'Ocorreu um erro ao fazer login, cheque as credenciais',
+        });
       }
-      addToast({
-        type: 'error',
-        title: 'Erro na autenticação',
-        description: 'Ocorreu um erro ao fazer login, cheque as credenciais',
-      });
-    }
-  }, []);
+    },
+    [addToast, signIn],
+  );
 
   return (
     <Container>

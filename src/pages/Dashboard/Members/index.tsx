@@ -20,7 +20,7 @@ import api from '../../../services/api';
 
 import Select from '../../../components/Select';
 
-import imgMemberDefault from '../../../assets/imgDefault/member.jpg';
+// import imgMemberDefault from '../../../assets/imgDefault/member.jpg';
 
 import { Container, Content, HeaderSection, Section } from './styles';
 import AppError from '../../../utils/AppError';
@@ -37,8 +37,10 @@ interface OfficesProps extends OptionTypeBase {
 
 const DashboardMembers: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { member, token, updateMember } = useAuth();
   const { addToast } = useToast();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [members, setMembers] = useState<IMembersProps[]>([]);
   const [offices, setOffices] = useState<OptionTypeBase[]>([]);
 

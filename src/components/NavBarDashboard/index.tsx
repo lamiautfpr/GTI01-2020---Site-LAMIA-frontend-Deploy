@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FaMedal } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
@@ -22,6 +22,7 @@ interface IMenuBurgerProps {
 const NavBarDashboard: React.FC<IMenuBurgerProps> = ({ page }) => {
   const { member, signOut } = useAuth();
   const history = useHistory();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [permitted, setPermitted] = useState(() => {
     const checkPermission = officesPermitted.find(
       (officePermitted) => officePermitted === member.office.value,
