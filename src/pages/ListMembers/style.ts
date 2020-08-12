@@ -24,8 +24,7 @@ export const Section = styled.section<SectionProps>`
   /* border: 1px solid red; */
   border-radius: 8px;
   padding: 12px;
-  margin: auto;
-  margin-top: 24px;
+  margin: 24px auto;
   max-width: 1200px;
   width: 100%;
   transition: 0.3s all;

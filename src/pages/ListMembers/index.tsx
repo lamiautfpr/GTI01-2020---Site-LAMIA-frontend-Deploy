@@ -116,47 +116,6 @@ const ListProjects: React.FC = () => {
             </Projects>
           </Section>
         ))}
-
-        <Projects>
-          <Link to="/item.login">
-            <img src={imgMemberDefault} alt="Member" />
-
-            <strong>
-              item.name
-              <span>
-                <FaMedal size={14} />
-                item.office.label
-              </span>
-              <span>
-                <FaMailBulk size={14} />
-                item.email
-              </span>
-            </strong>
-            <p>item.description</p>
-            <div>
-              <FaChevronRight size={20} />
-            </div>
-          </Link>
-          <Link to="/item.login">
-            <img src={imgMemberDefault} alt="Member" />
-
-            <strong>
-              item.name
-              <span>
-                <FaMedal size={14} />
-                item.office.label
-              </span>
-              <span>
-                <FaMailBulk size={14} />
-                item.email
-              </span>
-            </strong>
-            <p>item.description</p>
-            <div>
-              <FaChevronRight size={20} />
-            </div>
-          </Link>
-        </Projects>
       </Main>
 
       <Footer />
