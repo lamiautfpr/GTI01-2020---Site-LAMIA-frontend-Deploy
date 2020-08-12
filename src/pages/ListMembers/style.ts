@@ -39,6 +39,8 @@ export const Section = styled.section<SectionProps>`
   header {
     display: flex;
     flex-direction: column;
+    color: #a8a8b3;
+    cursor: pointer;
 
     svg {
       margin: 0 8px;
@@ -67,6 +69,9 @@ export const Section = styled.section<SectionProps>`
     p {
       font-family: 'Source Sans Pro';
       font-size: 18px;
+      font-weight: 600;
+      line-height: 28px;
+      color: ${shade(0.24, '#a8a8b3')};
       margin: 12px;
       padding-bottom: 12px;
       border-bottom: 3px solid ${secondaryBackground};
@@ -92,7 +97,8 @@ export const Section = styled.section<SectionProps>`
   }
 
   &:hover {
-    > header svg {
+    > header svg,
+    h2 {
       color: ${tertiaryColor};
     }
   }
