@@ -227,7 +227,7 @@ const Home: React.FC = () => {
                   <header>
                     <h2>{work.title}</h2>
                   </header>
-                  <p>{work.objective.slice(0, 130)}</p>
+                  <p>{work.objective?.slice(0, 130)}</p>
                 </div>
               ))}
             </div>

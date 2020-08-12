@@ -190,8 +190,10 @@ const Member: React.FC = () => {
                         </div>
                         <div className="objective">
                           <p>
-                            {`${workData.objective.slice(0, 80)}`}
-                            {workData.objective.length > 80 && '...'}
+                            {`${workData.objective?.slice(0, 80)}`}
+                            {workData.objective &&
+                              workData.objective.length > 80 &&
+                              '...'}
                           </p>
                         </div>
                       </div>

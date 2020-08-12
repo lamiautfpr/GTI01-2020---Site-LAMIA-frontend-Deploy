@@ -28,8 +28,8 @@ interface PatnerProps {
 export interface WorkListProps {
   id: number;
   title: string;
-  objective: string;
-  abstract: string;
+  objective: string | null;
+  abstract: string | null;
   categories: CategoryProps[];
   types: SelectItem[];
   areaExpertise: SelectItem[];
