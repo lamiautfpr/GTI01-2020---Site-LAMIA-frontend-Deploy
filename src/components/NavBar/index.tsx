@@ -3,64 +3,68 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 
-import { Nav } from './style';
+import { Nav, NavItem } from './style';
 
-const NavBar: React.FC = () => {
+interface IMenuBurgerProps {
+  page?: 'members' | 'products' | 'projects' | 'publications' | 'home';
+}
+
+const NavBar: React.FC<IMenuBurgerProps> = ({ page = 'home' }) => {
   return (
     <Nav>
       <ul>
-        <li>
+        <NavItem active={page === 'home'}>
           <Link to="/">Home</Link>
           <ul className="DropDraw">
-            <li>
+            <NavItem>
               <HashLink smooth to="/#Statistics">
                 Linhas de Códigos Produzidas
               </HashLink>
-            </li>
+            </NavItem>
             {/* <li>
               <HashLink smooth to="#News">
                 Noticias
               </HashLink>
             </li> */}
-            <li>
+            <NavItem>
               <HashLink smooth to="/#Mission">
                 Missão
               </HashLink>
-            </li>
-            <li>
+            </NavItem>
+            <NavItem>
               <HashLink smooth to="/#LatestPublications">
                 Ultimas publicações
               </HashLink>
-            </li>
-            <li>
+            </NavItem>
+            <NavItem>
               <HashLink smooth to="/#AreasExpertise">
                 Áreas de Atuação
               </HashLink>
-            </li>
-            <li>
+            </NavItem>
+            <NavItem>
               <HashLink smooth to="/#Partners">
                 Parceiros
               </HashLink>
-            </li>
-            <li>
+            </NavItem>
+            <NavItem>
               <HashLink smooth to="/#Advisors">
                 Orientadores
               </HashLink>
-            </li>
+            </NavItem>
           </ul>
-        </li>
-        <li>
+        </NavItem>
+        <NavItem active={page === 'products'}>
           <Link to="/works/products">Produtos</Link>
-        </li>
-        <li>
+        </NavItem>
+        <NavItem active={page === 'projects'}>
           <Link to="/works/projects">Projetos</Link>
-        </li>
-        <li>
+        </NavItem>
+        <NavItem active={page === 'publications'}>
           <Link to="/works/publications">Publicações</Link>
-        </li>
-        <li>
+        </NavItem>
+        <NavItem active={page === 'members'}>
           <Link to="/members">Integrantes</Link>
-        </li>
+        </NavItem>
       </ul>
     </Nav>
   );

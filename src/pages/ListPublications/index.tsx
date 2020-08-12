@@ -190,7 +190,7 @@ const ListPublications: React.FC = () => {
     <>
       <Header title="LAMIA - Projetos" />
 
-      <NavBar />
+      <NavBar page="publications" />
 
       <Main>
         <SectionFilters name="">

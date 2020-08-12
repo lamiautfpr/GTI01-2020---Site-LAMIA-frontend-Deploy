@@ -63,7 +63,7 @@ const ListProjects: React.FC = () => {
     <>
       <Header title="LAMIA - Projetos" />
 
-      <NavBar />
+      <NavBar page="members" />
 
       <Main>
         {offices.map((office, index) => (
