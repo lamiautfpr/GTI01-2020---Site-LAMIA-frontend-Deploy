@@ -9,6 +9,8 @@ import {
   FaMailBulk,
   FaCopyright,
   FaQuoteLeft,
+  FaInstagram,
+  FaTwitter,
 } from 'react-icons/fa';
 
 import { Contact } from './style';
@@ -47,21 +49,26 @@ const Footer: React.FC = () => {
           <span>
             <FaMailBulk size={16} />
             <strong>Email: </strong>
-            <a href="mailto:naves@utfpr.edu.br">naves@utfpr.edu.br</a>
+            <a href="mailto:lamia-sh@utfpr.edu.br">lamia-sh@utfpr.edu.br</a>
           </span>
           <ul>
             <li>
-              <a href="https://lamia-utfpr.slack.com/" target="blank">
-                <FaSlack size={32} />
+              <a href="https://www.instagram.com/lamiautfpr/" target="blank">
+                <FaInstagram size={32} />
               </a>
             </li>
             <li>
-              <a href="https://www.facebook.com/lamia-utfpr" target="blank">
+              <a href="https://twitter.com/lamiautfpr" target="blank">
+                <FaTwitter size={32} />
+              </a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/lamiautfpr2" target="blank">
                 <FaFacebook size={32} />
               </a>
             </li>
             <li>
-              <a href="https://github.com/lamia-utfpr" target="blank">
+              <a href="https://github.com/lamiautfpr" target="blank">
                 <FaGithubAlt size={32} />
               </a>
             </li>

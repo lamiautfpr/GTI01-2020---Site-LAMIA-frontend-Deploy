@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
 import { transparentize } from 'polished';
-import { secondaryBackground } from '../../styles/paletsColorers';
+import {
+  secondaryBackground,
+  tertiaryColor,
+} from '../../styles/paletsColorers';
 
 export const Contact = styled.footer`
   max-width: 1200px;
@@ -79,8 +82,11 @@ export const Contact = styled.footer`
             text-decoration: none;
             color: #fff;
 
+            transition: 0.4s ease;
+
             &:hover {
-              color: ${transparentize(0.24, '#fff')};
+              /* color: ${transparentize(0.24, tertiaryColor)}; */
+              color: ${tertiaryColor};
             }
           }
         }
