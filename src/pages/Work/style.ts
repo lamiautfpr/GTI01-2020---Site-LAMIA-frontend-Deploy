@@ -7,10 +7,22 @@ import {
   secondaryColor,
   featuredColor,
   titleColor,
+  tertiaryColor,
+  infoColor,
 } from '../../styles/paletsColorers';
+import Tooltip from '../../components/Tooltip';
 
 interface WarningPros {
   textColor?: string;
+}
+
+interface ParticipantProps {
+  responsibility:
+    | 'Coordenador'
+    | 'Colaborador'
+    | 'Orientador'
+    | 'Membro Líder'
+    | 'Membro';
 }
 
 export const Main = styled.main`
@@ -176,8 +188,12 @@ export const Aside = styled.aside`
     color: #f0f0f0;
   }
 
-  div {
+  > div {
     margin: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+
     span {
       display: flex;
       /* flex-direction: row; */
@@ -189,27 +205,6 @@ export const Aside = styled.aside`
       svg {
         margin-right: 4px;
         color: ${transparentize(0.2, '#f0f0f0')};
-      }
-    }
-    a {
-      img {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        border: 2px solid #f0f0f0;
-
-        margin: 2px;
-        transition: 0.4s;
-      }
-      &:hover {
-        img {
-          filter: none;
-          transform: translateY(8px);
-
-          -webkit-box-shadow: 0px 0px 24px -4px rgba(0, 0, 0, 0.56);
-          -moz-box-shadow: 0px 0px 24px -4px rgba(0, 0, 0, 0.56);
-          box-shadow: 0px 0px 24px -4px rgba(0, 0, 0, 0.56);
-        }
       }
     }
   }
@@ -394,4 +389,70 @@ export const CardWarning = styled.div<WarningPros>`
 
     margin-left: 40px;
   }
+`;
+
+export const Participant = styled(Tooltip)<ParticipantProps>`
+  width: fit-content;
+  margin: 8px;
+
+  a {
+    img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 3px solid white;
+
+      margin: 2px;
+      transition: 0.4s;
+    }
+  }
+
+  ${({ responsibility }) =>
+    responsibility === 'Coordenador' &&
+    css`
+      a {
+        img {
+          border-color: ${tertiaryColor};
+        }
+      }
+      .tooltip {
+        background: ${tertiaryColor};
+        color: white;
+
+        &::before {
+          border-color: ${tertiaryColor} transparent;
+        }
+      }
+    `}
+
+  ${({ responsibility }) =>
+    responsibility === 'Membro Líder' &&
+    css`
+      a {
+        img {
+          border-color: ${secondaryColor};
+        }
+      }
+      .tooltip {
+        background: ${secondaryColor};
+        color: white;
+
+        &::before {
+          border-color: ${secondaryColor} transparent;
+        }
+      }
+    `}
+
+    ${({ responsibility }) =>
+      responsibility === 'Membro' &&
+      css`
+        .tooltip {
+          background: ${secondaryBackground};
+          color: #000;
+
+          &::before {
+            border-color: ${secondaryBackground} transparent;
+          }
+        }
+      `}
 `;

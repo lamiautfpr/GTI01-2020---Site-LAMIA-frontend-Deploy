@@ -2,13 +2,18 @@ import { SelectItem } from './SelectItem';
 import { ImageProps } from './Images';
 
 interface MemberProps {
-  nameABNT: string;
+  name: string;
   login: string;
   avatar: ImageProps | null;
 }
 
 interface WorksMemberProps {
-  scholarship: boolean;
+  responsibility:
+    | 'Coordenador'
+    | 'Colaborador'
+    | 'Orientador'
+    | 'Membro Líder'
+    | 'Membro';
   memberData: MemberProps;
 }
 

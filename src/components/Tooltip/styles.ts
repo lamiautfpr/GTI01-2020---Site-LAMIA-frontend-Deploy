@@ -5,7 +5,10 @@ export const Container = styled.div`
   position: relative;
 
   span {
-    width: 160px;
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+
     background: ${primaryColor};
     padding: 8px;
     border-radius: 4px;
@@ -31,6 +34,12 @@ export const Container = styled.div`
       position: absolute;
       left: 95%;
       transform: translateX(-95%);
+    }
+
+    strong {
+      font-size: 18px;
+      line-height: 20px;
+      font-weight: 800;
     }
   }
 

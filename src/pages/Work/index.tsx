@@ -32,6 +32,7 @@ import {
   SectionColumn,
   SectionText,
   ShelfGallery,
+  Participant,
 } from './style';
 
 interface WorkParams {
@@ -51,6 +52,7 @@ const ProjectView: React.FC = () => {
 
   useEffect(() => {
     api.get(`work/${params.id}`).then((response) => {
+      console.log(response.data);
       setWork(response.data);
       setGetApi(true);
     });
@@ -68,7 +70,7 @@ const ProjectView: React.FC = () => {
 
   return (
     <>
-      <Header title={work ? `LAMIA - ${work.title}` : 'LAMIA'} />
+      <Header />
 
       <NavBar />
 
@@ -156,21 +158,27 @@ const ProjectView: React.FC = () => {
                     <Aside>
                       <h1>Integrantes</h1>
                       <div>
-                        {work.worksMember.map(({ memberData }) => (
-                          <Link
-                            key={memberData.login}
-                            to={`/${memberData.login}`}
-                          >
-                            <img
-                              src={
-                                memberData.avatar
-                                  ? memberData.avatar.src
-                                  : imgMemberDefault
-                              }
-                              alt={memberData.nameABNT}
-                            />
-                          </Link>
-                        ))}
+                        {work.worksMember.map(
+                          ({ responsibility, memberData }) => (
+                            <Participant
+                              title={memberData.name}
+                              subTitle={responsibility}
+                              key={memberData.login}
+                              responsibility={responsibility}
+                            >
+                              <Link to={`/${memberData.login}`}>
+                                <img
+                                  src={
+                                    memberData.avatar
+                                      ? memberData.avatar.src
+                                      : imgMemberDefault
+                                  }
+                                  alt={memberData.name}
+                                />
+                              </Link>
+                            </Participant>
+                          ),
+                        )}
                       </div>
                     </Aside>
                     <Aside>

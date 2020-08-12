@@ -252,7 +252,7 @@ const ListProjects: React.FC = () => {
                       <FaUserNinja size={14} />
                       {item.worksMember.map(({ memberData }) => (
                         <span key={memberData.login}>
-                          {`${memberData.nameABNT}; `}
+                          {`${memberData.name}; `}
                         </span>
                       ))}
                     </span>
