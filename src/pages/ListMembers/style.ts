@@ -1,11 +1,17 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-import { transparentize } from 'polished';
+import { transparentize, shade } from 'polished';
 import {
   secondaryBackground,
   primaryColor,
   secondaryColor,
+  tertiaryColor,
 } from '../../styles/paletsColorers';
+
+interface SectionProps {
+  isOpen?: boolean;
+  height: number;
+}
 
 export const Main = styled.main`
   background: #fff;
@@ -14,22 +20,82 @@ export const Main = styled.main`
   margin-bottom: 100px;
 `;
 
-export const SectionFilters = styled.section`
+export const Section = styled.section<SectionProps>`
+  /* border: 1px solid red; */
+  border-radius: 8px;
+  padding: 12px;
+  margin: auto;
+  margin-top: 24px;
   max-width: 1200px;
-  margin: 40px auto;
+  width: 100%;
+  transition: 0.3s all;
+  border: 1px solid ${secondaryBackground};
 
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  ${(props) =>
+    !props.isOpen &&
+    css`
+      background: ${secondaryBackground};
+    `}
 
-  .areaExpensive {
-    width: 250px;
+  header {
+    display: flex;
+    flex-direction: column;
+
+    svg {
+      margin: 0 8px;
+      transition: 0.3s all;
+    }
+
+    div {
+      display: flex;
+      align-items: center;
+
+      width: 100%;
+
+      h2 {
+        font-family: 'Source Sans Pro';
+        font-size: 28px;
+        min-width: fit-content;
+        font-weight: 500;
+      }
+
+      .bar {
+        width: 100%;
+        margin: 0 12px;
+      }
+    }
+
+    p {
+      font-family: 'Source Sans Pro';
+      font-size: 18px;
+      margin: 12px;
+      padding-bottom: 12px;
+      border-bottom: 3px solid ${secondaryBackground};
+    }
   }
-  .typeWorks {
-    width: 550px;
+
+  > div {
+    transition: 0.3s all;
+    margin-top: 0px;
+    margin-top: 12px;
+    ${(props) =>
+      props.height &&
+      css`
+        height: ${`${props.height * 145}px`};
+      `}
+
+    ${(props) =>
+      !props.isOpen &&
+      css`
+        overflow: hidden;
+        height: 0;
+      `}
   }
-  .order {
-    width: 150px;
+
+  &:hover {
+    > header svg {
+      color: ${tertiaryColor};
+    }
   }
 `;
 
@@ -38,11 +104,14 @@ export const Projects = styled.div`
   max-width: 1200px;
   margin: 24px auto;
 
-  div + div {
-    margin-top: 16px;
-  }
+  display: flex;
+  flex-direction: column;
 
   a {
+    & + a {
+      margin-top: 16px;
+    }
+
     background: ${secondaryBackground};
 
     border-radius: 8px;
