@@ -110,7 +110,7 @@ const Home: React.FC = () => {
     <>
       <Header />
 
-      <NavBar />
+      <NavBar page="home" />
 
       <Main>
         {/* <SectionLine title="News" id="News">

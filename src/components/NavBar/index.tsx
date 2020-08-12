@@ -9,7 +9,7 @@ interface IMenuBurgerProps {
   page?: 'members' | 'products' | 'projects' | 'publications' | 'home';
 }
 
-const NavBar: React.FC<IMenuBurgerProps> = ({ page = 'home' }) => {
+const NavBar: React.FC<IMenuBurgerProps> = ({ page }) => {
   return (
     <Nav>
       <ul>
