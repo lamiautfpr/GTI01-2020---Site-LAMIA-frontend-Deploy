@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import { Link } from 'react-router-dom';
-import { useTransition, animated } from 'react-spring';
 import { FaMedal, FaChevronRight, FaMailBulk } from 'react-icons/fa';
 
 import { OptionTypeBase } from 'react-select';
@@ -9,18 +8,14 @@ import { MdKeyboardArrowDown, MdKeyboardArrowLeft } from 'react-icons/md';
 import api from '../../services/api';
 
 import imgMemberDefault from '../../assets/imgDefault/member.jpg';
-import imgEmojiSad from '../../assets/imgWarning/emojiSad.png';
 //
-import { SelectItem } from '../../../myTypes/SelectItem';
 import { ImageProps } from '../../../myTypes/Images';
 import {} from '../../utils/orderArray';
 
-import { Main, Projects, Section, CardWarning } from './style';
+import { Main, Projects, Section } from './style';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
-import Separator from '../../components/Separator';
 import Footer from '../../components/Footer';
-import SelectBox from '../../components/SelectBox';
 
 export const listOrder = [
   { value: 0, description: null, label: 'A-Z' },
@@ -33,7 +28,6 @@ interface MembersListProps {
   name: string;
   email: string;
   description: string;
-  office: SelectItem;
   avatar?: ImageProps;
 }
 
@@ -44,7 +38,6 @@ interface OfficesProps extends OptionTypeBase {
 }
 
 const ListProjects: React.FC = () => {
-  const [members, setMembers] = useState<MembersListProps[]>([]);
   const [offices, setOffices] = useState<OfficesProps[]>([]);
 
   const handleOffice = useCallback(

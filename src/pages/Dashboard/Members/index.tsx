@@ -7,9 +7,15 @@ import {
   MdKeyboardArrowLeft,
   MdKeyboardArrowDown,
 } from 'react-icons/md';
-import { FaUserNinja, FaMedal } from 'react-icons/fa';
+import {
+  FaUserNinja,
+  FaMedal,
+  FaMailBulk,
+  FaChevronRight,
+} from 'react-icons/fa';
 import { GiNinjaHead } from 'react-icons/gi';
 import { OptionTypeBase } from 'react-select';
+import { Link } from 'react-router-dom';
 import { useAuth, IMembersProps } from '../../../hooks/Auth';
 import { useToast } from '../../../hooks/Toast';
 import getValidationErrors from '../../../utils/getValidationErrors';
@@ -22,8 +28,10 @@ import Select from '../../../components/Select';
 
 // import imgMemberDefault from '../../../assets/imgDefault/member.jpg';
 
-import { Container, Content, HeaderSection, Section } from './styles';
+import { Container, Content, HeaderSection, Section, Projects } from './styles';
 import AppError from '../../../utils/AppError';
+import imgMemberDefault from '../../../assets/imgDefault/member.jpg';
+import { ImageProps } from '../../../../myTypes/Images';
 
 interface IMemberFormProps extends IMembersProps {
   oldPassword?: string;
@@ -31,8 +39,19 @@ interface IMemberFormProps extends IMembersProps {
   confirmPassword?: string;
 }
 
+interface MembersListProps {
+  id: number;
+  login: string;
+  name: string;
+  email: string;
+  description: string;
+  avatar?: ImageProps;
+}
+
 interface OfficesProps extends OptionTypeBase {
   isOpen?: boolean;
+  description: string | null;
+  members: MembersListProps[];
 }
 
 const DashboardMembers: React.FC = () => {
@@ -40,9 +59,8 @@ const DashboardMembers: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { member, token, updateMember } = useAuth();
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [members, setMembers] = useState<IMembersProps[]>([]);
-  const [offices, setOffices] = useState<OptionTypeBase[]>([]);
+
+  const [offices, setOffices] = useState<OfficesProps[]>([]);
 
   const handleSubmit = useCallback(
     async (data: IMemberFormProps) => {
@@ -139,8 +157,7 @@ const DashboardMembers: React.FC = () => {
 
   useEffect(() => {
     api.get(`members/`).then((response) => {
-      setOffices(response.data.officesMembers);
-      setMembers(response.data.members);
+      setOffices(response.data);
     });
   }, []);
 
@@ -193,17 +210,46 @@ const DashboardMembers: React.FC = () => {
         </Form>
 
         {offices.map((office, index) => (
-          <Section isOpen={!!office.isOpen}>
+          <Section
+            key={office.value}
+            isOpen={!!office.isOpen}
+            height={office.members.length}
+          >
             <header onClick={() => handleOffice(index)}>
-              <h2>{office.label}</h2>
-              <div className="bar" />
-              {office.isOpen ? (
-                <MdKeyboardArrowDown size={28} />
-              ) : (
-                <MdKeyboardArrowLeft size={28} />
-              )}
+              <div>
+                <FaMedal size={28} />
+                <h2>{office.label}</h2>
+                <div className="bar" />
+                {office.isOpen ? (
+                  <MdKeyboardArrowDown size={28} />
+                ) : (
+                  <MdKeyboardArrowLeft size={28} />
+                )}
+              </div>
+              <p>{office.description}</p>
             </header>
-            <div>oi</div>
+            <Projects>
+              {office.members.map((member) => (
+                <Link to={`/${member.login}`}>
+                  <img
+                    src={member.avatar ? member.avatar.src : imgMemberDefault}
+                    alt={member.name}
+                  />
+
+                  <strong>
+                    {member.name}
+                    <span>
+                      <FaMailBulk size={14} />
+                      {member.email}
+                    </span>
+                  </strong>
+                  <p>{member.description}</p>
+                  <div>
+                    <FaChevronRight size={20} />
+                  </div>
+                </Link>
+              ))}
+            </Projects>
           </Section>
         ))}
       </Content>
