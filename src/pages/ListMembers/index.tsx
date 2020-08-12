@@ -54,7 +54,6 @@ const ListProjects: React.FC = () => {
   // Functions for get list works
   useEffect(() => {
     api.get(`members/`).then((response) => {
-      console.log(response);
       setOffices(response.data);
     });
   }, []);
