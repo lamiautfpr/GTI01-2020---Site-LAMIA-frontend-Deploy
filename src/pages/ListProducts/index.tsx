@@ -12,7 +12,6 @@ import {
 import api from '../../services/api';
 
 import imgWorkDefault from '../../assets/imgDefault/work1.png';
-import imgEmojiSad from '../../assets/imgWarning/emojiSad.png';
 import { SelectItem } from '../../../myTypes/SelectItem';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
 import {
@@ -24,7 +23,7 @@ import {
 
 import { listOrder } from '../ListMembers';
 
-import { Main, Projects, SectionFilters, CardWarning } from './style';
+import { Main, Projects, SectionFilters } from './style';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
 import Separator from '../../components/Separator';
@@ -180,12 +179,6 @@ const ListProducts: React.FC = () => {
     });
   }, []);
 
-  const workWithTransitions = useTransition(works, (work) => work.id, {
-    from: { opacity: 0, transform: 'translate3d(-40px,0,0)' },
-    enter: { opacity: 1, transform: 'translate3d(0,0px,0)' },
-    leave: { opacity: 0, transform: 'translate3d(+40px,0,0)' },
-  });
-
   return (
     <>
       <Header title="LAMIA - Projetos" />
@@ -230,64 +223,46 @@ const ListProducts: React.FC = () => {
         <Separator />
 
         <Projects>
-          {works.length > 0 ? (
-            workWithTransitions.map(({ item, key, props }) => (
-              <animated.div key={key} style={props}>
-                <Link to={`/work/${item.id}`}>
-                  <img
-                    src={
-                      item.pictures?.length > 0
-                        ? item.pictures[0].src
-                        : imgWorkDefault
-                    }
-                    alt={
-                      item.pictures?.length > 0
-                        ? item.pictures[0].name
-                        : 'Capa do Projeto'
-                    }
-                  />
-
-                  <strong>
-                    {item.title}
-                    <span>
-                      <FaUserNinja size={14} />
-                      {item.worksMember.map(({ memberData }) => (
-                        <span key={memberData.login}>
-                          {`${memberData.name}; `}
-                        </span>
-                      ))}
-                    </span>
+          {works.map((work) => (
+            <Link key={work.id} to={`/work/${work.id}`}>
+              <img
+                src={
+                  work.pictures?.length > 0
+                    ? work.pictures[0].src
+                    : imgWorkDefault
+                }
+                alt={
+                  work.pictures?.length > 0
+                    ? work.pictures[0].name
+                    : 'Capa do Projeto'
+                }
+              />
+              <div>
+                <strong>
+                  {work.title}
+                  <span>{work.dateBegin}</span>
+                </strong>
+                <div>
+                  <div>
                     <span>
                       <FaRegClipboard size={14} />
-                      {item.types.map((type) => (
+                      {work.types.map((type) => (
                         <span key={type.value}>{`${type.label}; `}</span>
                       ))}
                     </span>
                     <span>
                       <FaListUl size={14} />
-                      {item.areaExpertise.map((ae) => (
+                      {work.areaExpertise.map((ae) => (
                         <span key={ae.value}>{`${ae.label}; `}</span>
                       ))}
                     </span>
-                  </strong>
-                  <p>{item.objective}</p>
-                  <div>
-                    <span>{item.dateBegin}</span>
-                    <FaChevronRight size={20} />
                   </div>
-                </Link>
-              </animated.div>
-            ))
-          ) : (
-            <CardWarning>
-              <h2>
-                <strong>POXA !!!</strong>
-                <br />
-                Ainda não temos o que você procura...
-              </h2>
-              <img src={imgEmojiSad} alt="Triste" />
-            </CardWarning>
-          )}
+                  <p>{work.abstractCard}</p>
+                  <FaChevronRight size={20} />
+                </div>
+              </div>
+            </Link>
+          ))}
         </Projects>
       </Main>
 

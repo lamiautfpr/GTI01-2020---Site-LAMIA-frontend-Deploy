@@ -5,6 +5,7 @@ import {
   secondaryBackground,
   primaryColor,
   secondaryColor,
+  tertiaryColor,
 } from '../../styles/paletsColorers';
 
 interface FilterPros {
@@ -42,11 +43,8 @@ export const Projects = styled.div`
   max-width: 1200px;
   margin: 24px auto;
 
-  div + div {
-    margin-top: 16px;
-  }
-
   a {
+    margin-top: 16px;
     background: ${secondaryBackground};
 
     border-radius: 8px;
@@ -56,7 +54,7 @@ export const Projects = styled.div`
     text-decoration: none;
 
     display: flex;
-    align-items: center;
+    align-items: unset;
     transition: all 0.2s;
 
     &:hover {
@@ -70,70 +68,81 @@ export const Projects = styled.div`
     }
 
     img {
-      min-width: 64px;
-      min-height: 64px;
-      max-width: 64px;
-      max-height: 64px;
+      min-width: 80px;
+      min-height: 80px;
+      max-width: 80px;
+      max-height: 80px;
       border-radius: 50%;
       display: flex;
       flex-shrink: 1;
+      margin-right: 8px;
+      margin-top: 16px;
     }
 
-    strong {
-      min-width: 210px;
-      margin: 0 16px;
-      min-height: 88px;
-
+    > div {
       flex: 1;
       display: flex;
       flex-direction: column;
-
-      align-items: baseline;
-
-      font-size: 20px;
-      color: ${primaryColor};
-
-      span {
-        margin-top: 4px;
-
-        font-size: 14px;
-        color: ${transparentize(0.35, primaryColor)};
-
-        svg {
-          margin-right: 4px;
-          color: ${transparentize(0.35, primaryColor)};
-        }
-      }
-    }
-
-    p {
-      margin-right: 16px;
-      width: 100%;
-
-      font-size: 18px;
-      color: #a8a8b3;
-    }
-
-    div {
-      min-height: 88px;
-
-      display: flex;
-      flex-direction: column;
+      align-items: center;
       justify-content: center;
 
-      span {
-        margin-top: -20px;
-        margin-bottom: 20px;
+      strong {
+        display: flex;
+        justify-content: space-between;
+
+        margin: 12px;
+        width: 100%;
+
+        font-size: 20px;
+        line-height: 30px;
+        color: ${primaryColor};
+
+        span {
+          margin-left: 16px;
+
+          color: ${tertiaryColor};
+          font-weight: 200;
+          font-family: 'Dosis';
+        }
       }
 
-      color: ${primaryColor};
-      font-family: 'Dosis';
-      font-weight: 200;
-    }
+      > div {
+        display: flex;
+        color: #a8a8b3;
 
-    svg {
-      margin-left: auto;
-      color: #cbcbd6;
+        > div {
+          display: flex;
+          flex-direction: column;
+
+          max-width: 330px;
+          margin-right: 4px;
+
+          > span {
+            & + span {
+              margin-top: 16px;
+            }
+
+            font-size: 16px;
+
+            svg {
+              margin-right: 4px;
+              color: ${tertiaryColor};
+            }
+          }
+        }
+
+        p {
+          margin-right: 16px;
+          width: 100%;
+          flex: 1;
+
+          font-size: 18px;
+        }
+
+        svg {
+          margin: auto;
+        }
+      }
     }
   }
 `;

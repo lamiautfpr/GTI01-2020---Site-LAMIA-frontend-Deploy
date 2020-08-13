@@ -35,6 +35,7 @@ export interface WorkListProps {
   title: string;
   objective: string | null;
   abstract: string | null;
+  abstractCard: string | null;
   categories: CategoryProps[];
   types: SelectItem[];
   areaExpertise: SelectItem[];
