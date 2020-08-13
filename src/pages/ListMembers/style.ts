@@ -42,6 +42,12 @@ export const Section = styled.section<SectionProps>`
     color: #a8a8b3;
     cursor: pointer;
 
+    ${(props) =>
+      props.isOpen &&
+      css`
+        color: ${tertiaryColor};
+      `}
+
     svg {
       margin: 0 8px;
       transition: 0.3s all;
