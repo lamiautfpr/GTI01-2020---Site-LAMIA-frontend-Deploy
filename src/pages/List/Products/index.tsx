@@ -3,26 +3,26 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FaChevronRight, FaRegClipboard, FaListUl } from 'react-icons/fa';
 
-import api from '../../services/api';
+import api from '../../../services/api';
 
-import imgWorkDefault from '../../assets/imgDefault/work1.png';
-import { SelectItem } from '../../../myTypes/SelectItem';
-import { WorkListProps } from '../../../myTypes/WorkListProps';
+import imgWorkDefault from '../../../assets/imgDefault/work1.png';
+import { SelectItem } from '../../../../myTypes/SelectItem';
+import { WorkListProps } from '../../../../myTypes/WorkListProps';
 import {
   compareTitleASC,
   compareTitleDESC,
   compareDateASC,
   compareDateDESC,
-} from '../../utils/orderArray';
+} from '../../../utils/orderArray';
 
-import { listOrder } from '../ListMembers';
+import { listOrder } from '../../ListMembers';
 
-import { Main, Projects, SectionFilters } from './style';
-import Header from '../../components/Header';
-import NavBar from '../../components/NavBar';
-import Separator from '../../components/Separator';
-import Footer from '../../components/Footer';
-import SelectBox from '../../components/SelectBox';
+import { Main, Projects, SectionFilters } from '../style';
+import Header from '../../../components/Header';
+import NavBar from '../../../components/NavBar';
+import Separator from '../../../components/Separator';
+import Footer from '../../../components/Footer';
+import SelectBox from '../../../components/SelectBox';
 
 interface CategoryProps {
   name: string;
@@ -32,7 +32,7 @@ interface CategoryProps {
 
 const page = 'Produtos';
 
-const ListProducts: React.FC = () => {
+const List: React.FC = () => {
   // database
   const [allWorks, setAllWorks] = useState<WorkListProps[]>([]);
   const [works, setWorks] = useState<WorkListProps[]>([]);
@@ -265,4 +265,4 @@ const ListProducts: React.FC = () => {
   );
 };
 
-export default ListProducts;
+export default List;

@@ -8,7 +8,6 @@ import {
   featuredColor,
   titleColor,
   tertiaryColor,
-  infoColor,
 } from '../../styles/paletsColorers';
 import Tooltip from '../../components/Tooltip';
 
@@ -74,6 +73,7 @@ export const HeadTitle = styled.div`
     h1{
       /* transform: translateX(4px); */
       color: #f0f0f0;
+      font-size: x-large;
     }
 
      -webkit-box-shadow: 10px 10px 64px -16px rgba(0, 0, 0, 0.75);

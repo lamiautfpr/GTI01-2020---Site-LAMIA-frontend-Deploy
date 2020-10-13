@@ -20,6 +20,8 @@ import Footer from '../../components/Footer';
 export const listOrder = [
   { value: 0, description: null, label: 'A-Z' },
   { value: 1, description: null, label: 'Z-A' },
+  { value: 2, description: null, label: 'Recentes' },
+  { value: 3, description: null, label: 'Antigas' },
 ];
 
 interface MembersListProps {

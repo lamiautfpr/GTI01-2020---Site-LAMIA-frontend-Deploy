@@ -4,9 +4,9 @@ import Route from './Route';
 
 import Home from '../pages/Home';
 
-import ListProducts from '../pages/ListProducts';
-import ListProjects from '../pages/ListProjects';
-import ListPublications from '../pages/ListPublications';
+import ListProducts from '../pages/List/Products';
+import ListProjects from '../pages/List/Projects';
+import ListPublications from '../pages/List/Publications';
 import Login from '../pages/Login';
 
 import Dashboard from '../pages/Dashboard';

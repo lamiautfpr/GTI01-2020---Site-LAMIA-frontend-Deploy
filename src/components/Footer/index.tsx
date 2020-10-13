@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {
-  FaSlack,
   FaGithubAlt,
   FaFacebook,
   FaStreetView,

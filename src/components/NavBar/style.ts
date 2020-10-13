@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 
-import { transparentize } from 'polished';
 import {
   secondaryBackground,
   tertiaryColor,
