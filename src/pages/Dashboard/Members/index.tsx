@@ -69,47 +69,44 @@ const DashboardMembers: React.FC = () => {
 
         formRef.current?.setErrors({});
 
-        const shema = Yup.object().shape({
+        const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
           login: Yup.string().required('Login obrigatório'),
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('Digite um e-maio valido'),
-          office: Yup.string().required('Patente obrigatória'),
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          office_id: Yup.number().required('Patente obrigatória'),
         });
 
-        await shema.validate(data, {
+        await schema.validate(data, {
           abortEarly: false,
         });
 
-        if (
-          data.oldPassword?.length === 0 &&
-          (data.password?.length !== 0 || data.confirmPassword?.length !== 0)
-        ) {
-          throw new AppError(
-            'Para atualizar a senha é preciso confirmar a senha atual!',
-          );
-        }
-
-        if (data.oldPassword?.length === 0 && data.password?.length === 0) {
-          // eslint-disable-next-line no-param-reassign
-          delete data.oldPassword;
-          // eslint-disable-next-line no-param-reassign
-          delete data.password;
-        }
-
-        const response = await api.put('/members', data, {
+        const response = await api.post('/members', data, {
           headers: { authorization: `Bearer ${token}` },
         });
-        updateMember(response.data);
-        addToast({
-          type: 'success',
-          title: 'Perfil Atualizando!',
+
+        setOffices((old) => {
+          const office = old.find(
+            (state) => state.id === response.data.office_id,
+          );
+
+          if (office) {
+            office.members = [...office.members, response.data];
+
+            return [...old, office];
+          }
+
+          return old;
         });
 
-        formRef.current?.clearField('oldPassword');
-        formRef.current?.clearField('password');
-        formRef.current?.clearField('confirmPassword');
+        addToast({
+          type: 'success',
+          title: 'Membro cadastro com sucesso!',
+        });
+
+        formRef.current?.reset();
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -120,12 +117,12 @@ const DashboardMembers: React.FC = () => {
         if (err instanceof AppError) {
           addToast({
             type: 'error',
-            title: 'Erro na atualização',
+            title: 'Erro ao cadastrar novo membro',
             description: err.mensagem,
           });
           return;
         }
-        if (err.response.status === 401) {
+        if (err.response.status === 400) {
           addToast({
             type: 'error',
             title: 'Dados inválidos',
@@ -141,7 +138,7 @@ const DashboardMembers: React.FC = () => {
         });
       }
     },
-    [addToast, token, updateMember],
+    [addToast, token],
   );
 
   const handleOffice = useCallback(
@@ -178,7 +175,7 @@ const DashboardMembers: React.FC = () => {
             <Input
               icon={FaUserNinja}
               name="name"
-              type="password"
+              type="text"
               placeholder="Nome do novo integrante"
               isFormGroup
             />
@@ -198,10 +195,11 @@ const DashboardMembers: React.FC = () => {
             placeholder="Email do novo integrante"
           />
           <Select
-            name="office"
+            name="office_id"
             icon={FaMedal}
             placeholder="Selecione a Patente!"
             options={offices}
+            value={null}
           />
           <Button width="320px" type="submit">
             Cadastrar Integrante
