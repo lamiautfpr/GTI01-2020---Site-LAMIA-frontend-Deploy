@@ -223,8 +223,11 @@ const DashboardMembers: React.FC = () => {
       const office = offices[index];
 
       office.isOpen = !office.isOpen;
-      setOffices([...offices, (offices[index] = office)]);
-      setOffices(offices.filter((_, i) => i !== offices.length));
+      setOffices(
+        [...offices, (offices[index] = office)].filter(
+          (_, i) => i !== offices.length,
+        ),
+      );
     },
     [offices],
   );
