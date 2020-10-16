@@ -15,8 +15,8 @@ import {
 } from 'react-icons/fa';
 import { GiNinjaHead } from 'react-icons/gi';
 import { OptionTypeBase } from 'react-select';
-import { Link } from 'react-router-dom';
-import { useAuth, IMembersProps } from '../../../hooks/Auth';
+import { Link, useRouteMatch, useHistory } from 'react-router-dom';
+import { useAuth } from '../../../hooks/Auth';
 import { useToast } from '../../../hooks/Toast';
 import getValidationErrors from '../../../utils/getValidationErrors';
 import NavBarDashboard from '../../../components/NavBarDashboard';
@@ -33,10 +33,11 @@ import AppError from '../../../utils/AppError';
 import imgMemberDefault from '../../../assets/imgDefault/member.jpg';
 import { ImageProps } from '../../../../myTypes/Images';
 
-interface IMemberFormProps extends IMembersProps {
-  oldPassword?: string;
-  password?: string;
-  confirmPassword?: string;
+interface MemberFormProps {
+  login: string;
+  name: string;
+  email: string;
+  office_id: number;
 }
 
 interface MembersListProps {
@@ -54,21 +55,42 @@ interface OfficesProps extends OptionTypeBase {
   members: MembersListProps[];
 }
 
+interface MembersParams {
+  login: string;
+}
+
+interface MemberEditableProps {
+  login: string;
+  name: string;
+  email: string;
+  office_id: OfficesProps;
+  office: string;
+}
+
 const DashboardMembers: React.FC = () => {
+  const { params } = useRouteMatch<MembersParams>();
+  const history = useHistory();
+
   const formRef = useRef<FormHandles>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { member, token, updateMember } = useAuth();
+  const { token } = useAuth();
   const { addToast } = useToast();
 
   const [offices, setOffices] = useState<OfficesProps[]>([]);
+  const [editable, setEditable] = useState(false);
+  const [member, setMember] = useState<MemberEditableProps | undefined>(
+    undefined,
+  );
 
   const handleSubmit = useCallback(
-    async (data: IMemberFormProps) => {
+    async (data: MemberFormProps) => {
+      formRef.current?.setErrors({});
+      if (!editable) {
+        setEditable(true);
+        return;
+      }
+
       try {
-        console.log(data);
-
-        formRef.current?.setErrors({});
-
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
           login: Yup.string().required('Login obrigatório'),
@@ -83,30 +105,83 @@ const DashboardMembers: React.FC = () => {
           abortEarly: false,
         });
 
-        const response = await api.post('/members', data, {
-          headers: { authorization: `Bearer ${token}` },
-        });
-
-        setOffices((old) => {
-          const office = old.find(
-            (state) => state.id === response.data.office_id,
-          );
-
-          if (office) {
-            office.members = [...office.members, response.data];
-
-            return [...old, office];
+        if (params.login) {
+          if (data.office_id === member?.office_id.value) {
+            return;
           }
 
-          return old;
-        });
+          const response = await api.patch('/members/office', data, {
+            headers: { authorization: `Bearer ${token}` },
+          });
 
-        addToast({
-          type: 'success',
-          title: 'Membro cadastro com sucesso!',
-        });
+          setOffices((old) => {
+            const officeRemoveMember = old.find(
+              (state) => state.id === member?.office_id.value,
+            );
 
-        formRef.current?.reset();
+            if (officeRemoveMember) {
+              officeRemoveMember.members = officeRemoveMember.members.filter(
+                (m) => m.login !== member?.login,
+              );
+
+              const officeAddMember = old.find(
+                (state) => state.id === response.data.office_id,
+              );
+
+              if (officeAddMember) {
+                officeAddMember.members = [
+                  ...officeAddMember.members,
+                  response.data,
+                ];
+
+                return [...old, officeRemoveMember, officeAddMember];
+              }
+            }
+
+            return old;
+          });
+
+          addToast({
+            type: 'success',
+            title: 'Membro atualizado com sucesso!',
+          });
+
+          setMember({
+            name: response.data.name,
+            email: response.data.email,
+            login: params.login,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            office_id: response.data.office,
+            office: response.data.office.label,
+          });
+
+          setEditable(false);
+        } else {
+          const response = await api.post('/members', data, {
+            headers: { authorization: `Bearer ${token}` },
+          });
+
+          setOffices((old) => {
+            const office = old.find(
+              (state) => state.id === response.data.office_id,
+            );
+
+            if (office) {
+              office.members = [...office.members, response.data];
+
+              return [...old, office];
+            }
+
+            return old;
+          });
+
+          addToast({
+            type: 'success',
+            title: 'Membro cadastro com sucesso!',
+          });
+
+          history.push(`/dashboard/members`);
+        }
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -122,7 +197,7 @@ const DashboardMembers: React.FC = () => {
           });
           return;
         }
-        if (err.response.status === 400) {
+        if (err.response.status) {
           addToast({
             type: 'error',
             title: 'Dados inválidos',
@@ -138,7 +213,7 @@ const DashboardMembers: React.FC = () => {
         });
       }
     },
-    [addToast, token],
+    [addToast, editable, history, member, params.login, token],
   );
 
   const handleOffice = useCallback(
@@ -158,6 +233,28 @@ const DashboardMembers: React.FC = () => {
     });
   }, []);
 
+  useEffect(() => {
+    formRef.current?.setErrors({});
+
+    if (params.login) {
+      api.get(`${params.login}`).then((response) => {
+        setMember({
+          name: response.data.name,
+          email: response.data.email,
+          login: params.login,
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          office_id: response.data.office,
+          office: response.data.office.label,
+        });
+      });
+      setEditable(false);
+    } else {
+      formRef.current?.reset();
+      setMember(undefined);
+      setEditable(true);
+    }
+  }, [params]);
+
   return (
     <Container>
       <NavBarDashboard page="members" />
@@ -166,7 +263,7 @@ const DashboardMembers: React.FC = () => {
           <h2>Integrantes </h2>
           <div className="bar" />
         </HeaderSection>
-        <Form ref={formRef} onSubmit={handleSubmit}>
+        <Form ref={formRef} onSubmit={handleSubmit} initialData={member}>
           <header>
             Novo Integrante
             <div className="bar" />
@@ -178,6 +275,8 @@ const DashboardMembers: React.FC = () => {
               type="text"
               placeholder="Nome do novo integrante"
               isFormGroup
+              disabled={!!member}
+              value={member?.name}
             />
 
             <Input
@@ -186,6 +285,8 @@ const DashboardMembers: React.FC = () => {
               type="text"
               placeholder="Login do novo integrante"
               isFormGroup
+              disabled={!!member}
+              value={member?.login}
             />
           </div>
           <Input
@@ -193,16 +294,30 @@ const DashboardMembers: React.FC = () => {
             name="email"
             type="mail"
             placeholder="Email do novo integrante"
+            disabled={!!member}
+            value={member?.email}
           />
-          <Select
-            name="office_id"
-            icon={FaMedal}
-            placeholder="Selecione a Patente!"
-            options={offices}
-            value={null}
-          />
+          {!editable ? (
+            <Input
+              icon={FaMedal}
+              name="office"
+              type="text"
+              placeholder="Selecione a Patente!"
+              disabled
+              value={member?.office}
+            />
+          ) : (
+            <Select
+              name="office_id"
+              icon={FaMedal}
+              placeholder="Selecione a Patente!"
+              options={offices}
+              defaultValue={member?.office_id || null}
+            />
+          )}
+
           <Button width="320px" type="submit">
-            Cadastrar Integrante
+            {!editable ? 'Editar Integrante' : 'Salvar Integrante'}
             <GiNinjaHead size={24} />
           </Button>
         </Form>
@@ -228,7 +343,7 @@ const DashboardMembers: React.FC = () => {
             </header>
             <Projects>
               {office.members.map((member) => (
-                <Link to={`/${member.login}`}>
+                <Link to={`/dashboard/members/${member.login}`}>
                   <img
                     src={member.avatar ? member.avatar.src : imgMemberDefault}
                     alt={member.name}

@@ -3,7 +3,11 @@ import styled, { css } from 'styled-components';
 import { shade } from 'polished';
 import Tooltip from '../Tooltip';
 
-import { primaryColor, errorColor } from '../../styles/paletsColorers';
+import {
+  primaryColor,
+  errorColor,
+  secondaryBackground,
+} from '../../styles/paletsColorers';
 
 interface ContainerProps {
   isFocused: boolean;
@@ -12,6 +16,7 @@ interface ContainerProps {
   isFormGroup: boolean;
   width?: number;
   isHidden?: boolean;
+  disabled?: boolean;
   activeColor?: string;
 }
 
@@ -123,6 +128,12 @@ export const Container = styled.div<ContainerProps>`
         `}
     }
   }
+
+  ${(props) =>
+    props.disabled &&
+    css`
+      background: ${secondaryBackground};
+    `}
 
   ${(props) =>
     props.isHidden &&

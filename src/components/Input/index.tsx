@@ -27,6 +27,7 @@ const Input: React.FC<IInputProps> = ({
   isHidden = false,
   activeColor,
   children,
+  disabled,
   ...rest
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -49,7 +50,7 @@ const Input: React.FC<IInputProps> = ({
       ref: inputRef.current,
       path: 'value',
     });
-  }, [fieldName, registerField]);
+  }, [defaultValue, fieldName, registerField]);
 
   return (
     <Container
@@ -61,6 +62,7 @@ const Input: React.FC<IInputProps> = ({
       isHidden={isHidden}
       activeColor={activeColor}
       className="input-form"
+      disabled={disabled}
     >
       {Icon && <Icon size={24} />}
       {children}
@@ -69,6 +71,7 @@ const Input: React.FC<IInputProps> = ({
         onBlur={handleInputBlur}
         defaultValue={defaultValue}
         ref={inputRef}
+        disabled={disabled}
         {...rest}
       />
       {error && (

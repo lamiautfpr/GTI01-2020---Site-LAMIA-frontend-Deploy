@@ -38,6 +38,12 @@ const Routes: React.FC = () => (
       component={DashboardMembers}
       isPrivate
     />
+    <Route
+      path="/dashboard/members/:login"
+      exact
+      component={DashboardMembers}
+      isPrivate
+    />
 
     <Route path="/:login" exact component={Member} />
   </Switch>
