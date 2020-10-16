@@ -345,7 +345,10 @@ const DashboardMembers: React.FC = () => {
             </header>
             <Projects>
               {office.members.map((member) => (
-                <Link to={`/dashboard/members/${member.login}`}>
+                <Link
+                  key={member.login}
+                  to={`/dashboard/members/${member.login}`}
+                >
                   <img
                     src={member.avatar ? member.avatar.src : imgMemberDefault}
                     alt={member.name}
