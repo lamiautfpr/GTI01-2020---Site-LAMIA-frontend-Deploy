@@ -134,7 +134,9 @@ const DashboardMembers: React.FC = () => {
                   response.data,
                 ];
 
-                return [...old, officeRemoveMember, officeAddMember];
+                return [...old, officeRemoveMember, officeAddMember].filter(
+                  (_, i) => i !== old.length && i !== old.length - 1,
+                );
               }
             }
 
@@ -169,7 +171,7 @@ const DashboardMembers: React.FC = () => {
             if (office) {
               office.members = [...office.members, response.data];
 
-              return [...old, office];
+              return [...old, office].filter((_, i) => i !== old.length);
             }
 
             return old;
