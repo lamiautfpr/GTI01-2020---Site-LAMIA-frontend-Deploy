@@ -1,37 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { GoStar, GoRepo, GoGitCommit, GoGitBranch } from 'react-icons/go';
+import React, { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
-
-import api from '../../services/api';
-
-import imgLogo from '../../assets/logo.jpg';
-import imgArea from '../../assets/imgDefault/search.jpg';
+import { GoGitBranch, GoGitCommit, GoRepo, GoStar } from 'react-icons/go';
+import { ImageProps } from '../../../myTypes/Images';
+import { WorkListProps } from '../../../myTypes/WorkListProps';
+//
+import { mission } from '../../assets/dataStatistic';
 import imgPartnerDefault from '../../assets/imgDefault/partner.svg';
+import imgArea from '../../assets/imgDefault/search.jpg';
 import imgTeacherDefault from '../../assets/imgDefault/teacher.png';
 import imgWorkDefault from '../../assets/imgDefault/work1.png';
-
 import imgDisoriented from '../../assets/imgWarning/disoriented.jpg';
 import imgFocus from '../../assets/imgWarning/focus.gif';
 import imgDoPartner from '../../assets/imgWarning/partner.jpg';
-//
-
-import { mission } from '../../assets/dataStatistic';
-
-import {
-  Main,
-  SectionLine,
-  SectionColumn,
-  SectionVip,
-  SectionCards,
-  HeaderSection,
-  CardWarning,
-} from './style';
+import imgLogo from '../../assets/logo.jpg';
+import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
-import Footer from '../../components/Footer';
-
-import { WorkListProps } from '../../../myTypes/WorkListProps';
-import { ImageProps } from '../../../myTypes/Images';
+import api from '../../services/api';
+import {
+  CardWarning,
+  HeaderSection,
+  Main,
+  SectionCards,
+  SectionColumn,
+  SectionLine,
+  SectionVip,
+} from './style';
 
 interface StatisticsProps {
   countRepositories: number;
@@ -49,7 +43,7 @@ interface AreasExpertiseProps {
 interface PartnerProps {
   id: number;
   name: string;
-  logo?: string | null;
+  logoUrl?: string | null;
   linkPage?: string | null;
 }
 
@@ -83,7 +77,7 @@ const Home: React.FC = () => {
       setAreaExpertises(response.data);
     });
 
-    api.get<PartnerProps[]>(`partiners`).then((response) => {
+    api.get<PartnerProps[]>(`partners`).then((response) => {
       setPartners(response.data);
     });
 
@@ -273,7 +267,11 @@ const Home: React.FC = () => {
                 {partners.map((partner) => (
                   <li key={partner.id}>
                     <img
-                      src={partner.logo ? `${partner.logo}` : imgPartnerDefault}
+                      src={
+                        partner.logoUrl
+                          ? `${partner.logoUrl}`
+                          : imgPartnerDefault
+                      }
                       alt={partner.name}
                     />
                     <h2>{partner.name}</h2>
