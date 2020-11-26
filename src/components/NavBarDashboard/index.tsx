@@ -54,27 +54,20 @@ const NavBarDashboard: React.FC<IMenuBurgerProps> = ({ page }) => {
       </Header>
 
       <ul>
-        {permitted && (
-          <>
-            <ItemMenu active={page === 'administrative'}>
-              <Link to="to">Geral</Link>
-            </ItemMenu>
-            <ItemMenu active={page === 'members'}>
-              <Link to="/dashboard/members">Integrantes</Link>
-            </ItemMenu>
-          </>
+        {/* Apenas para Administrador, Coordenador, Orientador */}
+        {[1, 2, 3].includes(member.office.value) && (
+          <ItemMenu active={page === 'members'}>
+            <Link to="/dashboard/members">Integrantes</Link>
+          </ItemMenu>
         )}
         <ItemMenu active={page === 'products'}>
-          <Link to="to">Produtos</Link>
+          <Link to="/products">Produtos</Link>
         </ItemMenu>
         <ItemMenu active={page === 'projects'}>
-          <Link to="to">Projetos</Link>
+          <Link to="/projects">Projetos</Link>
         </ItemMenu>
         <ItemMenu active={page === 'publications'}>
-          <Link to="to">Publicações</Link>
-        </ItemMenu>
-        <ItemMenu active={page === 'phrases'}>
-          <Link to="to">Frases</Link>
+          <Link to="/publications">Publicações</Link>
         </ItemMenu>
       </ul>
 
