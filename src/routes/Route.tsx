@@ -10,11 +10,13 @@ import { useAuth } from '../hooks/Auth';
 interface RouteProps extends ReactDOMRouteProps {
   isPrivate?: boolean;
   component: React.ComponentType;
+  permittedFor?: number[];
 }
 
 const Route: React.FC<RouteProps> = ({
   isPrivate = false,
   component: Component,
+  permittedFor,
   path,
   ...rest
 }) => {
@@ -32,6 +34,15 @@ const Route: React.FC<RouteProps> = ({
               />
             );
           }
+
+          if (permittedFor && !permittedFor.includes(member.office.value)) {
+            return (
+              <Redirect
+                to={{ pathname: '/dashboard', state: { from: location } }}
+              />
+            );
+          }
+
           return <Component />;
         }
         if (isPrivate) {

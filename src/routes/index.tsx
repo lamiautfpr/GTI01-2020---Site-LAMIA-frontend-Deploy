@@ -37,12 +37,14 @@ const Routes: React.FC = () => (
       exact
       component={DashboardMembers}
       isPrivate
+      permittedFor={[1, 2, 3]}
     />
     <Route
       path="/dashboard/members/:login"
       exact
       component={DashboardMembers}
       isPrivate
+      permittedFor={[1, 2, 3]}
     />
 
     <Route path="/:login" exact component={Member} />
