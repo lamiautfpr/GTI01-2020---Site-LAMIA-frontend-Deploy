@@ -12,9 +12,9 @@ import imgMemberDefault from '../../assets/imgDefault/member.jpg';
 interface IMenuBurgerProps {
   page?:
     | 'members'
-    | 'products'
-    | 'projects'
-    | 'publications'
+    | 'Produtos'
+    | 'Projetos'
+    | 'Publicações'
     | 'phrases'
     | 'administrative';
 }
@@ -60,14 +60,14 @@ const NavBarDashboard: React.FC<IMenuBurgerProps> = ({ page }) => {
             <Link to="/dashboard/members">Integrantes</Link>
           </ItemMenu>
         )}
-        <ItemMenu active={page === 'products'}>
-          <Link to="/products">Produtos</Link>
+        <ItemMenu active={page === 'Produtos'}>
+          <Link to="/dashboard/products">Produtos</Link>
         </ItemMenu>
-        <ItemMenu active={page === 'projects'}>
-          <Link to="/projects">Projetos</Link>
+        <ItemMenu active={page === 'Projetos'}>
+          <Link to="/dashboard/projects">Projetos</Link>
         </ItemMenu>
-        <ItemMenu active={page === 'publications'}>
-          <Link to="/publications">Publicações</Link>
+        <ItemMenu active={page === 'Publicações'}>
+          <Link to="/dashboard/publications">Publicações</Link>
         </ItemMenu>
       </ul>
 
