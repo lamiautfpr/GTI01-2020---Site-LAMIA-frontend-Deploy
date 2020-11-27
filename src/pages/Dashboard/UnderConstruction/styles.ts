@@ -1,11 +1,9 @@
-import styled, { css } from 'styled-components';
-
-import { transparentize } from 'polished';
+import styled from 'styled-components';
 import {
-  secondaryBackground,
-  titleColor,
-  tertiaryColor,
   featuredColor,
+  secondaryBackground,
+  tertiaryColor,
+  titleColor,
 } from '../../../styles/paletsColorers';
 
 export const Container = styled.div`

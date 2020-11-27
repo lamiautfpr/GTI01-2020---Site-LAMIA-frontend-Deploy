@@ -52,7 +52,6 @@ const ProjectView: React.FC = () => {
 
   useEffect(() => {
     api.get(`work/${params.id}`).then((response) => {
-      console.log(response.data);
       setWork(response.data);
       setGetApi(true);
     });

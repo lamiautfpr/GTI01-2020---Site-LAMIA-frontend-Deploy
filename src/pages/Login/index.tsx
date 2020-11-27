@@ -27,7 +27,6 @@ const Login: React.FC = () => {
 
   const handleSubmit = useCallback(
     async (data: ISingInFormData) => {
-      console.log(data);
       try {
         formRef.current?.setErrors({});
 
@@ -50,14 +49,9 @@ const Login: React.FC = () => {
 
           formRef.current?.setErrors(errors);
         }
-        addToast({
-          type: 'error',
-          title: 'Erro na autenticação',
-          description: 'Ocorreu um erro ao fazer login, cheque as credenciais',
-        });
       }
     },
-    [addToast, signIn],
+    [signIn],
   );
 
   return (
