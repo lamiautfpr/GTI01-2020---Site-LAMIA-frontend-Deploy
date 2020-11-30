@@ -1,19 +1,17 @@
+import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import React, { useCallback, useRef } from 'react';
-
-import { FormHandles } from '@unform/core';
-import { RiArrowLeftLine } from 'react-icons/ri';
 import { MdLock, MdMail } from 'react-icons/md';
+import { RiArrowLeftLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import imgLogo from '../../assets/logo.jpg';
-import Input from '../../components/Input';
-import { Container, Content, Header } from './styles';
-import getValidationErrors from '../../utils/getValidationErrors';
-import { useToast } from '../../hooks/Toast';
-import { useAuth } from '../../hooks/Auth';
 import Button from '../../components/Button';
+import Input from '../../components/Input';
+import { useAuth } from '../../hooks/Auth';
 import { tertiaryColor } from '../../styles/paletsColorers';
+import getValidationErrors from '../../utils/getValidationErrors';
+import { Container, Content, Header } from './styles';
 
 interface ISingInFormData {
   login: string;
@@ -22,7 +20,6 @@ interface ISingInFormData {
 
 const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
-  const { addToast } = useToast();
   const { signIn } = useAuth();
 
   const handleSubmit = useCallback(
