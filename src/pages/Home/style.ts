@@ -133,6 +133,7 @@ export const SectionColumn = styled.section`
 
 export const SectionVip = styled.section`
   max-width: 1200px;
+  height: 376px;
   margin: 24px auto;
   background: ${featuredColor};
   padding: 24px;
@@ -196,46 +197,6 @@ export const SectionVip = styled.section`
       );
 
       position: absolute;
-    }
-  }
-
-  ul {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    flex-grow: 1;
-
-    list-style: none;
-
-    li {
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      align-items: center;
-
-      margin-top: 24px;
-      margin-left: 24px;
-
-      &:hover {
-        img {
-          filter: none;
-          transform: translateY(5px);
-        }
-      }
-
-      img {
-        width: 150px;
-        height: 150px;
-        border-radius: 35px;
-        transition: 0.3s;
-
-        filter: grayscale(100%);
-      }
-
-      h2 {
-        color: #fff;
-        margin-top: 4px;
-      }
     }
   }
 `;

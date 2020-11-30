@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
 import { GoGitBranch, GoGitCommit, GoRepo, GoStar } from 'react-icons/go';
+import { Link } from 'react-router-dom';
 import { ImageProps } from '../../../myTypes/Images';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
 //
@@ -16,6 +17,7 @@ import imgLogo from '../../assets/logo.jpg';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
+import Slider from '../../components/Slider';
 import api from '../../services/api';
 import {
   CardWarning,
@@ -263,21 +265,21 @@ const Home: React.FC = () => {
           </header>
           <div>
             {partners.length > 0 ? (
-              <ul>
+              <Slider>
                 {partners.map((partner) => (
-                  <li key={partner.id}>
-                    <img
-                      src={
-                        partner.logoUrl
-                          ? `${partner.logoUrl}`
-                          : imgPartnerDefault
-                      }
-                      alt={partner.name}
-                    />
-                    <h2>{partner.name}</h2>
-                  </li>
+                  <Link
+                    to={partner.linkPage || '#'}
+                    className="slider-item"
+                    key={partner.id}
+                  >
+                    {partner.logoUrl ? (
+                      <img src={partner.logoUrl} alt={partner.name} />
+                    ) : (
+                      <h2>{partner.name}</h2>
+                    )}
+                  </Link>
                 ))}
-              </ul>
+              </Slider>
             ) : (
               <CardWarning textColor="#f0f0f0">
                 <img src={imgDoPartner} alt="logoLex" />
