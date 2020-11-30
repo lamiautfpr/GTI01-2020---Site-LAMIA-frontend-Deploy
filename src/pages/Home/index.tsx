@@ -53,6 +53,7 @@ interface AdvisorsProps {
   name: string;
   description: string;
   avatar: ImageProps;
+  login: string;
 }
 
 const Home: React.FC = () => {
@@ -300,7 +301,7 @@ const Home: React.FC = () => {
             <div>
               <>
                 {advisors.map((advisor) => (
-                  <div key={advisor.id}>
+                  <Link to={`/${advisor.login}`} key={advisor.id}>
                     <img
                       src={
                         advisor.avatar ? advisor.avatar.src : imgTeacherDefault
@@ -311,7 +312,7 @@ const Home: React.FC = () => {
                       <h2>{advisor.name}</h2>
                     </header>
                     <p>{advisor.description}</p>
-                  </div>
+                  </Link>
                 ))}
               </>
             </div>
