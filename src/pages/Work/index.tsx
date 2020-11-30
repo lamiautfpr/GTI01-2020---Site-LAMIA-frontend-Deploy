@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+-import React, { useCallback, useEffect, useState } from 'react';
 import {
   FaGithub,
   FaListUl,
@@ -182,24 +182,25 @@ const ProjectView: React.FC = () => {
                     </Aside>
                     <Aside>
                       <h1>Parceiros</h1>
-                      <ul>
-                        {work.partner && (
-                          <li>
-                            <a href={work.partner.link_page}>
+                      <a href="mailto:naves@utfpr.edu.br" className="BePartner">
+                        seja um parceiro
+                      </a>
+                      <div>
+                        {work.partners.map((partner) => (
+                          <Participant title={partner.name} key={partner.id}>
+                            <a href={partner.linkPage || '#'} target="_blank">
                               <img
-                                src={work.partner.logo}
-                                alt={work.partner.name}
+                                src={
+                                  partner.logoUrl
+                                    ? partner.logoUrl
+                                    : imgMemberDefault
+                                }
+                                alt={partner.name}
                               />
                             </a>
-                          </li>
-                        )}
-                        <a
-                          href="mailto:naves@utfpr.edu.br"
-                          className="BePartner"
-                        >
-                          seja um parceiro
-                        </a>
-                      </ul>
+                          </Participant>
+                        ))}
+                      </div>
                     </Aside>
                   </div>
                 </SectionColumn>

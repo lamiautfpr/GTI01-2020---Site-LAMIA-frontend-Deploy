@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
 import { GoGitBranch, GoGitCommit, GoRepo, GoStar } from 'react-icons/go';
-import { Link } from 'react-router-dom';
 import { ImageProps } from '../../../myTypes/Images';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
 //
