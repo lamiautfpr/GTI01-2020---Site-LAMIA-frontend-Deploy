@@ -1,12 +1,11 @@
-import styled, { css } from 'styled-components';
-
 import { shade, transparentize } from 'polished';
+import styled, { css } from 'styled-components';
 import {
-  secondaryBackground,
-  titleColor,
-  primaryColor,
-  secondaryColor,
   featuredColor,
+  primaryColor,
+  secondaryBackground,
+  secondaryColor,
+  titleColor,
 } from '../../styles/paletsColorers';
 
 interface WarningPros {

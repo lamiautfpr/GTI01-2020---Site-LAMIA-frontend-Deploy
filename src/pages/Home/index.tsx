@@ -6,7 +6,6 @@ import { ImageProps } from '../../../myTypes/Images';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
 //
 import { mission } from '../../assets/dataStatistic';
-import imgPartnerDefault from '../../assets/imgDefault/partner.svg';
 import imgArea from '../../assets/imgDefault/search.jpg';
 import imgTeacherDefault from '../../assets/imgDefault/teacher.png';
 import imgWorkDefault from '../../assets/imgDefault/work1.png';
@@ -267,8 +266,8 @@ const Home: React.FC = () => {
             {partners.length > 0 ? (
               <Slider>
                 {partners.map((partner) => (
-                  <Link
-                    to={partner.linkPage || '#'}
+                  <a
+                    href={partner.linkPage || '#'}
                     className="slider-item"
                     key={partner.id}
                   >
@@ -277,7 +276,7 @@ const Home: React.FC = () => {
                     ) : (
                       <h2>{partner.name}</h2>
                     )}
-                  </Link>
+                  </a>
                 ))}
               </Slider>
             ) : (
