@@ -77,6 +77,7 @@ export const Projects = styled.div`
       flex-shrink: 1;
       margin-right: 8px;
       margin-top: 16px;
+      object-fit: cover;
     }
 
     > div {

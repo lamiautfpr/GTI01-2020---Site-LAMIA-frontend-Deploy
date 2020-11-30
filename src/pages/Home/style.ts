@@ -99,13 +99,17 @@ export const SectionColumn = styled.section`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    a,
     div {
       display: flex;
       flex-direction: column;
       align-items: center;
       max-width: 378px;
       margin-left: 0;
+      text-decoration: none;
+      color: #000;
 
+      & + a,
       & + div {
         margin-left: 24px;
       }
@@ -121,6 +125,7 @@ export const SectionColumn = styled.section`
         box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
 
         margin-bottom: 16px;
+        object-fit: cover;
       }
 
       h2 {

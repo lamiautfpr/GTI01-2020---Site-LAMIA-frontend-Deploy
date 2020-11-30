@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
 import { GoGitBranch, GoGitCommit, GoRepo, GoStar } from 'react-icons/go';
+import { Link } from 'react-router-dom';
 import { ImageProps } from '../../../myTypes/Images';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
 //
@@ -205,7 +206,7 @@ const Home: React.FC = () => {
           {lastWork.length > 0 ? (
             <div>
               {lastWork.map((work) => (
-                <div key={work.id}>
+                <Link to={`/work/${work.id}`} key={work.id}>
                   <img
                     src={
                       work.pictures?.length > 0
@@ -221,8 +222,12 @@ const Home: React.FC = () => {
                   <header>
                     <h2>{work.title}</h2>
                   </header>
-                  <p>{work.objective?.slice(0, 130)}</p>
-                </div>
+                  <p>
+                    {work.objective.length <= 130
+                      ? work.objective
+                      : `${work.objective?.slice(0, 130)}...`}
+                  </p>
+                </Link>
               ))}
             </div>
           ) : (

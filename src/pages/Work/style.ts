@@ -118,6 +118,7 @@ export const HeadTitle = styled.div`
       height: 176px;
       width: 176px;
       border-radius: 50%;
+      object-fit: cover;
     }
   }
 `;
