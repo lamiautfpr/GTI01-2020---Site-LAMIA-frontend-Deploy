@@ -86,6 +86,134 @@ export const SectionLine = styled.section`
   }
 `;
 
+export const SetionsNews = styled.section`
+  max-width: 1200px;
+  margin: 24px auto;
+
+  display: flex;
+  flex-direction: column;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    margin: 16px 0;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      /* align-items: flex-start; */
+      margin-bottom: 8px;
+
+      transition: 0.3s ease;
+
+      img {
+        display: flex;
+
+        height: 200px;
+        width: 200px;
+        border-radius: 50%;
+        -webkit-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+        box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+      }
+      div {
+        display: flex;
+        flex-direction: column;
+
+        width: 100%;
+        margin: 0 16px;
+        h2 {
+          font-family: Dosis;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 44px;
+          line-height: 40px;
+
+          color: #00679a;
+
+          margin-bottom: 18px;
+        }
+        p {
+          font-family: Source Sans Pro;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 20px;
+          line-height: 20px;
+
+          color: #000000;
+        }
+      }
+    }
+    a {
+      width: 159px;
+      height: 47px;
+      margin-bottom: 8px;
+      margin-left: auto;
+      background: #ff6600;
+      border-radius: 8px;
+
+      font-family: Source Sans Pro;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 18px;
+      line-height: 23px;
+
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      color: #e5e5e5;
+      svg {
+        font-size: 32px;
+        color: #e5e5e5;
+      }
+    }
+    .line {
+      border-bottom: 4px solid #ff6600;
+    }
+    :hover {
+      .line {
+        box-shadow: 0px -1px 8px rgba(255, 102, 0, 0.8);
+      }
+    }
+  }
+  div:nth-child(3) {
+    img {
+      order: 1;
+    }
+  }
+
+  > a {
+    width: 173px;
+    height: 46px;
+
+    background: #00679a;
+    border-radius: 8px;
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 25px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+
+    color: #e5e5e5;
+
+    margin: 0 auto;
+    svg {
+      color: #e5e5e5;
+      font-size: 32px;
+      margin: 4px;
+    }
+  }
+`;
 export const SectionColumn = styled.section`
   max-width: 1200px;
   margin: 24px auto;

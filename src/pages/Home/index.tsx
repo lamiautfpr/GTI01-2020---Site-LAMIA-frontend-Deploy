@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { GoStar, GoRepo, GoGitCommit, GoGitBranch } from 'react-icons/go';
+import { BsChevronDoubleRight, BsChevronDoubleDown } from 'react-icons/bs';
 import CountUp from 'react-countup';
+import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
 
@@ -25,6 +27,7 @@ import {
   SectionCards,
   HeaderSection,
   CardWarning,
+  SetionsNews,
 } from './style';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
@@ -113,49 +116,60 @@ const Home: React.FC = () => {
       <NavBar page="home" />
 
       <Main>
-        {/* <SectionLine title="News" id="News">
+        <SetionsNews title="News" id="News">
           <HeaderSection>
             <h2>Notícias</h2>
           </HeaderSection>
+
           <div>
             <div>
-              <header>
-                <h2>Contrução de Site</h2>
-              </header>
-              <p>
-                Sed lorem ipsum
-              </p>
+              <img src={imgLogo} alt="Tester" />
+              <div>
+                <h2>titulo</h2>
+                <p>descrição</p>
+              </div>
             </div>
-            <img src={imgTester} alt="Tester" />
+            <Link to="home">
+              Veja Mais
+              <BsChevronDoubleRight />
+            </Link>
+            <div className="line" />
           </div>
-          <Separator />
           <div>
-            <img src={imgTester} alt="Tester" />
             <div>
-              <header>
-                <h2>Contrução de Site</h2>
-              </header>
-              <p>
-                Sed lorem ipsum dolor
-              </p>
+              <img src={imgLogo} alt="Tester" />
+              <div>
+                <h2>titulo</h2>
+                <p>descrição</p>
+              </div>
             </div>
+            <Link to="home">
+              Veja Mais
+              <BsChevronDoubleRight />
+            </Link>
+            <div className="line" />
+          </div>
+          <div>
+            <div>
+              <img src={imgLogo} alt="Tester" />
+              <div>
+                <h2>titulo</h2>
+                <p>descrição</p>
+              </div>
+            </div>
+            <Link to="home">
+              Veja Mais
+              <BsChevronDoubleRight />
+            </Link>
+            <div className="line" />
           </div>
 
-          <Separator />
-          <div>
-            <div>
-              <header>
-                <h2>Contrução de Site</h2>
-              </header>
-              <p>
-                Sed lorem ipsum dolor
-              </p>
-            </div>
-
-            <img src={imgTester} alt="Tester" />
-          </div>
-        </SectionLine>
-        <hr /> */}
+          <Link to="/news">
+            Mais Noticias
+            <BsChevronDoubleDown />
+          </Link>
+        </SetionsNews>
+        <hr />
         <SectionCards title="Statistics" id="Statistics">
           <HeaderSection>
             <h2>Linhas de Códigos Produzidas</h2>
