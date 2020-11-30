@@ -339,7 +339,8 @@ export const Card = styled.div`
 
   img {
     min-width: 200px;
-    max-height: 300px;
+    min-height: 300px;
+    object-fit: contain;
   }
 
   /* .imgCase {
