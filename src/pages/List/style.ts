@@ -77,6 +77,7 @@ export const Projects = styled.div`
       flex-shrink: 1;
       margin-right: 8px;
       margin-top: 16px;
+      object-fit: cover;
     }
 
     > div {
@@ -133,6 +134,7 @@ export const Projects = styled.div`
 
         p {
           margin-right: 16px;
+          padding: 0 8px;
           width: 100%;
           flex: 1;
 

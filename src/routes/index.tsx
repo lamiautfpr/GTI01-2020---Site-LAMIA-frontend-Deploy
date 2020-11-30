@@ -11,6 +11,7 @@ import Login from '../pages/Login';
 
 import Dashboard from '../pages/Dashboard';
 import DashboardMembers from '../pages/Dashboard/Members';
+import UnderConstruction from '../pages/Dashboard/UnderConstruction';
 
 import ListMembers from '../pages/ListMembers';
 import Member from '../pages/Member';
@@ -41,11 +42,32 @@ const Routes: React.FC = () => (
       exact
       component={DashboardMembers}
       isPrivate
+      permittedFor={[1, 2, 3]}
     />
     <Route
       path="/dashboard/members/:login"
       exact
       component={DashboardMembers}
+      isPrivate
+      permittedFor={[1, 2, 3]}
+    />
+
+    <Route
+      path="/dashboard/products"
+      exact
+      component={UnderConstruction}
+      isPrivate
+    />
+    <Route
+      path="/dashboard/projects"
+      exact
+      component={UnderConstruction}
+      isPrivate
+    />
+    <Route
+      path="/dashboard/publications"
+      exact
+      component={UnderConstruction}
       isPrivate
     />
 

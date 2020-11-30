@@ -12,7 +12,7 @@ interface WorksMemberProps {
     | 'Coordenador'
     | 'Colaborador'
     | 'Orientador'
-    | 'Membro Líder'
+    | 'Membro/Líder'
     | 'Membro';
   memberData: MemberProps;
 }
@@ -23,24 +23,23 @@ interface CategoryProps {
   description: string | null;
 }
 
-interface PatnerProps {
+interface PartnerProps {
   id: number;
   name: string;
-  logo: string;
-  link_page: string;
+  logoUrl: string | null;
+  linkPage: string | null;
 }
 
 export interface WorkListProps {
   id: number;
   title: string;
-  objective: string | null;
-  abstract: string | null;
+  objective: string;
   abstractCard: string | null;
   categories: CategoryProps[];
   types: SelectItem[];
   areaExpertise: SelectItem[];
   worksMember: WorksMemberProps[];
-  partner: PatnerProps | null;
+  partners: PartnerProps[];
   dateBegin: Date;
   pictures: ImageProps[];
   urlGithub?: string;

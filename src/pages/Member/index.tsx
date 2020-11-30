@@ -151,7 +151,9 @@ const Member: React.FC = () => {
                     </div>
                     <div className="informationContainer">
                       <h2 className="title">
-                        {`${workData.title.slice(0, 25)}...`}
+                        {workData.title.length <= 25
+                          ? workData.title
+                          : `${workData.title.slice(0, 25)}...`}
                       </h2>
                       <div className="primaryInformation">
                         {workData.areaExpertise.length > 0 && (

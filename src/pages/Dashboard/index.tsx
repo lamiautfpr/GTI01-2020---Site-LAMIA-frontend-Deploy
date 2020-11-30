@@ -176,6 +176,7 @@ const Dashboard: React.FC = () => {
       <Content>
         <HeaderSection>
           <h2>Meu Perfil </h2>
+          <div className="bar" />
         </HeaderSection>
         <Form ref={formRef} initialData={member} onSubmit={handleSubmit}>
           <section>

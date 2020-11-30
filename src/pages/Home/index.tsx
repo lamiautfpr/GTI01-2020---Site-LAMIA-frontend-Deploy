@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { GoStar, GoRepo, GoGitCommit, GoGitBranch } from 'react-icons/go';
 import { BsChevronDoubleRight, BsChevronDoubleDown } from 'react-icons/bs';
@@ -7,34 +8,44 @@ import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 import imgLogo from '../../assets/logo.jpg';
+=======
+import React, { useEffect, useState } from 'react';
+import CountUp from 'react-countup';
+import { GoGitBranch, GoGitCommit, GoRepo, GoStar } from 'react-icons/go';
+import { Link } from 'react-router-dom';
+import { ImageProps } from '../../../myTypes/Images';
+import { WorkListProps } from '../../../myTypes/WorkListProps';
+//
+import { mission } from '../../assets/dataStatistic';
+>>>>>>> 71149ba7e11b89391e5adfc8094b4cdf9b8b01ad
 import imgArea from '../../assets/imgDefault/search.jpg';
-import imgPartnerDefault from '../../assets/imgDefault/partner.svg';
 import imgTeacherDefault from '../../assets/imgDefault/teacher.png';
 import imgWorkDefault from '../../assets/imgDefault/work1.png';
-
 import imgDisoriented from '../../assets/imgWarning/disoriented.jpg';
 import imgFocus from '../../assets/imgWarning/focus.gif';
 import imgDoPartner from '../../assets/imgWarning/partner.jpg';
-//
-
-import { mission } from '../../assets/dataStatistic';
-
+import imgLogo from '../../assets/logo.jpg';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import NavBar from '../../components/NavBar';
+import Slider from '../../components/Slider';
+import api from '../../services/api';
 import {
+  CardWarning,
+  HeaderSection,
   Main,
-  SectionLine,
+  SectionCards,
   SectionColumn,
+  SectionLine,
   SectionVip,
+<<<<<<< HEAD
   SectionCards,
   HeaderSection,
   CardWarning,
   SetionsNews,
+=======
+>>>>>>> 71149ba7e11b89391e5adfc8094b4cdf9b8b01ad
 } from './style';
-import Header from '../../components/Header';
-import NavBar from '../../components/NavBar';
-import Footer from '../../components/Footer';
-
-import { WorkListProps } from '../../../myTypes/WorkListProps';
-import { ImageProps } from '../../../myTypes/Images';
 
 interface StatisticsProps {
   countRepositories: number;
@@ -52,7 +63,7 @@ interface AreasExpertiseProps {
 interface PartnerProps {
   id: number;
   name: string;
-  logo?: string | null;
+  logoUrl?: string | null;
   linkPage?: string | null;
 }
 
@@ -61,6 +72,7 @@ interface AdvisorsProps {
   name: string;
   description: string;
   avatar: ImageProps;
+  login: string;
 }
 
 const Home: React.FC = () => {
@@ -86,7 +98,7 @@ const Home: React.FC = () => {
       setAreaExpertises(response.data);
     });
 
-    api.get<PartnerProps[]>(`partiners`).then((response) => {
+    api.get<PartnerProps[]>(`partners`).then((response) => {
       setPartners(response.data);
     });
 
@@ -225,7 +237,7 @@ const Home: React.FC = () => {
           {lastWork.length > 0 ? (
             <div>
               {lastWork.map((work) => (
-                <div key={work.id}>
+                <Link to={`/work/${work.id}`} key={work.id}>
                   <img
                     src={
                       work.pictures?.length > 0
@@ -241,8 +253,12 @@ const Home: React.FC = () => {
                   <header>
                     <h2>{work.title}</h2>
                   </header>
-                  <p>{work.objective?.slice(0, 130)}</p>
-                </div>
+                  <p>
+                    {work.objective.length <= 130
+                      ? work.objective
+                      : `${work.objective?.slice(0, 130)}...`}
+                  </p>
+                </Link>
               ))}
             </div>
           ) : (
@@ -283,17 +299,21 @@ const Home: React.FC = () => {
           </header>
           <div>
             {partners.length > 0 ? (
-              <ul>
+              <Slider>
                 {partners.map((partner) => (
-                  <li key={partner.id}>
-                    <img
-                      src={partner.logo ? `${partner.logo}` : imgPartnerDefault}
-                      alt={partner.name}
-                    />
-                    <h2>{partner.name}</h2>
-                  </li>
+                  <a
+                    href={partner.linkPage || '#'}
+                    className="slider-item"
+                    key={partner.id}
+                  >
+                    {partner.logoUrl ? (
+                      <img src={partner.logoUrl} alt={partner.name} />
+                    ) : (
+                      <h2>{partner.name}</h2>
+                    )}
+                  </a>
                 ))}
-              </ul>
+              </Slider>
             ) : (
               <CardWarning textColor="#f0f0f0">
                 <img src={imgDoPartner} alt="logoLex" />
@@ -311,7 +331,7 @@ const Home: React.FC = () => {
             <div>
               <>
                 {advisors.map((advisor) => (
-                  <div key={advisor.id}>
+                  <Link to={`/${advisor.login}`} key={advisor.id}>
                     <img
                       src={
                         advisor.avatar ? advisor.avatar.src : imgTeacherDefault
@@ -322,7 +342,7 @@ const Home: React.FC = () => {
                       <h2>{advisor.name}</h2>
                     </header>
                     <p>{advisor.description}</p>
-                  </div>
+                  </Link>
                 ))}
               </>
             </div>

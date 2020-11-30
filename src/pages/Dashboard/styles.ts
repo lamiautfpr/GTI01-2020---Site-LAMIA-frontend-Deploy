@@ -23,16 +23,6 @@ export const HeaderSection = styled.header`
     font-size: 32px;
     color: ${titleColor};
 
-    &::after{
-      content: "";
-
-      width: 224px;
-      height: 2px;
-      background-image: -webkit-linear-gradient(180deg, ${primaryColor} 15%, ${secondaryColor} 85%);
-
-      position: absolute;
-    }
-
 `;
 
 export const Content = styled.div`

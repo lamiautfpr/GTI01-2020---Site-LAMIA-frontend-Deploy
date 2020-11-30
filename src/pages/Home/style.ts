@@ -1,12 +1,11 @@
-import styled, { css } from 'styled-components';
-
 import { shade, transparentize } from 'polished';
+import styled, { css } from 'styled-components';
 import {
-  secondaryBackground,
-  titleColor,
-  primaryColor,
-  secondaryColor,
   featuredColor,
+  primaryColor,
+  secondaryBackground,
+  secondaryColor,
+  titleColor,
 } from '../../styles/paletsColorers';
 
 interface WarningPros {
@@ -228,13 +227,17 @@ export const SectionColumn = styled.section`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    a,
     div {
       display: flex;
       flex-direction: column;
       align-items: center;
       max-width: 378px;
       margin-left: 0;
+      text-decoration: none;
+      color: #000;
 
+      & + a,
       & + div {
         margin-left: 24px;
       }
@@ -250,6 +253,7 @@ export const SectionColumn = styled.section`
         box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
 
         margin-bottom: 16px;
+        object-fit: cover;
       }
 
       h2 {
@@ -261,6 +265,7 @@ export const SectionColumn = styled.section`
 
 export const SectionVip = styled.section`
   max-width: 1200px;
+  height: 376px;
   margin: 24px auto;
   background: ${featuredColor};
   padding: 24px;
@@ -324,46 +329,6 @@ export const SectionVip = styled.section`
       );
 
       position: absolute;
-    }
-  }
-
-  ul {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    flex-grow: 1;
-
-    list-style: none;
-
-    li {
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      align-items: center;
-
-      margin-top: 24px;
-      margin-left: 24px;
-
-      &:hover {
-        img {
-          filter: none;
-          transform: translateY(5px);
-        }
-      }
-
-      img {
-        width: 150px;
-        height: 150px;
-        border-radius: 35px;
-        transition: 0.3s;
-
-        filter: grayscale(100%);
-      }
-
-      h2 {
-        color: #fff;
-        margin-top: 4px;
-      }
     }
   }
 `;
