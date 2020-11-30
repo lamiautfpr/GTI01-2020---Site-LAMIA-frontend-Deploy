@@ -1,4 +1,4 @@
--import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   FaGithub,
   FaListUl,
@@ -97,10 +97,6 @@ const ProjectView: React.FC = () => {
 
               <Content>
                 <SectionText>
-                  <HeaderSection>Resumo</HeaderSection>
-                  <div className="text">
-                    <p>{work.abstract}</p>
-                  </div>
                   <HeaderSection>Objetivo</HeaderSection>
                   <div className="text">
                     <p>{work.objective}</p>

@@ -33,8 +33,7 @@ interface PartnerProps {
 export interface WorkListProps {
   id: number;
   title: string;
-  objective: string | null;
-  abstract: string | null;
+  objective: string;
   abstractCard: string | null;
   categories: CategoryProps[];
   types: SelectItem[];

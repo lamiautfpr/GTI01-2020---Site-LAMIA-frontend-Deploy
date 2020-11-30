@@ -251,7 +251,11 @@ const List: React.FC = () => {
                       ))}
                     </span>
                   </div>
-                  <p>{work.abstractCard}</p>
+                  <p>
+                    {work?.objective?.length <= 160
+                      ? work?.objective
+                      : `${work?.objective?.substr(0, 160)}...`}
+                  </p>
                   <FaChevronRight size={20} />
                 </div>
               </div>
