@@ -15,12 +15,16 @@ import DashboardMembers from '../pages/Dashboard/Members';
 import ListMembers from '../pages/ListMembers';
 import Member from '../pages/Member';
 import ProjectView from '../pages/Work';
+import NewsList from '../pages/NewsList';
+import News from '../pages/News';
 
 // Switch é para apresentar uma rota de cada vez
 
 const Routes: React.FC = () => (
   <Switch>
     <Route path="/" exact component={Home} />
+    <Route path="/news" exact component={NewsList} />
+    <Route path="/news/:title" exact component={News} />
     <Route path="/members" exact component={ListMembers} />
 
     <Route path="/login" exact component={Login} />
