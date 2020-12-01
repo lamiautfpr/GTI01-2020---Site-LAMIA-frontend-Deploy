@@ -1,23 +1,11 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from 'react';
-import { GoStar, GoRepo, GoGitCommit, GoGitBranch } from 'react-icons/go';
-import { BsChevronDoubleRight, BsChevronDoubleDown } from 'react-icons/bs';
-import CountUp from 'react-countup';
-import { Link } from 'react-router-dom';
-
-import api from '../../services/api';
-
-import imgLogo from '../../assets/logo.jpg';
-=======
 import React, { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
+import { BsChevronDoubleDown, BsChevronDoubleRight } from 'react-icons/bs';
 import { GoGitBranch, GoGitCommit, GoRepo, GoStar } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 import { ImageProps } from '../../../myTypes/Images';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
-//
 import { mission } from '../../assets/dataStatistic';
->>>>>>> 71149ba7e11b89391e5adfc8094b4cdf9b8b01ad
 import imgArea from '../../assets/imgDefault/search.jpg';
 import imgTeacherDefault from '../../assets/imgDefault/teacher.png';
 import imgWorkDefault from '../../assets/imgDefault/work1.png';
@@ -38,13 +26,7 @@ import {
   SectionColumn,
   SectionLine,
   SectionVip,
-<<<<<<< HEAD
-  SectionCards,
-  HeaderSection,
-  CardWarning,
   SetionsNews,
-=======
->>>>>>> 71149ba7e11b89391e5adfc8094b4cdf9b8b01ad
 } from './style';
 
 interface StatisticsProps {
