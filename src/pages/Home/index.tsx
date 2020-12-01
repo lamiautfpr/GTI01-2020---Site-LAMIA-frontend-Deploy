@@ -57,6 +57,15 @@ interface AdvisorsProps {
   login: string;
 }
 
+interface NewsProps {
+  id: number;
+  title: string;
+  content: string;
+  datePublication: string;
+  coverUrl: string;
+  pictures: ImageProps[];
+}
+
 const Home: React.FC = () => {
   const [statistics, setStatistics] = useState<StatisticsProps>({
     countRepositories: 5,
@@ -74,6 +83,7 @@ const Home: React.FC = () => {
   const [lastWork, setLastWork] = useState<WorkListProps[]>([]);
 
   const [advisors, setAdvisors] = useState<AdvisorsProps[]>([]);
+  const [news, setNews] = useState<NewsProps[]>([]);
 
   useEffect(() => {
     api.get<AreasExpertiseProps[]>(`area-expertises`).then((response) => {
@@ -101,6 +111,10 @@ const Home: React.FC = () => {
     api.get<AdvisorsProps[]>(`members/Orientador`).then((response) => {
       setAdvisors(response.data);
     });
+
+    api.get(`news`).then((response) => {
+      setNews(response.data.news);
+    });
   }, []);
 
   return (
@@ -114,49 +128,22 @@ const Home: React.FC = () => {
           <HeaderSection>
             <h2>Notícias</h2>
           </HeaderSection>
-
-          <div>
-            <div>
-              <img src={imgLogo} alt="Tester" />
+          {news.map((n) => (
+            <div key={n.id}>
               <div>
-                <h2>titulo</h2>
-                <p>descrição</p>
+                <img src={n.coverUrl} alt={n.title} />
+                <div>
+                  <h2>{n.title}</h2>
+                  <p>{n.content.split('\n')[0]}</p>
+                </div>
               </div>
+              <Link to={`news/${n.id}`}>
+                Veja Mais
+                <BsChevronDoubleRight />
+              </Link>
+              <div className="line" />
             </div>
-            <Link to="home">
-              Veja Mais
-              <BsChevronDoubleRight />
-            </Link>
-            <div className="line" />
-          </div>
-          <div>
-            <div>
-              <img src={imgLogo} alt="Tester" />
-              <div>
-                <h2>titulo</h2>
-                <p>descrição</p>
-              </div>
-            </div>
-            <Link to="home">
-              Veja Mais
-              <BsChevronDoubleRight />
-            </Link>
-            <div className="line" />
-          </div>
-          <div>
-            <div>
-              <img src={imgLogo} alt="Tester" />
-              <div>
-                <h2>titulo</h2>
-                <p>descrição</p>
-              </div>
-            </div>
-            <Link to="home">
-              Veja Mais
-              <BsChevronDoubleRight />
-            </Link>
-            <div className="line" />
-          </div>
+          ))}
 
           <Link to="/news">
             Mais Noticias
