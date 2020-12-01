@@ -1,9 +1,15 @@
-import styled from 'styled-components';
+import { shade } from 'polished';
+import styled, { css } from 'styled-components';
 import {
-  titleColor,
   primaryColor,
   secondaryColor,
+  tertiaryColor,
+  titleColor,
 } from '../../styles/paletsColorers';
+
+interface ISelectPageProps {
+  currentPage: number;
+}
 
 export const Container = styled.div``;
 
@@ -35,7 +41,7 @@ export const Main = styled.main`
   margin-bottom: 100px;
 `;
 
-export const SetionsNews = styled.section`
+export const SectionsNews = styled.section`
   max-width: 1200px;
   margin: 24px auto;
 
@@ -80,7 +86,7 @@ export const SetionsNews = styled.section`
           font-size: 44px;
           line-height: 40px;
 
-          color: #00679a;
+          color: ${secondaryColor};
 
           margin-bottom: 18px;
         }
@@ -100,7 +106,7 @@ export const SetionsNews = styled.section`
       height: 47px;
       margin-bottom: 8px;
       margin-left: auto;
-      background: #ff6600;
+      background: ${tertiaryColor};
       border-radius: 8px;
 
       font-family: Source Sans Pro;
@@ -119,9 +125,13 @@ export const SetionsNews = styled.section`
         font-size: 32px;
         color: #e5e5e5;
       }
+
+      &:hover {
+        background: ${shade(0.1, tertiaryColor)};
+      }
     }
     .line {
-      border-bottom: 4px solid #ff6600;
+      border-bottom: 4px solid ${tertiaryColor};
     }
     :hover {
       .line {
@@ -139,7 +149,7 @@ export const SetionsNews = styled.section`
     width: 173px;
     height: 46px;
 
-    background: #00679a;
+    background: ${secondaryColor};
     border-radius: 8px;
     font-family: Source Sans Pro;
     font-style: normal;
@@ -164,22 +174,27 @@ export const SetionsNews = styled.section`
   }
 `;
 
-export const SelectPage = styled.section`
+export const SelectPage = styled.section<ISelectPageProps>`
   margin: 0 auto;
   width: 488px;
 
   ul {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
     list-style-type: none;
 
     li {
       width: 44px;
-      background: #00679a;
+      background: ${secondaryColor};
       height: 44px;
       border-radius: 8px;
       text-align: center;
       transition: 0.3s ease;
+
+      & + li {
+        margin-left: 8px;
+      }
 
       a {
         color: white;
@@ -187,10 +202,27 @@ export const SelectPage = styled.section`
         font-family: 'Dosis';
         font-size: 32px;
         font-weight: 300;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        height: 100%;
       }
       &:hover {
-        background: #ff6600;
+        background: ${tertiaryColor};
       }
+
+      ${(pros) => css`
+        &:nth-child(${pros.currentPage === 1
+              ? pros.currentPage
+              : pros.currentPage + 1}) {
+          background: ${tertiaryColor};
+          width: 52px;
+          height: 52px;
+        }
+      `}
     }
   }
 `;

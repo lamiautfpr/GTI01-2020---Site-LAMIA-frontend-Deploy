@@ -1,100 +1,90 @@
-import React from 'react';
-import { BsChevronDoubleRight, BsChevronDoubleDown } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BsChevronDoubleRight } from 'react-icons/bs';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { Link, useLocation } from 'react-router-dom';
+import { ImageProps } from '../../../myTypes/Images';
 import Footer from '../../components/Footer';
-
-import imgLogo from '../../assets/logo.jpg';
-
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
+import api from '../../services/api';
+import { HeaderSection, Main, SectionsNews, SelectPage } from './style';
 
-import { SelectPage, Main, HeaderSection, SetionsNews } from './style';
+interface INewsProps {
+  datePublication: string;
+  coverUrl: string;
+  id: number;
+  title: string;
+  content: string;
+  pictures: ImageProps[];
+}
 
 const NewsList: React.FC = () => {
+  const [news, setNews] = useState<INewsProps[]>([]);
+  const [indexPages, setIndexPages] = useState([1]);
+  const [page, setPage] = useState<number>(1);
+  const location = useLocation();
+
+  useEffect(() => {
+    const locationPage = location.search.replace('?page=', '');
+
+    // eslint-disable-next-line radix
+    const currentPage = parseInt(locationPage) || 1;
+
+    setPage(currentPage);
+    api.get(`news?page=${currentPage}`).then((response) => {
+      setNews(response.data.news);
+      setIndexPages(response.data.totalPages);
+    });
+  }, [location.search]);
+
   return (
     <>
       <Header />
       <NavBar page="home" />
       <Main>
-        <SetionsNews title="News" id="News">
+        <SectionsNews title="News" id="News">
           <HeaderSection>
             <h2>Notícias</h2>
           </HeaderSection>
 
-          <div>
-            <div>
-              <img src={imgLogo} alt="Tester" />
+          {news.map((n) => (
+            <div key={n.id}>
               <div>
-                <h2>titulo</h2>
-                <p>descrição</p>
+                <img src={n.coverUrl} alt={n.title} />
+                <div>
+                  <h2>{n.title}</h2>
+                  <p>{n.content.split('\n')[0]}</p>
+                </div>
               </div>
+              <Link to={`/news/${n.id}`}>
+                Veja Mais
+                <BsChevronDoubleRight />
+              </Link>
+              <div className="line" />
             </div>
-            <Link to="home">
-              Veja Mais
-              <BsChevronDoubleRight />
-            </Link>
-            <div className="line" />
-          </div>
-          <div>
-            <div>
-              <img src={imgLogo} alt="Tester" />
-              <div>
-                <h2>titulo</h2>
-                <p>descrição</p>
-              </div>
-            </div>
-            <Link to="home">
-              Veja Mais
-              <BsChevronDoubleRight />
-            </Link>
-            <div className="line" />
-          </div>
-          <div>
-            <div>
-              <img src={imgLogo} alt="Tester" />
-              <div>
-                <h2>titulo</h2>
-                <p>descrição</p>
-              </div>
-            </div>
-            <Link to="home">
-              Veja Mais
-              <BsChevronDoubleRight />
-            </Link>
-            <div className="line" />
-          </div>
-          <div>
-            <div>
-              <img src={imgLogo} alt="Tester" />
-              <div>
-                <h2>titulo</h2>
-                <p>descrição</p>
-              </div>
-            </div>
-            <Link to="home">
-              Veja Mais
-              <BsChevronDoubleRight />
-            </Link>
-            <div className="line" />
-          </div>
-        </SetionsNews>
-        <SelectPage>
+          ))}
+        </SectionsNews>
+        <SelectPage currentPage={page}>
           <ul>
-            <li>
-              <Link to="home">1</Link>
-            </li>
-            <li>
-              <Link to="home">2</Link>
-            </li>
-            <li>
-              <Link to="home">3</Link>
-            </li>
-            <li>
-              <Link to="home">4</Link>
-            </li>
-            <li>
-              <Link to="home">5</Link>
-            </li>
+            {page !== 1 && (
+              <li>
+                <Link to={`/news?page=${page - 1}`}>
+                  <IoIosArrowBack size={24} />
+                </Link>
+              </li>
+            )}
+            {indexPages.map((p) => (
+              <li key={p}>
+                <Link to={`/news?page=${p}`}>{p}</Link>
+              </li>
+            ))}
+            {page !== indexPages.length && (
+              <li>
+                <Link to={`/news?page=${page + 1}`}>
+                  <IoIosArrowForward size={24} />
+                </Link>
+              </li>
+            )}
           </ul>
         </SelectPage>
       </Main>
