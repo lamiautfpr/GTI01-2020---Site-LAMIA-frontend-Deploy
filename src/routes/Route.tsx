@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Route as ReactDOMRoute,
   RouteProps as ReactDOMRouteProps,
   Redirect,
+  useLocation,
 } from 'react-router-dom';
 
 import { useAuth } from '../hooks/Auth';
@@ -21,6 +22,11 @@ const Route: React.FC<RouteProps> = ({
   ...rest
 }) => {
   const { member } = useAuth();
+
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <ReactDOMRoute

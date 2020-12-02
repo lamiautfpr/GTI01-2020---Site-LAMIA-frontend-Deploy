@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import {
   featuredColor,
   primaryColor,
+  tertiaryColor,
   secondaryBackground,
   secondaryColor,
   titleColor,
