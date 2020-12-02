@@ -17,8 +17,9 @@ export const Main = styled.main`
     font-family: Dosis;
     font-style: normal;
     font-weight: 500;
-    font-size: 32px;
-    line-height: 40px;
+    font-size: 62px;
+    margin: 30px 0;
+    line-height: 60px;
     text-align: center;
 
     color: #00679a;
@@ -29,6 +30,7 @@ export const Main = styled.main`
     font-weight: normal;
     font-size: 16px;
     line-height: 20px;
+    white-space: pre-line
 
     color: #d61818;
     span {

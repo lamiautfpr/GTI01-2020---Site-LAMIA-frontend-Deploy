@@ -1,97 +1,106 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useHistory, useRouteMatch, Link } from 'react-router-dom';
-import Gallery from 'react-photo-gallery';
+import React, { useCallback, useEffect, useState } from 'react';
 import Carousel, { Modal, ModalGateway } from 'react-images';
+import Gallery from 'react-photo-gallery';
+import { useRouteMatch } from 'react-router-dom';
+import { ImageProps } from '../../../myTypes/Images';
 import Footer from '../../components/Footer';
-import imgLogo from '../../assets/logo.jpg';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
-import { Cover, Main, ShelfGallery, HeaderSection } from './style';
+import { Cover, HeaderSection, Main, ShelfGallery } from './styles';
+import api from '../../services/api';
 
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
-interface IRouterMatch {
+interface NewsProps {
+  id: number;
   title: string;
+  content: string;
+  datePublication: string;
+  coverUrl: string;
+  source: string;
+  pictures: ImageProps[];
+}
+interface RouterMatch {
+  id: string;
 }
 
 const News: React.FC = () => {
-  const { params } = useRouteMatch<IRouterMatch>();
+  const { params } = useRouteMatch<RouterMatch>();
+  const [news, setNews] = useState<NewsProps>({} as NewsProps);
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
-
-  const photos = [
-    {
-      src: imgLogo,
-      source: imgLogo,
-      name: 'http://example.com/example/img1.jpg',
-      width: 1,
-      height: 1,
-    },
-    {
-      src: imgLogo,
-      source: imgLogo,
-      name: 'http://example.com/example/img2.jpg',
-      width: 1,
-      height: 1,
-    },
-  ];
 
   const openLightbox = useCallback((event, { index }) => {
     setCurrentImage(index);
     setViewerIsOpen(true);
+    console.log('nada');
   }, []);
   const closeLightbox = useCallback((): void => {
     setCurrentImage(0);
     setViewerIsOpen(false);
+    console.log('tudo');
   }, []);
+
+  useEffect(() => {
+    api.get(`news/${params.id}`).then((response) => {
+      setNews(response.data);
+    });
+  }, [params.id]);
 
   return (
     <>
       <Header />
       <NavBar />
       <Main>
-        <h1>titulo</h1>
+        <h1>{news.title}</h1>
         <p className="info">
           Data de publicação:&nbsp;
-          <span>22/12/2020</span>
+          <span>{news.datePublication}</span>
         </p>
         <Cover>
           <div className="line" />
-          <img src={imgLogo} alt="img" />
+          <img src={news.coverUrl} alt={news.title} />
           <div className="line" />
         </Cover>
         <HeaderSection>
           <h2>Descrição</h2>
         </HeaderSection>
-        <p>asasdsadas</p>
+        <p>{news.content}</p>
         <hr />
 
         <HeaderSection>
           <h2>Fotos</h2>
         </HeaderSection>
-        <ShelfGallery>
-          <Gallery margin={8} photos={photos} onClick={openLightbox} />
-          <ModalGateway>
-            {viewerIsOpen ? (
-              <Modal onClose={closeLightbox}>
-                <Carousel
-                  currentIndex={currentImage}
-                  views={photos.map((x) => ({
-                    ...x,
-                    srcset: x.source,
-                    caption: x.name,
-                  }))}
-                />
-              </Modal>
-            ) : null}
-          </ModalGateway>
-        </ShelfGallery>
-        <hr />
+        {news.pictures.length > 0 && (
+          <>
+            <ShelfGallery>
+              <Gallery
+                margin={8}
+                photos={news.pictures}
+                onClick={openLightbox}
+              />
+              <ModalGateway>
+                {viewerIsOpen ? (
+                  <Modal onClose={closeLightbox}>
+                    <Carousel
+                      currentIndex={currentImage}
+                      views={news.pictures.map((x) => ({
+                        ...x,
+                        srcset: x.source,
+                        caption: x.name,
+                      }))}
+                    />
+                  </Modal>
+                ) : null}
+              </ModalGateway>
+            </ShelfGallery>
+            <hr />
+          </>
+        )}
         <HeaderSection>
           <h2>Referência</h2>
         </HeaderSection>
         <p className="info">
           +:&nbsp;
-          <a>tecno</a>
+          <a href={news.source}>{news.source}</a>
           <hr />
         </p>
       </Main>
