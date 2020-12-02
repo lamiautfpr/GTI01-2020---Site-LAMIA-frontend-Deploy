@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {
   secondaryBackground,
   primaryColor,
-  secondaryColor,
   titleColor,
   tertiaryColor,
 } from '../../styles/paletsColorers';

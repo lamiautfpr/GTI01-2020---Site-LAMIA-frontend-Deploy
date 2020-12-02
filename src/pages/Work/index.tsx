@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   FaGithub,
