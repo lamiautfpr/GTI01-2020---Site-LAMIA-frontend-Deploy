@@ -31,10 +31,12 @@ const News: React.FC = () => {
   const openLightbox = useCallback((event, { index }) => {
     setCurrentImage(index);
     setViewerIsOpen(true);
+    console.log('nada');
   }, []);
   const closeLightbox = useCallback((): void => {
     setCurrentImage(0);
     setViewerIsOpen(false);
+    console.log('tudo');
   }, []);
 
   useEffect(() => {
@@ -64,11 +66,11 @@ const News: React.FC = () => {
         <p>{news.content}</p>
         <hr />
 
-        <HeaderSection>
-          <h2>Fotos</h2>
-        </HeaderSection>
         {news.pictures?.length > 0 && (
           <>
+            <HeaderSection>
+              <h2>Fotos</h2>
+            </HeaderSection>
             <ShelfGallery>
               <Gallery
                 margin={8}

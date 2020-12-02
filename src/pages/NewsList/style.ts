@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/interface-name-prefix */
 import { shade } from 'polished';
 import styled, { css } from 'styled-components';
 import {
@@ -58,7 +59,6 @@ export const SectionsNews = styled.section`
     div {
       display: flex;
       flex-direction: row;
-      /* align-items: flex-start; */
       margin-bottom: 8px;
 
       transition: 0.3s ease;

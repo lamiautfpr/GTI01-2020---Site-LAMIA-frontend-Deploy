@@ -1,4 +1,4 @@
-import { shade, transparentize } from 'polished';
+import { transparentize } from 'polished';
 import styled, { css } from 'styled-components';
 import {
   featuredColor,
@@ -13,23 +13,24 @@ interface WarningPros {
 }
 
 export const HeaderSection = styled.header`
+  margin: 4px 0 8px 0;
 
-    margin: 4px 0 8px 0;
-    /* border-bottom: 1px solid ${titleColor}; */
+  font-size: 32px;
+  color: ${titleColor};
 
-    font-size: 32px;
-    color: ${titleColor};
+  &::after {
+    content: '';
 
-    &::after{
-      content: "";
+    width: 224px;
+    height: 2px;
+    background-image: -webkit-linear-gradient(
+      180deg,
+      ${primaryColor} 15%,
+      ${secondaryColor} 85%
+    );
 
-      width: 224px;
-      height: 2px;
-      background-image: -webkit-linear-gradient(180deg, ${primaryColor} 15%, ${secondaryColor} 85%);
-
-      position: absolute;
-    }
-
+    position: absolute;
+  }
 `;
 
 export const Main = styled.main`
@@ -45,8 +46,6 @@ export const SectionLine = styled.section`
 
   display: flex;
   flex-direction: column;
-
-  /* border-bottom: 2px solid ${shade(0.2, secondaryBackground)}; */
 
   div {
     display: flex;
@@ -64,7 +63,7 @@ export const SectionLine = styled.section`
       max-width: 950px;
       padding: 0 8px;
 
-      header{
+      header {
         margin-bottom: 8px;
 
         font-size: 24px;
@@ -78,9 +77,9 @@ export const SectionLine = styled.section`
       height: 200px;
       width: 200px;
       border-radius: 50%;
-      -webkit-box-shadow: 0px 0px 48px -24px rgba(0,0,0,0.75);
-      -moz-box-shadow: 0px 0px 48px -24px rgba(0,0,0,0.75);
-      box-shadow: 0px 0px 48px -24px rgba(0,0,0,0.75);
+      -webkit-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+      -moz-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+      box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
     }
   }
 `;
@@ -102,7 +101,6 @@ export const SetionsNews = styled.section`
     div {
       display: flex;
       flex-direction: row;
-      /* align-items: flex-start; */
       margin-bottom: 8px;
 
       transition: 0.3s ease;
@@ -130,7 +128,7 @@ export const SetionsNews = styled.section`
           font-size: 44px;
           line-height: 40px;
 
-          color: #00679a;
+          color: ${primaryColor};
 
           margin-bottom: 18px;
         }
@@ -150,7 +148,7 @@ export const SetionsNews = styled.section`
       height: 47px;
       margin-bottom: 8px;
       margin-left: auto;
-      background: #ff6600;
+      background: ${tertiaryColor};
       border-radius: 8px;
 
       font-family: Source Sans Pro;
@@ -171,7 +169,7 @@ export const SetionsNews = styled.section`
       }
     }
     .line {
-      border-bottom: 4px solid #ff6600;
+      border-bottom: 4px solid ${tertiaryColor};
     }
     :hover {
       .line {
@@ -189,7 +187,7 @@ export const SetionsNews = styled.section`
     width: 173px;
     height: 46px;
 
-    background: #00679a;
+    background: ${secondaryColor};
     border-radius: 8px;
     font-family: Source Sans Pro;
     font-style: normal;
@@ -279,7 +277,6 @@ export const SectionVip = styled.section`
 
   & > header {
     margin: 4px 0 32px 0;
-    /* border-bottom: 1px solid ${titleColor}; */
 
     display: flex;
     flex-wrap: wrap-reverse;
@@ -287,8 +284,8 @@ export const SectionVip = styled.section`
     font-size: 32px;
     color: ${secondaryBackground};
 
-    a{
-      margin-left:64px;
+    a {
+      margin-left: 64px;
 
       border: 2px solid white;
       padding: 12px;
@@ -365,8 +362,6 @@ export const SectionCards = styled.section`
     justify-content: space-between;
 
     div {
-      /* border: 1px solid red; */
-
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -382,11 +377,9 @@ export const SectionCards = styled.section`
       h3 {
         font-size: 40px;
         margin-bottom: 12px;
-        /* font-weight:200; */
       }
 
       div {
-        /* border: 1px solid red; */
         margin: 0px;
         height: 50px;
 
@@ -401,7 +394,6 @@ export const SectionCards = styled.section`
 
         span {
           font-weight: 200;
-          /* font-size: 40px; */
         }
       }
     }
@@ -417,7 +409,6 @@ export const CardWarning = styled.div<WarningPros>`
 
   h2 {
     display: flex;
-    /* flex-direction: column; */
 
     font-size: 40px;
     font-family: 'Dosis';

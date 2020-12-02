@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { transparentize } from 'polished';
 import {
   secondaryBackground,
-  titleColor,
   primaryColor,
   secondaryColor,
 } from '../../styles/paletsColorers';
@@ -12,17 +11,18 @@ export const Main = styled.main`
   padding: 12px;
   border-radius: 0 0 24px 24px;
   margin-bottom: 100px;
-
+  padding: 1px 20px;
+  padding-bottom: 32px;
   h1 {
     font-family: Dosis;
     font-style: normal;
     font-weight: 500;
-    font-size: 62px;
+    font-size: 48px;
     margin: 30px 0;
     line-height: 60px;
     text-align: center;
 
-    color: #00679a;
+    color: ${secondaryColor};
   }
   p.info {
     font-family: Source Sans Pro;
@@ -34,7 +34,7 @@ export const Main = styled.main`
 
     color: #d61818;
     span {
-      color: #00679a;
+      color: ${secondaryColor};
     }
   }
 
@@ -42,10 +42,9 @@ export const Main = styled.main`
     font-family: Source Sans Pro;
     font-style: normal;
     font-weight: normal;
-    font-size: 24px;
+    font-size: 20px;
     line-height: 30px;
 
-    color: #000000;
   }
 `;
 export const Cover = styled.div`
@@ -54,14 +53,18 @@ export const Cover = styled.div`
   flex-direction: column;
   align-items: center;
   div.line {
-    min-width: 315px;
-    border: 1px solid #018ab2;
+    width: 80%;
+
+    border: 1px solid ${primaryColor};
   }
   img {
     box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
     border-radius: 8px;
     width: max-content;
     max-width: 800px;
+    height: 300px;
+    object-fit: cover;
+    margin: 30px 0px;
   }
 `;
 
@@ -97,6 +100,8 @@ export const HeaderSection = styled.header`
   font-style: normal;
   font-weight: normal;
   font-size: 24px;
+  margin-top: 20px;
+  color: ${primaryColor};
 
   &::after {
     content: '';
