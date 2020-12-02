@@ -25,7 +25,7 @@ const Routes: React.FC = () => (
   <Switch>
     <Route path="/" exact component={Home} />
     <Route path="/news" exact component={NewsList} />
-    <Route path="/new/:id" exact component={News} />
+    <Route path="/news/:id" exact component={News} />
     <Route path="/members" exact component={ListMembers} />
 
     <Route path="/login" exact component={Login} />
