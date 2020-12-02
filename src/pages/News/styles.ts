@@ -3,6 +3,7 @@ import { transparentize } from 'polished';
 import {
   secondaryBackground,
   primaryColor,
+  tertiaryColor,
   secondaryColor,
 } from '../../styles/paletsColorers';
 
@@ -46,6 +47,20 @@ export const Main = styled.main`
     line-height: 30px;
 
   }
+  a{
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 30px;
+
+color:${primaryColor};
+transition: 0.3s ease;
+  }
+a:hover{
+  transform:translateX(8px);
+  color:${tertiaryColor};
+}
 `;
 export const Cover = styled.div`
   margin: 20px;
@@ -61,9 +76,8 @@ export const Cover = styled.div`
     box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
     border-radius: 8px;
     width: max-content;
-    max-width: 800px;
-    height: 300px;
-    object-fit: cover;
+    max-width: 400px;
+    object-fit: contain;
     margin: 30px 0px;
   }
 `;
