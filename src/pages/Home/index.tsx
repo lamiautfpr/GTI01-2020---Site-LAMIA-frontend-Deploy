@@ -5,8 +5,7 @@ import { GoGitBranch, GoGitCommit, GoRepo, GoStar } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 import { ImageProps } from '../../../myTypes/Images';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
-import { mission } from '../../assets/dataStatistic';
-import imgArea from '../../assets/imgDefault/search.jpg';
+import { imageAreaExpertises, mission } from '../../assets/dataStatistic';
 import imgTeacherDefault from '../../assets/imgDefault/teacher.png';
 import imgWorkDefault from '../../assets/imgDefault/work1.png';
 import imgDisoriented from '../../assets/imgWarning/disoriented.jpg';
@@ -232,9 +231,13 @@ const Home: React.FC = () => {
             <h2>Área de Atuação</h2>
           </HeaderSection>
           <div>
-            {areaExpertises.map((area) => (
+            {areaExpertises.map((area, index) => (
               <div key={area.id}>
-                <img src={imgArea} alt={area.name} />
+                <img
+                  className="area-expertise"
+                  src={imageAreaExpertises[index]}
+                  alt={area.name}
+                />
                 <header>
                   <h2>{area.name}</h2>
                 </header>

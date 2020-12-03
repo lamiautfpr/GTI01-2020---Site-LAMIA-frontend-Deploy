@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components';
 import {
   featuredColor,
   primaryColor,
-  tertiaryColor,
   secondaryBackground,
   secondaryColor,
+  tertiaryColor,
   titleColor,
 } from '../../styles/paletsColorers';
 
@@ -253,6 +253,10 @@ export const SectionColumn = styled.section`
 
         margin-bottom: 16px;
         object-fit: cover;
+      }
+
+      .area-expertise {
+        object-fit: contain;
       }
 
       h2 {
