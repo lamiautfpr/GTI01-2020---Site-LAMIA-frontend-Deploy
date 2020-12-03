@@ -88,12 +88,29 @@ const Dashboard: React.FC = () => {
           );
         }
 
+        if (data.linkedin?.length === 0) {
+          // eslint-disable-next-line no-param-reassign
+          delete data.linkedin;
+        }
+
+        if (data.gitHub?.length === 0) {
+          // eslint-disable-next-line no-param-reassign
+          delete data.gitHub;
+        }
+
+        if (data.lattes?.length === 0) {
+          // eslint-disable-next-line no-param-reassign
+          delete data.lattes;
+        }
+
         if (data.oldPassword?.length === 0 && data.password?.length === 0) {
           // eslint-disable-next-line no-param-reassign
           delete data.oldPassword;
           // eslint-disable-next-line no-param-reassign
           delete data.password;
         }
+
+        console.log(data);
 
         const response = await api.put('/members', data, {
           headers: { authorization: `Bearer ${token}` },
@@ -108,6 +125,7 @@ const Dashboard: React.FC = () => {
         formRef.current?.clearField('password');
         formRef.current?.clearField('confirmPassword');
       } catch (err) {
+        console.log(err);
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
 
@@ -214,7 +232,7 @@ const Dashboard: React.FC = () => {
           <Input icon={MdMail} name="email" type="text" placeholder="E-mail" />
           <Input
             icon={FaGithub}
-            name="git_hub"
+            name="gitHub"
             type="text"
             placeholder="DoeJonh"
           >
