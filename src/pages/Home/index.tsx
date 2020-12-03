@@ -67,13 +67,6 @@ interface NewsProps {
 }
 
 const Home: React.FC = () => {
-  const [statistics, setStatistics] = useState<StatisticsProps>({
-    countRepositories: 5,
-    countCommits: 300,
-    countBranches: 20,
-    countStars: 10,
-  } as StatisticsProps);
-
   const [areaExpertises, setAreaExpertises] = useState<AreasExpertiseProps[]>(
     [],
   );
@@ -103,10 +96,6 @@ const Home: React.FC = () => {
       .then((response) => {
         setLastWork(response.data);
       });
-
-    api.get<StatisticsProps>(`statistics`).then((response) => {
-      setStatistics(response.data);
-    });
 
     api.get<AdvisorsProps[]>(`members/Orientador`).then((response) => {
       setAdvisors(response.data);
@@ -181,7 +170,7 @@ const Home: React.FC = () => {
               <h3>Star</h3>
               <div>
                 <GoStar />
-                <CountUp delay={1} end={9} />
+                <CountUp delay={1} end={32} />
               </div>
             </div>
           </div>
