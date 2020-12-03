@@ -90,17 +90,17 @@ const Dashboard: React.FC = () => {
 
         if (data.linkedin?.length === 0) {
           // eslint-disable-next-line no-param-reassign
-          delete data.linkedin;
+          data.linkedin = null;
         }
 
         if (data.gitHub?.length === 0) {
           // eslint-disable-next-line no-param-reassign
-          delete data.gitHub;
+          data.gitHub = null;
         }
 
         if (data.lattes?.length === 0) {
           // eslint-disable-next-line no-param-reassign
-          delete data.lattes;
+          data.lattes = null;
         }
 
         if (data.oldPassword?.length === 0 && data.password?.length === 0) {
@@ -109,8 +109,6 @@ const Dashboard: React.FC = () => {
           // eslint-disable-next-line no-param-reassign
           delete data.password;
         }
-
-        console.log(data);
 
         const response = await api.put('/members', data, {
           headers: { authorization: `Bearer ${token}` },
@@ -125,7 +123,6 @@ const Dashboard: React.FC = () => {
         formRef.current?.clearField('password');
         formRef.current?.clearField('confirmPassword');
       } catch (err) {
-        console.log(err);
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
 

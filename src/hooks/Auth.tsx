@@ -13,9 +13,9 @@ export interface IMembersProps {
   description: string;
   office: SelectItem;
   avatar?: ImageProps;
-  linkedin?: string;
-  gitHub?: string;
-  lattes?: string;
+  linkedin?: string | null;
+  gitHub?: string | null;
+  lattes?: string | null;
 }
 
 interface IAuthState {
