@@ -169,7 +169,7 @@ const Home: React.FC = () => {
               <h3>Star</h3>
               <div>
                 <GoStar />
-                <CountUp delay={1} end={32} />
+                <CountUp delay={1} end={9} />
               </div>
             </div>
           </div>
