@@ -43,7 +43,7 @@ const NewsList: React.FC = () => {
       <Header />
       <NavBar page="home" />
       <Main>
-        <SectionsNews title="News" id="News">
+        <SectionsNews title="News">
           <HeaderSection>
             <h2>Notícias</h2>
           </HeaderSection>

@@ -116,22 +116,23 @@ const Home: React.FC = () => {
           <HeaderSection>
             <h2>Notícias</h2>
           </HeaderSection>
-          {news.map((n) => (
-            <div key={n.id}>
-              <div>
-                <img src={n.coverUrl} alt={n.title} />
+          <Slider className="slider-news">
+            {news.map((n) => (
+              <div className="slider-news-item" key={n.id}>
                 <div>
-                  <h2>{n.title}</h2>
-                  <p>{n.content.split('\n')[0]}</p>
+                  <img src={n.coverUrl} alt={n.title} />
+                  <div>
+                    <h2>{n.title}</h2>
+                    <p>{n.content.split('\n')[0]}</p>
+                  </div>
                 </div>
+                <Link to={`news/${n.id}`}>
+                  Todas Notícias
+                  <BsChevronDoubleRight />
+                </Link>
               </div>
-              <Link to={`news/${n.id}`}>
-                Veja Mais
-                <BsChevronDoubleRight />
-              </Link>
-              <div className="line" />
-            </div>
-          ))}
+            ))}
+          </Slider>
 
           <Link to="/news">
             Mais Noticias

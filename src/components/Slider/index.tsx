@@ -4,8 +4,12 @@ import 'react-awesome-slider/dist/styles.css';
 
 import { Container } from './styles';
 
-const Slider: React.FC = ({ children }) => (
-  <Container>
+interface ISliderProps {
+  className?: string;
+}
+
+const Slider: React.FC<ISliderProps> = ({ children, className = '' }) => (
+  <Container className={className}>
     <AwesomeSlider className="slider-lamia">{children}</AwesomeSlider>
   </Container>
 );

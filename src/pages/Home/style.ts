@@ -1,4 +1,4 @@
-import { transparentize } from 'polished';
+import { shade, transparentize } from 'polished';
 import styled, { css } from 'styled-components';
 import {
   featuredColor,
@@ -92,98 +92,96 @@ export const SectionNews = styled.section`
   display: flex;
   flex-direction: column;
 
-  > div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  .slider-news {
+    .awssld__container {
+      height: 350px;
 
-    margin: 16px 0;
-
-    div {
-      display: flex;
-      flex-direction: row;
-      margin-bottom: 8px;
-
-      transition: 0.3s ease;
-
-      img {
-        display: flex;
-
-        height: 200px;
-        width: 200px;
-        border-radius: 50%;
-        -webkit-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
-        box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
-      }
-      div {
+      .slider-news-item {
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        max-width: 75%;
 
-        width: 100%;
-        margin: 0 16px;
-        h2 {
-          font-family: Dosis;
-          font-style: normal;
-          font-weight: 500;
-          font-size: 44px;
-          line-height: 40px;
+        > div {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
 
-          color: ${primaryColor};
+          img {
+            height: 200px;
+            width: 200px;
+            margin-right: 8px;
+            border-radius: 50%;
+            -webkit-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+          }
 
-          margin-bottom: 18px;
+          h2 {
+            font-family: 'Dosis';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 28px;
+            line-height: 38px;
+
+            color: ${primaryColor};
+
+            margin-bottom: 18px;
+          }
+
+          p {
+            font-family: 'Source Sans Pro';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 20px;
+            line-height: 20px;
+
+            color: #000000;
+          }
         }
-        p {
+
+        a {
+          width: 159px;
+          height: 47px;
+          margin-top: 16px;
+          background: ${tertiaryColor};
+          border-radius: 8px;
+
           font-family: Source Sans Pro;
           font-style: normal;
           font-weight: normal;
-          font-size: 20px;
-          line-height: 20px;
+          font-size: 18px;
+          line-height: 23px;
 
-          color: #000000;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          transition: 0.3s;
+
+          color: #e5e5e5;
+          svg {
+            font-size: 32px;
+            color: #e5e5e5;
+            transition: 0.3s;
+            transform: translateX(-8px);
+          }
+
+          &:hover {
+            background: ${shade(0.1, tertiaryColor)};
+            svg {
+              transform: translateX(0px);
+            }
+          }
         }
       }
     }
-    a {
-      width: 159px;
-      height: 47px;
-      margin-bottom: 8px;
-      margin-left: auto;
-      background: ${tertiaryColor};
-      border-radius: 8px;
 
-      font-family: Source Sans Pro;
-      font-style: normal;
-      font-weight: normal;
-      font-size: 18px;
-      line-height: 23px;
-
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-
-      color: #e5e5e5;
-      svg {
-        font-size: 32px;
-        color: #e5e5e5;
-      }
-    }
-    .line {
-      border-bottom: 4px solid ${tertiaryColor};
-    }
-    :hover {
-      .line {
-        box-shadow: 0px -1px 8px rgba(255, 102, 0, 0.8);
-      }
+    .awssld__bullets {
+      bottom: 16px;
     }
   }
-  div:nth-child(3) {
-    img {
-      order: 1;
-    }
-  }
-
   > a {
     width: 173px;
     height: 46px;
@@ -200,6 +198,8 @@ export const SectionNews = styled.section`
     align-items: center;
     justify-content: center;
 
+    transition: 0.3s;
+
     text-decoration: none;
 
     color: #e5e5e5;
@@ -208,7 +208,15 @@ export const SectionNews = styled.section`
     svg {
       color: #e5e5e5;
       font-size: 32px;
-      margin: 4px;
+      margin-left: 4px;
+      transition: 0.3s;
+    }
+
+    &:hover {
+      background: ${shade(0.1, secondaryColor)};
+      svg {
+        transform: translateY(4px);
+      }
     }
   }
 `;

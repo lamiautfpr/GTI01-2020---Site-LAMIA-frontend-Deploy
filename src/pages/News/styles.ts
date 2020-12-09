@@ -62,6 +62,7 @@ a:hover{
   color:${tertiaryColor};
 }
 `;
+
 export const Cover = styled.div`
   margin: 20px;
   display: flex;

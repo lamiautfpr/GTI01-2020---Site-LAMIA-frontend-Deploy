@@ -119,15 +119,21 @@ export const SectionsNews = styled.section`
       display: flex;
       align-items: center;
       justify-content: space-around;
+      transition: 0.3s;
 
       color: #e5e5e5;
       svg {
         font-size: 32px;
         color: #e5e5e5;
+        transition: 0.3s;
+        transform: translateX(-8px);
       }
 
       &:hover {
         background: ${shade(0.1, tertiaryColor)};
+        svg {
+          transform: translateX(0px);
+        }
       }
     }
     .line {

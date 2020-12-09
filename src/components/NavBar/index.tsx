@@ -23,7 +23,7 @@ const NavBar: React.FC<IMenuBurgerProps> = ({ page }) => {
             </NavItem>
             <li>
               <NavItem>
-                <HashLink smooth to="#News">
+                <HashLink smooth to="/#News">
                   Notícias
                 </HashLink>
               </NavItem>
