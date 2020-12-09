@@ -139,9 +139,21 @@ const Home: React.FC = () => {
           </Link>
         </SectionNews>
         <hr />
+        <SectionLine id="Mission">
+          <HeaderSection>
+            <h2>História e Missão</h2>
+          </HeaderSection>
+          <div>
+            <div>
+              <p>{mission}</p>
+            </div>
+            <img src={imgLogo} alt="LAMIA" />
+          </div>
+        </SectionLine>
+        <hr />
         <SectionCards title="Statistics" id="Statistics">
           <HeaderSection>
-            <h2>Linhas de Códigos Produzidas</h2>
+            <h2>Tecnologias Produzidas</h2>
           </HeaderSection>
           <div>
             <div>
@@ -175,21 +187,9 @@ const Home: React.FC = () => {
           </div>
         </SectionCards>
         <hr />
-        <SectionLine id="Mission">
-          <HeaderSection>
-            <h2>Missão</h2>
-          </HeaderSection>
-          <div>
-            <div>
-              <p>{mission}</p>
-            </div>
-            <img src={imgLogo} alt="LAMIA" />
-          </div>
-        </SectionLine>
-        <hr />
         <SectionColumn title="LatestPublications" id="LatestPublications">
           <HeaderSection>
-            <h2>Ultimas Publicações</h2>
+            <h2>Últimas Publicações e Projetos</h2>
           </HeaderSection>
           {lastWork.length > 0 ? (
             <div>
