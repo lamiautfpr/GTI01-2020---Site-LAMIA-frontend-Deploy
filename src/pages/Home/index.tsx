@@ -25,7 +25,7 @@ import {
   SectionColumn,
   SectionLine,
   SectionVip,
-  SetionsNews,
+  SectionNews,
 } from './style';
 
 interface StatisticsProps {
@@ -112,7 +112,7 @@ const Home: React.FC = () => {
       <NavBar page="home" />
 
       <Main>
-        <SetionsNews title="News" id="News">
+        <SectionNews title="News" id="News">
           <HeaderSection>
             <h2>Notícias</h2>
           </HeaderSection>
@@ -137,7 +137,7 @@ const Home: React.FC = () => {
             Mais Noticias
             <BsChevronDoubleDown />
           </Link>
-        </SetionsNews>
+        </SectionNews>
         <hr />
         <SectionCards title="Statistics" id="Statistics">
           <HeaderSection>

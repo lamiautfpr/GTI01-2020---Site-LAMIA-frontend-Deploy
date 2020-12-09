@@ -85,7 +85,7 @@ export const SectionLine = styled.section`
   }
 `;
 
-export const SetionsNews = styled.section`
+export const SectionNews = styled.section`
   max-width: 1200px;
   margin: 24px auto;
 
@@ -212,6 +212,7 @@ export const SetionsNews = styled.section`
     }
   }
 `;
+
 export const SectionColumn = styled.section`
   max-width: 1200px;
   margin: 24px auto;
