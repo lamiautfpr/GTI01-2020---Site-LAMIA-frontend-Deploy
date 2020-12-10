@@ -189,45 +189,6 @@ const Home: React.FC = () => {
           </div>
         </SectionCards>
         <hr />
-        <SectionColumn title="LatestPublications" id="LatestPublications">
-          <HeaderSection>
-            <h2>Últimas Publicações e Projetos</h2>
-          </HeaderSection>
-          {lastWork.length > 0 ? (
-            <div>
-              {lastWork.map((work) => (
-                <Link to={`/work/${work.id}`} key={work.id}>
-                  <img
-                    src={
-                      work.pictures?.length > 0
-                        ? work.pictures[0].src
-                        : imgWorkDefault
-                    }
-                    alt={
-                      work.pictures.length > 0
-                        ? work.pictures[0].name
-                        : 'Capa do Projeto'
-                    }
-                  />
-                  <header>
-                    <h2>{work.title}</h2>
-                  </header>
-                  <p>
-                    {work.objective.length <= 130
-                      ? work.objective
-                      : `${work.objective?.slice(0, 130)}...`}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <CardWarning>
-              <img src={imgFocus} alt="plusUltra" />
-              <h2>Estamos dando PLUS ULTRA para publiar nosso trabalho</h2>
-            </CardWarning>
-          )}
-        </SectionColumn>
-        <hr />
         <SectionColumn id="AreasExpertise">
           <HeaderSection>
             <h2>Área de Atuação</h2>
@@ -245,7 +206,7 @@ const Home: React.FC = () => {
                 </header>
                 <p>
                   {area.description
-                    ? `${area.description.slice(0, 130)} ...`
+                    ? `${area.description.split('.')[0]}.`
                     : 'Lendo alguns artigos para definição perfeita da aplicação científica e industrial. Isso pode demorar um pouco...'}
                 </p>
               </div>

@@ -11,6 +11,6 @@ O **LAMIA** possui consultorias, produtos e tecnologias em seu [portfólio](http
 
 export const imageAreaExpertises = [
   dataScience,
-  tecnologiaSociais,
   visaoComputacional,
+  tecnologiaSociais,
 ];
