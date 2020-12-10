@@ -153,6 +153,45 @@ const Home: React.FC = () => {
           </div>
         </SectionLine>
         <hr />
+        <SectionColumn title="LatestPublications" id="LatestPublications">
+          <HeaderSection>
+            <h2>Últimas Publicações e Projetos</h2>
+          </HeaderSection>
+          {lastWork.length > 0 ? (
+            <div>
+              {lastWork.map((work) => (
+                <Link to={`/work/${work.id}`} key={work.id}>
+                  <img
+                    src={
+                      work.pictures?.length > 0
+                        ? work.pictures[0].src
+                        : imgWorkDefault
+                    }
+                    alt={
+                      work.pictures.length > 0
+                        ? work.pictures[0].name
+                        : 'Capa do Projeto'
+                    }
+                  />
+                  <header>
+                    <h2>{work.title}</h2>
+                  </header>
+                  <p>
+                    {work.objective.length <= 130
+                      ? work.objective
+                      : `${work.objective?.slice(0, 130)}...`}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <CardWarning>
+              <img src={imgFocus} alt="plusUltra" />
+              <h2>Estamos dando PLUS ULTRA para publiar nosso trabalho</h2>
+            </CardWarning>
+          )}
+        </SectionColumn>
+        <hr />
         <SectionCards title="Statistics" id="Statistics">
           <HeaderSection>
             <h2>Tecnologias Produzidas</h2>
