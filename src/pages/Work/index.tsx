@@ -11,6 +11,7 @@ import Carousel, { Modal, ModalGateway } from 'react-images';
 import Gallery from 'react-photo-gallery';
 import { Link, useRouteMatch } from 'react-router-dom';
 
+import ReactMarkdown from 'react-markdown';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
 import api from '../../services/api';
 
@@ -100,7 +101,7 @@ const ProjectView: React.FC = () => {
                 <SectionText>
                   <HeaderSection>Objetivo</HeaderSection>
                   <div className="text">
-                    <p>{work.objective}</p>
+                    <ReactMarkdown>{work.objective}</ReactMarkdown>
                   </div>
                 </SectionText>
 

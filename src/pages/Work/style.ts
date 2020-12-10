@@ -133,12 +133,23 @@ export const SectionText = styled.section`
   width: 100%;
   padding: 12px;
   .column {
-    /* margin-top: -256px; */
-    /* border: 1px solid yellow; */
-
     flex-direction: column;
-
     position: relative;
+  }
+
+  .text {
+    p {
+      font-size: 20px;
+    }
+
+    a {
+      color: ${tertiaryColor};
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 `;
 
