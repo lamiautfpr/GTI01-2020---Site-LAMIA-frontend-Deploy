@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
 import { BsChevronDoubleDown, BsChevronDoubleRight } from 'react-icons/bs';
 import { GoGitBranch, GoGitCommit, GoRepo, GoStar } from 'react-icons/go';
+import ReactMarkdown from 'react-markdown';
 import { Link } from 'react-router-dom';
 import { ImageProps } from '../../../myTypes/Images';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
@@ -146,7 +147,7 @@ const Home: React.FC = () => {
           </HeaderSection>
           <div>
             <div>
-              <p>{mission}</p>
+              <ReactMarkdown>{mission}</ReactMarkdown>
             </div>
             <img src={imgLogo} alt="LAMIA" />
           </div>

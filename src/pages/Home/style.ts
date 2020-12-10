@@ -48,6 +48,17 @@ export const SectionLine = styled.section`
   display: flex;
   flex-direction: column;
 
+  a {
+    text-decoration: none;
+    color: ${tertiaryColor};
+    transition: 0.3s;
+
+    &:hover {
+      color: ${shade(0.01, tertiaryColor)};
+      text-decoration: underline;
+    }
+  }
+
   div {
     display: flex;
     align-items: center;
@@ -81,6 +92,7 @@ export const SectionLine = styled.section`
       -webkit-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
       -moz-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
       box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+      object-fit: none;
     }
   }
 `;
