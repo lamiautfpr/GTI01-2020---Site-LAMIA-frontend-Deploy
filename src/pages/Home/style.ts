@@ -305,7 +305,7 @@ export const SectionColumn = styled.section`
 
 export const SectionVip = styled.section`
   max-width: 1200px;
-  height: 376px;
+  /* height: 376px; */
   margin: 24px auto;
   background: ${featuredColor};
   padding: 24px;
@@ -368,6 +368,52 @@ export const SectionVip = styled.section`
       );
 
       position: absolute;
+    }
+  }
+
+  > div {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+
+    a {
+      flex-wrap: wrap;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      margin: 0 12px 12px 0;
+
+      h2 {
+        background: ${secondaryBackground};
+        border: 2px solid ${secondaryBackground};
+        text-align: center;
+        text-decoration: none;
+        color: ${featuredColor};
+        font-family: 'Source Sans Pro';
+        font-size: 28px;
+      }
+
+      img,
+      h2 {
+        padding: 12px;
+        border-radius: 4px;
+        flex-shrink: 0;
+        max-width: 256px;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+    a[disabled] {
+      pointer-events: none;
     }
   }
 `;

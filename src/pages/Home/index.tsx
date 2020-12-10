@@ -260,30 +260,31 @@ const Home: React.FC = () => {
               <a href="mailto:naves@utfpr.edu.br">seja um parceiro</a>
             )}
           </header>
-          <div>
-            {partners.length > 0 ? (
-              <Slider>
-                {partners.map((partner) => (
-                  <a
-                    href={partner.linkPage || '#'}
-                    className="slider-item"
-                    key={partner.id}
-                  >
-                    {partner.logoUrl ? (
-                      <img src={partner.logoUrl} alt={partner.name} />
-                    ) : (
-                      <h2>{partner.name}</h2>
-                    )}
-                  </a>
-                ))}
-              </Slider>
-            ) : (
-              <CardWarning textColor="#f0f0f0">
-                <img src={imgDoPartner} alt="logoLex" />
-                <a href="mailto:naves@utfpr.edu.br">seja um parceiro</a>
-              </CardWarning>
-            )}
-          </div>
+          {partners.length > 0 ? (
+            <div>
+              {partners.map((partner) => (
+                <a
+                  href={
+                    partner.linkPage ||
+                    'https://www.lamia.sh.utfpr.edu.br/#Partners'
+                  }
+                  key={partner.id}
+                  target="bank"
+                >
+                  {partner.logoUrl ? (
+                    <img src={partner.logoUrl} alt={partner.name} />
+                  ) : (
+                    <h2>{partner.name}</h2>
+                  )}
+                </a>
+              ))}
+            </div>
+          ) : (
+            <CardWarning textColor="#f0f0f0">
+              <img src={imgDoPartner} alt="logoLex" />
+              <a href="mailto:naves@utfpr.edu.br">seja um parceiro</a>
+            </CardWarning>
+          )}
         </SectionVip>
         <hr />
         <SectionColumn id="Advisors">
