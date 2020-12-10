@@ -243,6 +243,20 @@ export const SectionColumn = styled.section`
     margin-top: 32px;
   }
 
+  a {
+    &:hover {
+      img {
+        -webkit-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-decoration: underline;
+      }
+    }
+  }
+
   div {
     display: flex;
     align-items: center;
@@ -274,6 +288,7 @@ export const SectionColumn = styled.section`
 
         margin-bottom: 16px;
         object-fit: cover;
+        transition: 0.3s ease-out;
       }
 
       .area-expertise {
@@ -282,6 +297,7 @@ export const SectionColumn = styled.section`
 
       h2 {
         margin-bottom: 4px;
+        transition: 0.3s ease-out;
       }
     }
   }
