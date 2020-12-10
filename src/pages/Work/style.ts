@@ -140,6 +140,12 @@ export const SectionText = styled.section`
   .text {
     p {
       font-size: 20px;
+      text-rendering: optimizeLegibility;
+      line-height: 28px;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.003em;
+      font-style: normal;
+      word-break: break-word;
     }
 
     a {
