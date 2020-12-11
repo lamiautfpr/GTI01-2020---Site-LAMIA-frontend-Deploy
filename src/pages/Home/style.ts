@@ -386,10 +386,14 @@ export const SectionVip = styled.section`
       justify-content: center;
       text-decoration: none;
       margin: 0 12px 12px 0;
+      width: 256px;
+      height: 256px;
+      background: #fff;
+      transition: 0.3s;
+      border-radius: 4px;
 
       h2 {
-        background: ${secondaryBackground};
-        border: 2px solid ${secondaryBackground};
+        border: 2px solid ${featuredColor};
         text-align: center;
         text-decoration: none;
         color: ${featuredColor};
@@ -399,21 +403,20 @@ export const SectionVip = styled.section`
 
       img,
       h2 {
-        padding: 12px;
         border-radius: 4px;
+        padding: 12px;
         flex-shrink: 0;
         max-width: 256px;
         align-items: center;
         justify-content: center;
-        transition: 0.3s;
 
-        &:hover {
-          transform: scale(1.1);
-        }
+        max-width: 256px;
+        max-height: 256px;
       }
-    }
-    a[disabled] {
-      pointer-events: none;
+
+      &:hover {
+        transform: scale(1.05);
+      }
     }
   }
 `;
