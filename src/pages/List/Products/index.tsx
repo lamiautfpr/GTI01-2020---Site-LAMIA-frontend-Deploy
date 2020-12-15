@@ -1,28 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
-
+import React, { useCallback, useEffect, useState } from 'react';
+import { FaChevronRight, FaListUl, FaRegClipboard } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { FaChevronRight, FaRegClipboard, FaListUl } from 'react-icons/fa';
-
-import api from '../../../services/api';
-
-import imgWorkDefault from '../../../assets/imgDefault/work1.png';
 import { SelectItem } from '../../../../myTypes/SelectItem';
 import { WorkListProps } from '../../../../myTypes/WorkListProps';
-import {
-  compareTitleASC,
-  compareTitleDESC,
-  compareDateASC,
-  compareDateDESC,
-} from '../../../utils/orderArray';
-
-import { listOrder } from '../../ListMembers';
-
-import { Main, Projects, SectionFilters } from '../style';
+import imgWorkDefault from '../../../assets/imgDefault/work1.png';
+import Footer from '../../../components/Footer';
 import Header from '../../../components/Header';
 import NavBar from '../../../components/NavBar';
-import Separator from '../../../components/Separator';
-import Footer from '../../../components/Footer';
 import SelectBox from '../../../components/SelectBox';
+import Separator from '../../../components/Separator';
+import api from '../../../services/api';
+import { Main, Projects, SectionFilters } from '../style';
 
 interface CategoryProps {
   name: string;
@@ -126,34 +114,6 @@ const List: React.FC = () => {
     [changeWorkList, typeSelected],
   );
 
-  const checkOrder = useCallback(
-    (order: SelectItem): void => {
-      // alert(`Order selected is ${value}`);
-      if (order.value === 0) {
-        const sorted = [...works].sort(compareTitleASC);
-        setWorks(sorted);
-
-        setAllWorks(allWorks.sort(compareTitleASC));
-      } else if (order.value === 1) {
-        const sorted = [...works].sort(compareTitleDESC);
-        setWorks(sorted);
-
-        setAllWorks(allWorks.sort(compareTitleDESC));
-      } else if (order.value === 2) {
-        const sorted = [...works].sort(compareDateDESC);
-        setWorks(sorted);
-
-        setAllWorks(allWorks.sort(compareDateDESC));
-      } else {
-        const sorted = [...works].sort(compareDateASC);
-        setWorks(sorted);
-
-        setAllWorks(allWorks.sort(compareDateASC));
-      }
-    },
-    [allWorks, works],
-  );
-
   // Functions for get list works
   useEffect(() => {
     api.get(`category-works/${page}`).then((response) => {
@@ -202,15 +162,6 @@ const List: React.FC = () => {
               defaultValue={null}
             />
           </div>
-          {/* <div className="order">
-            <SelectBox
-              label="Ordenação"
-              options={listOrder}
-              placeholder="Selecione..."
-              onChange={checkOrder}
-              defaultValue={listOrder[0]}
-            />
-          </div> */}
         </SectionFilters>
 
         <Separator />
