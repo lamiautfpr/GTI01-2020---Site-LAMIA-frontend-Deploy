@@ -158,8 +158,8 @@ const List: React.FC = () => {
   useEffect(() => {
     api.get(`category-works/${page}`).then((response) => {
       setCategory(response.data);
-      setAllWorks(response.data.works.sort(compareTitleASC));
-      setWorks(response.data.works.sort(compareTitleASC));
+      setAllWorks(response.data.works);
+      setWorks(response.data.works);
     });
 
     api.get(`area-expertises`).then((response) => {
@@ -202,8 +202,7 @@ const List: React.FC = () => {
               defaultValue={null}
             />
           </div>
-          <div className="order">
-            {/* // eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          {/* <div className="order">
             <SelectBox
               label="Ordenação"
               options={listOrder}
@@ -211,7 +210,7 @@ const List: React.FC = () => {
               onChange={checkOrder}
               defaultValue={listOrder[0]}
             />
-          </div>
+          </div> */}
         </SectionFilters>
 
         <Separator />
