@@ -201,28 +201,28 @@ const Home: React.FC = () => {
               <h3>Repositórios</h3>
               <div>
                 <GoRepo />
-                <CountUp delay={1} end={9} />
+                <CountUp delay={1} end={12} />
               </div>
             </div>
             <div>
               <h3>Commits</h3>
               <div>
                 <GoGitCommit />
-                <CountUp delay={1} end={2342} />
+                <CountUp delay={1} end={3213} />
               </div>
             </div>
             <div>
               <h3>Branches</h3>
               <div>
                 <GoGitBranch />
-                <CountUp delay={1} end={21} />
+                <CountUp delay={1} end={24} />
               </div>
             </div>
             <div>
               <h3>Star</h3>
               <div>
                 <GoStar />
-                <CountUp delay={1} end={9} />
+                <CountUp delay={1} end={10} />
               </div>
             </div>
           </div>
