@@ -37,9 +37,8 @@ const Footer: React.FC = () => {
           <span>
             <FaPhoneAlt size={16} />
             <strong>Telefone: </strong>
-            (45) 3268 - 8800
-          </span>
-          <span>
+              (45) 99835-7976</span>
+            <span>
             <FaStreetView size={24} />
             <strong>Endereço: </strong>
             Prolongamento da Rua Cerejeira, s/n Bairro - São Luiz, Santa Helena
