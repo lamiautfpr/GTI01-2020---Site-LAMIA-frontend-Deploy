@@ -1,47 +1,43 @@
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import React, { useRef, useCallback, useState, useEffect } from 'react';
-import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
-import * as Yup from 'yup';
+import { Form } from '@unform/web';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  MdMail,
-  MdKeyboardArrowLeft,
-  MdKeyboardArrowDown,
-} from 'react-icons/md';
-import {
-  FaUserNinja,
-  FaMedal,
-  FaMailBulk,
   FaChevronRight,
+  FaMailBulk,
+  FaMedal,
+  FaUserNinja,
 } from 'react-icons/fa';
 import { GiNinjaHead } from 'react-icons/gi';
+import {
+  MdKeyboardArrowDown,
+  MdKeyboardArrowLeft,
+  MdMail,
+} from 'react-icons/md';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { OptionTypeBase } from 'react-select';
-import { Link, useRouteMatch, useHistory } from 'react-router-dom';
-import { IoMdCloseCircleOutline } from 'react-icons/io';
+import * as Yup from 'yup';
+import { ImageProps } from '../../../../myTypes/Images';
+import imgMemberDefault from '../../../assets/imgDefault/member.jpg';
+import Button from '../../../components/Button';
+import Input from '../../../components/Input';
+import NavBarDashboard from '../../../components/NavBarDashboard';
+import Select from '../../../components/Select';
 import { useAuth } from '../../../hooks/Auth';
 import { useToast } from '../../../hooks/Toast';
-import getValidationErrors from '../../../utils/getValidationErrors';
-import NavBarDashboard from '../../../components/NavBarDashboard';
-import Input from '../../../components/Input';
-import Button from '../../../components/Button';
 import api from '../../../services/api';
-
-import Select from '../../../components/Select';
-
+import AppError from '../../../utils/AppError';
+import getValidationErrors from '../../../utils/getValidationErrors';
 // import imgMemberDefault from '../../../assets/imgDefault/member.jpg';
-
 import {
   Container,
   Content,
   HeaderSection,
-  Section,
-  Projects,
   ModalResetPassowrd,
+  Projects,
+  Section,
 } from './styles';
-import AppError from '../../../utils/AppError';
-import imgMemberDefault from '../../../assets/imgDefault/member.jpg';
-import { ImageProps } from '../../../../myTypes/Images';
 
 interface MemberFormProps {
   login: string;
