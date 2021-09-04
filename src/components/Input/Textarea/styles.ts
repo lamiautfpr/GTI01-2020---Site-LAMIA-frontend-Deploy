@@ -49,6 +49,7 @@ export const Container = styled.div<ContainerProps>`
 
   textarea {
     width:100%;
+    height: 96px;
     flex: 1;
 
     margin-left: 8px;

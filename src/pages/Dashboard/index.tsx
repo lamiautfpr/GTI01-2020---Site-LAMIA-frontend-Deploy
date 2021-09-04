@@ -88,6 +88,21 @@ const Dashboard: React.FC = () => {
           );
         }
 
+        if (data.linkedin?.length === 0) {
+          // eslint-disable-next-line no-param-reassign
+          data.linkedin = null;
+        }
+
+        if (data.gitHub?.length === 0) {
+          // eslint-disable-next-line no-param-reassign
+          data.gitHub = null;
+        }
+
+        if (data.lattes?.length === 0) {
+          // eslint-disable-next-line no-param-reassign
+          data.lattes = null;
+        }
+
         if (data.oldPassword?.length === 0 && data.password?.length === 0) {
           // eslint-disable-next-line no-param-reassign
           delete data.oldPassword;
@@ -149,7 +164,7 @@ const Dashboard: React.FC = () => {
         data.append('avatar', e.target.files[0]);
 
         api
-          .patch('/members/avatar', data, {
+          .patch('/members', data, {
             headers: { authorization: `Bearer ${token}` },
           })
           .then((response) => {
@@ -176,6 +191,7 @@ const Dashboard: React.FC = () => {
       <Content>
         <HeaderSection>
           <h2>Meu Perfil </h2>
+          <div className="bar" />
         </HeaderSection>
         <Form ref={formRef} initialData={member} onSubmit={handleSubmit}>
           <section>
@@ -213,7 +229,7 @@ const Dashboard: React.FC = () => {
           <Input icon={MdMail} name="email" type="text" placeholder="E-mail" />
           <Input
             icon={FaGithub}
-            name="git_hub"
+            name="gitHub"
             type="text"
             placeholder="DoeJonh"
           >

@@ -1,37 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { GoStar, GoRepo, GoGitCommit, GoGitBranch } from 'react-icons/go';
+import React, { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
-
-import api from '../../services/api';
-
-import imgLogo from '../../assets/logo.jpg';
-import imgArea from '../../assets/imgDefault/search.jpg';
-import imgPartnerDefault from '../../assets/imgDefault/partner.svg';
+import { BsChevronDoubleDown, BsChevronDoubleRight } from 'react-icons/bs';
+import { GoGitBranch, GoGitCommit, GoRepo, GoStar } from 'react-icons/go';
+import ReactMarkdown from 'react-markdown';
+import { Link } from 'react-router-dom';
+import { ImageProps } from '../../../myTypes/Images';
+import { WorkListProps } from '../../../myTypes/WorkListProps';
+import { imageAreaExpertises, mission } from '../../assets/dataStatistic';
 import imgTeacherDefault from '../../assets/imgDefault/teacher.png';
 import imgWorkDefault from '../../assets/imgDefault/work1.png';
-
 import imgDisoriented from '../../assets/imgWarning/disoriented.jpg';
 import imgFocus from '../../assets/imgWarning/focus.gif';
 import imgDoPartner from '../../assets/imgWarning/partner.jpg';
-//
-
-import { mission } from '../../assets/dataStatistic';
-
-import {
-  Main,
-  SectionLine,
-  SectionColumn,
-  SectionVip,
-  SectionCards,
-  HeaderSection,
-  CardWarning,
-} from './style';
+import imgLogo from '../../assets/logo.jpg';
+import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
-import Footer from '../../components/Footer';
-
-import { WorkListProps } from '../../../myTypes/WorkListProps';
-import { ImageProps } from '../../../myTypes/Images';
+import Slider from '../../components/Slider';
+import api from '../../services/api';
+import {
+  CardWarning,
+  HeaderSection,
+  Main,
+  SectionCards,
+  SectionColumn,
+  SectionLine,
+  SectionVip,
+  SectionNews,
+} from './style';
 
 interface StatisticsProps {
   countRepositories: number;
@@ -49,7 +45,7 @@ interface AreasExpertiseProps {
 interface PartnerProps {
   id: number;
   name: string;
-  logo?: string | null;
+  logoUrl?: string | null;
   linkPage?: string | null;
 }
 
@@ -58,16 +54,19 @@ interface AdvisorsProps {
   name: string;
   description: string;
   avatar: ImageProps;
+  login: string;
+}
+
+interface NewsProps {
+  id: number;
+  title: string;
+  content: string;
+  datePublication: string;
+  coverUrl: string;
+  pictures: ImageProps[];
 }
 
 const Home: React.FC = () => {
-  const [statistics, setStatistics] = useState<StatisticsProps>({
-    countRepositories: 5,
-    countCommits: 300,
-    countBranches: 20,
-    countStars: 10,
-  } as StatisticsProps);
-
   const [areaExpertises, setAreaExpertises] = useState<AreasExpertiseProps[]>(
     [],
   );
@@ -77,13 +76,14 @@ const Home: React.FC = () => {
   const [lastWork, setLastWork] = useState<WorkListProps[]>([]);
 
   const [advisors, setAdvisors] = useState<AdvisorsProps[]>([]);
+  const [news, setNews] = useState<NewsProps[]>([]);
 
   useEffect(() => {
     api.get<AreasExpertiseProps[]>(`area-expertises`).then((response) => {
       setAreaExpertises(response.data);
     });
 
-    api.get<PartnerProps[]>(`partiners`).then((response) => {
+    api.get<PartnerProps[]>(`partners`).then((response) => {
       setPartners(response.data);
     });
 
@@ -97,12 +97,12 @@ const Home: React.FC = () => {
         setLastWork(response.data);
       });
 
-    api.get<StatisticsProps>(`statistics`).then((response) => {
-      setStatistics(response.data);
-    });
-
     api.get<AdvisorsProps[]>(`members/Orientador`).then((response) => {
       setAdvisors(response.data);
+    });
+
+    api.get(`news`).then((response) => {
+      setNews(response.data.news);
     });
   }, []);
 
@@ -113,92 +113,41 @@ const Home: React.FC = () => {
       <NavBar page="home" />
 
       <Main>
-        {/* <SectionLine title="News" id="News">
+        <SectionNews title="News" id="News">
           <HeaderSection>
             <h2>Notícias</h2>
           </HeaderSection>
-          <div>
-            <div>
-              <header>
-                <h2>Contrução de Site</h2>
-              </header>
-              <p>
-                Sed lorem ipsum
-              </p>
-            </div>
-            <img src={imgTester} alt="Tester" />
-          </div>
-          <Separator />
-          <div>
-            <img src={imgTester} alt="Tester" />
-            <div>
-              <header>
-                <h2>Contrução de Site</h2>
-              </header>
-              <p>
-                Sed lorem ipsum dolor
-              </p>
-            </div>
-          </div>
+          <Slider className="slider-news">
+            {news.map((n) => (
+              <div className="slider-news-item" key={n.id}>
+                <div>
+                  <img src={n.coverUrl} alt={n.title} />
+                  <div>
+                    <h2>{n.title}</h2>
+                    <p>{n.content.split('\n')[0]}</p>
+                  </div>
+                </div>
+                <Link to={`news/${n.id}`}>
+                  Todas Notícias
+                  <BsChevronDoubleRight />
+                </Link>
+              </div>
+            ))}
+          </Slider>
 
-          <Separator />
-          <div>
-            <div>
-              <header>
-                <h2>Contrução de Site</h2>
-              </header>
-              <p>
-                Sed lorem ipsum dolor
-              </p>
-            </div>
-
-            <img src={imgTester} alt="Tester" />
-          </div>
-        </SectionLine>
-        <hr /> */}
-        <SectionCards title="Statistics" id="Statistics">
-          <HeaderSection>
-            <h2>Linhas de Códigos Produzidas</h2>
-          </HeaderSection>
-          <div>
-            <div>
-              <h3>Repositórios</h3>
-              <div>
-                <GoRepo />
-                <CountUp delay={1} end={statistics.countRepositories} />
-              </div>
-            </div>
-            <div>
-              <h3>Commits</h3>
-              <div>
-                <GoGitCommit />
-                <CountUp delay={1} end={statistics.countCommits} />
-              </div>
-            </div>
-            <div>
-              <h3>Branches</h3>
-              <div>
-                <GoGitBranch />
-                <CountUp delay={1} end={statistics.countBranches} />
-              </div>
-            </div>
-            <div>
-              <h3>Star</h3>
-              <div>
-                <GoStar />
-                <CountUp delay={1} end={statistics.countStars} />
-              </div>
-            </div>
-          </div>
-        </SectionCards>
+          <Link to="/news">
+            Mais Noticias
+            <BsChevronDoubleDown />
+          </Link>
+        </SectionNews>
         <hr />
         <SectionLine id="Mission">
           <HeaderSection>
-            <h2>Missão</h2>
+            <h2>História e Missão</h2>
           </HeaderSection>
           <div>
             <div>
-              <p>{mission}</p>
+              <ReactMarkdown>{mission}</ReactMarkdown>
             </div>
             <img src={imgLogo} alt="LAMIA" />
           </div>
@@ -206,12 +155,12 @@ const Home: React.FC = () => {
         <hr />
         <SectionColumn title="LatestPublications" id="LatestPublications">
           <HeaderSection>
-            <h2>Ultimas Publicações</h2>
+            <h2>Últimas Publicações e Projetos</h2>
           </HeaderSection>
           {lastWork.length > 0 ? (
             <div>
               {lastWork.map((work) => (
-                <div key={work.id}>
+                <Link to={`/work/${work.id}`} key={work.id}>
                   <img
                     src={
                       work.pictures?.length > 0
@@ -227,8 +176,12 @@ const Home: React.FC = () => {
                   <header>
                     <h2>{work.title}</h2>
                   </header>
-                  <p>{work.objective?.slice(0, 130)}</p>
-                </div>
+                  <p>
+                    {work.objective.length <= 130
+                      ? work.objective
+                      : `${work.objective?.slice(0, 130)}...`}
+                  </p>
+                </Link>
               ))}
             </div>
           ) : (
@@ -239,20 +192,60 @@ const Home: React.FC = () => {
           )}
         </SectionColumn>
         <hr />
+        <SectionCards title="Statistics" id="Statistics">
+          <HeaderSection>
+            <h2>Tecnologias Produzidas</h2>
+          </HeaderSection>
+          <div>
+            <div>
+              <h3>Repositórios</h3>
+              <div>
+                <GoRepo />
+                <CountUp delay={1} end={12} />
+              </div>
+            </div>
+            <div>
+              <h3>Commits</h3>
+              <div>
+                <GoGitCommit />
+                <CountUp delay={1} end={3213} />
+              </div>
+            </div>
+            <div>
+              <h3>Branches</h3>
+              <div>
+                <GoGitBranch />
+                <CountUp delay={1} end={24} />
+              </div>
+            </div>
+            <div>
+              <h3>Star</h3>
+              <div>
+                <GoStar />
+                <CountUp delay={1} end={10} />
+              </div>
+            </div>
+          </div>
+        </SectionCards>
+        <hr />
         <SectionColumn id="AreasExpertise">
           <HeaderSection>
             <h2>Área de Atuação</h2>
           </HeaderSection>
           <div>
-            {areaExpertises.map((area) => (
+            {areaExpertises.map((area, index) => (
               <div key={area.id}>
-                <img src={imgArea} alt={area.name} />
+                <img
+                  className="area-expertise"
+                  src={imageAreaExpertises[index]}
+                  alt={area.name}
+                />
                 <header>
                   <h2>{area.name}</h2>
                 </header>
                 <p>
                   {area.description
-                    ? `${area.description.slice(0, 130)} ...`
+                    ? `${area.description.split('.')[0]}.`
                     : 'Lendo alguns artigos para definição perfeita da aplicação científica e industrial. Isso pode demorar um pouco...'}
                 </p>
               </div>
@@ -267,26 +260,31 @@ const Home: React.FC = () => {
               <a href="mailto:naves@utfpr.edu.br">seja um parceiro</a>
             )}
           </header>
-          <div>
-            {partners.length > 0 ? (
-              <ul>
-                {partners.map((partner) => (
-                  <li key={partner.id}>
-                    <img
-                      src={partner.logo ? `${partner.logo}` : imgPartnerDefault}
-                      alt={partner.name}
-                    />
+          {partners.length > 0 ? (
+            <div>
+              {partners.map((partner) => (
+                <a
+                  href={
+                    partner.linkPage ||
+                    'https://www.lamia.sh.utfpr.edu.br/#Partners'
+                  }
+                  key={partner.id}
+                  target="bank"
+                >
+                  {partner.logoUrl ? (
+                    <img src={partner.logoUrl} alt={partner.name} />
+                  ) : (
                     <h2>{partner.name}</h2>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <CardWarning textColor="#f0f0f0">
-                <img src={imgDoPartner} alt="logoLex" />
-                <a href="mailto:naves@utfpr.edu.br">seja um parceiro</a>
-              </CardWarning>
-            )}
-          </div>
+                  )}
+                </a>
+              ))}
+            </div>
+          ) : (
+            <CardWarning textColor="#f0f0f0">
+              <img src={imgDoPartner} alt="logoLex" />
+              <a href="mailto:naves@utfpr.edu.br">seja um parceiro</a>
+            </CardWarning>
+          )}
         </SectionVip>
         <hr />
         <SectionColumn id="Advisors">
@@ -297,7 +295,7 @@ const Home: React.FC = () => {
             <div>
               <>
                 {advisors.map((advisor) => (
-                  <div key={advisor.id}>
+                  <Link to={`/${advisor.login}`} key={advisor.id}>
                     <img
                       src={
                         advisor.avatar ? advisor.avatar.src : imgTeacherDefault
@@ -308,7 +306,7 @@ const Home: React.FC = () => {
                       <h2>{advisor.name}</h2>
                     </header>
                     <p>{advisor.description}</p>
-                  </div>
+                  </Link>
                 ))}
               </>
             </div>

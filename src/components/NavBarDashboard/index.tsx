@@ -12,9 +12,9 @@ import imgMemberDefault from '../../assets/imgDefault/member.jpg';
 interface IMenuBurgerProps {
   page?:
     | 'members'
-    | 'products'
-    | 'projects'
-    | 'publications'
+    | 'Produtos'
+    | 'Projetos'
+    | 'Publicações'
     | 'phrases'
     | 'administrative';
 }
@@ -54,27 +54,20 @@ const NavBarDashboard: React.FC<IMenuBurgerProps> = ({ page }) => {
       </Header>
 
       <ul>
-        {permitted && (
-          <>
-            <ItemMenu active={page === 'administrative'}>
-              <Link to="to">Geral</Link>
-            </ItemMenu>
-            <ItemMenu active={page === 'members'}>
-              <Link to="/dashboard/members">Integrantes</Link>
-            </ItemMenu>
-          </>
+        {/* Apenas para Administrador, Coordenador, Orientador */}
+        {[1, 2, 3].includes(member.office.value) && (
+          <ItemMenu active={page === 'members'}>
+            <Link to="/dashboard/members">Integrantes</Link>
+          </ItemMenu>
         )}
-        <ItemMenu active={page === 'products'}>
-          <Link to="to">Produtos</Link>
+        <ItemMenu active={page === 'Produtos'}>
+          <Link to="/dashboard/products">Produtos</Link>
         </ItemMenu>
-        <ItemMenu active={page === 'projects'}>
-          <Link to="to">Projetos</Link>
+        <ItemMenu active={page === 'Projetos'}>
+          <Link to="/dashboard/projects">Projetos</Link>
         </ItemMenu>
-        <ItemMenu active={page === 'publications'}>
-          <Link to="to">Publicações</Link>
-        </ItemMenu>
-        <ItemMenu active={page === 'phrases'}>
-          <Link to="to">Frases</Link>
+        <ItemMenu active={page === 'Publicações'}>
+          <Link to="/dashboard/publications">Publicações</Link>
         </ItemMenu>
       </ul>
 

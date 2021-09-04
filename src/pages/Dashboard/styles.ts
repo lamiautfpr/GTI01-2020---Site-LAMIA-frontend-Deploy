@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {
   secondaryBackground,
   primaryColor,
-  secondaryColor,
   titleColor,
   tertiaryColor,
 } from '../../styles/paletsColorers';
@@ -22,16 +21,6 @@ export const HeaderSection = styled.header`
 
     font-size: 32px;
     color: ${titleColor};
-
-    &::after{
-      content: "";
-
-      width: 224px;
-      height: 2px;
-      background-image: -webkit-linear-gradient(180deg, ${primaryColor} 15%, ${secondaryColor} 85%);
-
-      position: absolute;
-    }
 
 `;
 

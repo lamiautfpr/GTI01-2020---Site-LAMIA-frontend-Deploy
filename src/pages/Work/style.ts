@@ -16,11 +16,11 @@ interface WarningPros {
 }
 
 interface ParticipantProps {
-  responsibility:
+  responsibility?:
     | 'Coordenador'
     | 'Colaborador'
     | 'Orientador'
-    | 'Membro Líder'
+    | 'Membro/Líder'
     | 'Membro';
 }
 
@@ -118,6 +118,7 @@ export const HeadTitle = styled.div`
       height: 176px;
       width: 176px;
       border-radius: 50%;
+      object-fit: cover;
     }
   }
 `;
@@ -132,12 +133,29 @@ export const SectionText = styled.section`
   width: 100%;
   padding: 12px;
   .column {
-    /* margin-top: -256px; */
-    /* border: 1px solid yellow; */
-
     flex-direction: column;
-
     position: relative;
+  }
+
+  .text {
+    p {
+      font-size: 20px;
+      text-rendering: optimizeLegibility;
+      line-height: 28px;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.003em;
+      font-style: normal;
+      word-break: break-word;
+    }
+
+    a {
+      color: ${tertiaryColor};
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 `;
 
@@ -186,6 +204,8 @@ export const Aside = styled.aside`
   h1 {
     font-size: 24px;
     color: #f0f0f0;
+    margin-bottom: 8px;
+
   }
 
   > div {
@@ -209,66 +229,30 @@ export const Aside = styled.aside`
     }
   }
 
-  ul {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    flex-grow: 1;
+  .BePartner {
+    margin: 8px;
+    margin-top: 24px;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    font-size: 20px;
+    padding: 2px 8px;
+    line-height: 30px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: 'Dosis';
+    background: #fff;
+    font-weight: bold;
+    color: ${featuredColor};
+    transition: 0.3s;
 
-    list-style: none;
+    &:hover {
+      /* border: 0px solid white;
 
-    li {
-      display: flex;
-      /* flex-direction: column; */
-      flex-shrink: 0;
-      /* align-items: center; */
+      transform: translateX(2px);
 
-      margin-top: 4px;
-      margin-left: 4px;
-
-      img {
-        width: 80px;
-        border-radius: 16px;
-
-        margin: 4px;
-        transition: 0.4s;
-      }
-      &:hover {
-        img {
-          filter: none;
-          transform: translateY(8px);
-
-          -webkit-box-shadow: 0px 0px 24px -4px rgba(0, 0, 0, 0.56);
-          -moz-box-shadow: 0px 0px 24px -4px rgba(0, 0, 0, 0.56);
-          box-shadow: 0px 0px 24px -4px rgba(0, 0, 0, 0.56);
-        }
-      }
-    }
-    .BePartner {
-      margin: 8px;
-      margin-top: 24px;
-      border: 2px solid #fff;
-      border-radius: 20px;
-      font-size: 20px;
-      padding: 2px 8px;
-      line-height: 30px;
-      text-decoration: none;
-      text-transform: uppercase;
-      font-family: 'Dosis';
-      background: #fff;
-      font-weight: bold;
-      color: ${featuredColor};
-      transition: 0.3s;
-
-      &:hover {
-        /* border: 0px solid white;
-
-        transform: translateX(2px);
-
-        color: ${transparentize(0, primaryColor)}; */
-        background: ${featuredColor};
-        color: white;
-      }
+      color: ${transparentize(0, primaryColor)}; */
+      background: ${featuredColor};
+      color: white;
     }
   }
 
@@ -401,10 +385,16 @@ export const Participant = styled(Tooltip)<ParticipantProps>`
       height: 60px;
       border-radius: 50%;
       border: 3px solid white;
+      object-fit: contain;
+      background-color: #fff;
 
       margin: 2px;
       transition: 0.4s;
     }
+  }
+
+  .tooltip {
+    max-width: 300px;
   }
 
   ${({ responsibility }) =>
@@ -426,7 +416,7 @@ export const Participant = styled(Tooltip)<ParticipantProps>`
     `}
 
   ${({ responsibility }) =>
-    responsibility === 'Membro Líder' &&
+    responsibility === 'Membro/Líder' &&
     css`
       a {
         img {

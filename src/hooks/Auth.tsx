@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useContext, useState } from 'react';
 import api from '../services/api';
 import { ImageProps } from '../../myTypes/Images';
 import { SelectItem } from '../../myTypes/SelectItem';
+import { useToast } from './Toast';
 
 export interface IMembersProps {
   id: number;
@@ -12,9 +13,9 @@ export interface IMembersProps {
   description: string;
   office: SelectItem;
   avatar?: ImageProps;
-  linkedin?: string;
-  gitHub?: string;
-  lattes?: string;
+  linkedin?: string | null;
+  gitHub?: string | null;
+  lattes?: string | null;
 }
 
 interface IAuthState {
@@ -39,6 +40,8 @@ export const officesPermitted: number[] = [1, 2, 3];
 const AuthContext = createContext<IAuthProviderData>({} as IAuthProviderData);
 
 export const AuthProvider: React.FC = ({ children }) => {
+  const { addToast } = useToast();
+
   const [data, setData] = useState<IAuthState>(() => {
     const token = localStorage.getItem('@LAMIA:token');
     const member = localStorage.getItem('@LAMIA:member');
@@ -50,19 +53,30 @@ export const AuthProvider: React.FC = ({ children }) => {
     return {} as IAuthState;
   });
 
-  const signIn = useCallback(async ({ login, password }) => {
-    const response = await api.post('sessions', {
-      login,
-      password,
-    });
+  const signIn = useCallback(
+    async ({ login, password }) => {
+      try {
+        const response = await api.post('sessions', {
+          login,
+          password,
+        });
 
-    const { token, member } = response.data;
+        const { token, member } = response.data;
 
-    localStorage.setItem('@LAMIA:token', token);
-    localStorage.setItem('@LAMIA:member', JSON.stringify(member));
+        localStorage.setItem('@LAMIA:token', token);
+        localStorage.setItem('@LAMIA:member', JSON.stringify(member));
 
-    setData({ token, member });
-  }, []);
+        setData({ token, member });
+      } catch (error) {
+        addToast({
+          type: 'error',
+          title: 'Erro na autenticação',
+          description: 'Ocorreu um erro ao fazer login, cheque as credenciais',
+        });
+      }
+    },
+    [addToast],
+  );
 
   const signOut = useCallback(() => {
     localStorage.removeItem('@LAMIA:token');

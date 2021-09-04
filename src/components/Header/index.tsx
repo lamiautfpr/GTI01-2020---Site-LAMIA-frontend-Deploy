@@ -35,7 +35,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'LAMIA' }: HeaderProps) => {
       <div className="img" />
       <h1>{title}</h1>
       <p>{subTitle}</p>
-      <span>UTFPR Santa Helena</span>
+      <span>UTFPR Campus Santa Helena</span>
     </Title>
   );
 };

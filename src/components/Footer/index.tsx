@@ -26,10 +26,11 @@ const Footer: React.FC = () => {
             <strong>Albert Einstein</strong>
           </p>
           <p>
-            Se você não está fazendo da vida de alguém algo melhor, você está
-            desperdiçando o seu tempo. Sua vida será melhor quando você fazer da
-            vida de outras pessoas algo melhor.
-            <strong>Will Smith</strong>
+            A promessa da inteligência artificial e da ciência da computação
+            geralmente supera o impacto que poderiam ter em alguns empregos da
+            mesma forma que, enquanto a invenção do avião prejudicou a indústria
+            ferroviária, ela abriu portas muito mais amplas ao progresso humano.
+            <strong>Paul Allen</strong>
           </p>
         </section>
         <section>

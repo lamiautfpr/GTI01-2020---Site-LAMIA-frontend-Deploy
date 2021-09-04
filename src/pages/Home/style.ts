@@ -1,12 +1,12 @@
-import styled, { css } from 'styled-components';
-
 import { shade, transparentize } from 'polished';
+import styled, { css } from 'styled-components';
 import {
-  secondaryBackground,
-  titleColor,
-  primaryColor,
-  secondaryColor,
   featuredColor,
+  primaryColor,
+  secondaryBackground,
+  secondaryColor,
+  tertiaryColor,
+  titleColor,
 } from '../../styles/paletsColorers';
 
 interface WarningPros {
@@ -14,23 +14,24 @@ interface WarningPros {
 }
 
 export const HeaderSection = styled.header`
+  margin: 4px 0 8px 0;
 
-    margin: 4px 0 8px 0;
-    /* border-bottom: 1px solid ${titleColor}; */
+  font-size: 32px;
+  color: ${titleColor};
 
-    font-size: 32px;
-    color: ${titleColor};
+  &::after {
+    content: '';
 
-    &::after{
-      content: "";
+    width: 224px;
+    height: 2px;
+    background-image: -webkit-linear-gradient(
+      180deg,
+      ${primaryColor} 15%,
+      ${secondaryColor} 85%
+    );
 
-      width: 224px;
-      height: 2px;
-      background-image: -webkit-linear-gradient(180deg, ${primaryColor} 15%, ${secondaryColor} 85%);
-
-      position: absolute;
-    }
-
+    position: absolute;
+  }
 `;
 
 export const Main = styled.main`
@@ -47,7 +48,16 @@ export const SectionLine = styled.section`
   display: flex;
   flex-direction: column;
 
-  /* border-bottom: 2px solid ${shade(0.2, secondaryBackground)}; */
+  a {
+    text-decoration: none;
+    color: ${tertiaryColor};
+    transition: 0.3s;
+
+    &:hover {
+      color: ${shade(0.01, tertiaryColor)};
+      text-decoration: underline;
+    }
+  }
 
   div {
     display: flex;
@@ -65,7 +75,7 @@ export const SectionLine = styled.section`
       max-width: 950px;
       padding: 0 8px;
 
-      header{
+      header {
         margin-bottom: 8px;
 
         font-size: 24px;
@@ -79,9 +89,146 @@ export const SectionLine = styled.section`
       height: 200px;
       width: 200px;
       border-radius: 50%;
-      -webkit-box-shadow: 0px 0px 48px -24px rgba(0,0,0,0.75);
-      -moz-box-shadow: 0px 0px 48px -24px rgba(0,0,0,0.75);
-      box-shadow: 0px 0px 48px -24px rgba(0,0,0,0.75);
+      -webkit-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+      -moz-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+      box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+      object-fit: none;
+    }
+  }
+`;
+
+export const SectionNews = styled.section`
+  max-width: 1200px;
+  margin: 24px auto;
+
+  display: flex;
+  flex-direction: column;
+
+  .slider-news {
+    .awssld__container {
+      height: 350px;
+
+      .slider-news-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        max-width: 75%;
+
+        > div {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          img {
+            height: 200px;
+            width: 200px;
+            margin-right: 8px;
+            border-radius: 50%;
+            -webkit-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
+          }
+
+          h2 {
+            font-family: 'Dosis';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 28px;
+            line-height: 38px;
+
+            color: ${primaryColor};
+
+            margin-bottom: 18px;
+          }
+
+          p {
+            font-family: 'Source Sans Pro';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 20px;
+            line-height: 20px;
+
+            color: #000000;
+          }
+        }
+
+        a {
+          width: 159px;
+          height: 47px;
+          margin-top: 16px;
+          background: ${tertiaryColor};
+          border-radius: 8px;
+
+          font-family: Source Sans Pro;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 18px;
+          line-height: 23px;
+
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          transition: 0.3s;
+
+          color: #e5e5e5;
+          svg {
+            font-size: 32px;
+            color: #e5e5e5;
+            transition: 0.3s;
+            transform: translateX(-8px);
+          }
+
+          &:hover {
+            background: ${shade(0.1, tertiaryColor)};
+            svg {
+              transform: translateX(0px);
+            }
+          }
+        }
+      }
+    }
+
+    .awssld__bullets {
+      bottom: 16px;
+    }
+  }
+  > a {
+    width: 173px;
+    height: 46px;
+
+    background: ${secondaryColor};
+    border-radius: 8px;
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 25px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.3s;
+
+    text-decoration: none;
+
+    color: #e5e5e5;
+
+    margin: 0 auto;
+    svg {
+      color: #e5e5e5;
+      font-size: 32px;
+      margin-left: 4px;
+      transition: 0.3s;
+    }
+
+    &:hover {
+      background: ${shade(0.1, secondaryColor)};
+      svg {
+        transform: translateY(4px);
+      }
     }
   }
 `;
@@ -96,17 +243,35 @@ export const SectionColumn = styled.section`
     margin-top: 32px;
   }
 
+  a {
+    &:hover {
+      img {
+        -webkit-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-decoration: underline;
+      }
+    }
+  }
+
   div {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    a,
     div {
       display: flex;
       flex-direction: column;
       align-items: center;
       max-width: 378px;
       margin-left: 0;
+      text-decoration: none;
+      color: #000;
 
+      & + a,
       & + div {
         margin-left: 24px;
       }
@@ -122,10 +287,17 @@ export const SectionColumn = styled.section`
         box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
 
         margin-bottom: 16px;
+        object-fit: cover;
+        transition: 0.3s ease-out;
+      }
+
+      .area-expertise {
+        object-fit: contain;
       }
 
       h2 {
         margin-bottom: 4px;
+        transition: 0.3s ease-out;
       }
     }
   }
@@ -133,6 +305,7 @@ export const SectionColumn = styled.section`
 
 export const SectionVip = styled.section`
   max-width: 1200px;
+  /* height: 376px; */
   margin: 24px auto;
   background: ${featuredColor};
   padding: 24px;
@@ -146,7 +319,6 @@ export const SectionVip = styled.section`
 
   & > header {
     margin: 4px 0 32px 0;
-    /* border-bottom: 1px solid ${titleColor}; */
 
     display: flex;
     flex-wrap: wrap-reverse;
@@ -154,8 +326,8 @@ export const SectionVip = styled.section`
     font-size: 32px;
     color: ${secondaryBackground};
 
-    a{
-      margin-left:64px;
+    a {
+      margin-left: 64px;
 
       border: 2px solid white;
       padding: 12px;
@@ -199,42 +371,51 @@ export const SectionVip = styled.section`
     }
   }
 
-  ul {
+  > div {
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
     flex-grow: 1;
+    align-items: center;
+    justify-content: center;
 
-    list-style: none;
-
-    li {
+    a {
+      flex-wrap: wrap;
+      flex-grow: 1;
       display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
       align-items: center;
-
-      margin-top: 24px;
-      margin-left: 24px;
-
-      &:hover {
-        img {
-          filter: none;
-          transform: translateY(5px);
-        }
-      }
-
-      img {
-        width: 150px;
-        height: 150px;
-        border-radius: 35px;
-        transition: 0.3s;
-
-        filter: grayscale(100%);
-      }
+      justify-content: center;
+      text-decoration: none;
+      margin: 0 12px 12px 0;
+      width: 256px;
+      height: 256px;
+      background: #fff;
+      transition: 0.3s;
+      border-radius: 4px;
 
       h2 {
-        color: #fff;
-        margin-top: 4px;
+        border: 2px solid ${featuredColor};
+        text-align: center;
+        text-decoration: none;
+        color: ${featuredColor};
+        font-family: 'Source Sans Pro';
+        font-size: 28px;
+      }
+
+      img,
+      h2 {
+        border-radius: 4px;
+        padding: 12px;
+        flex-shrink: 0;
+        max-width: 256px;
+        align-items: center;
+        justify-content: center;
+
+        max-width: 256px;
+        max-height: 256px;
+      }
+
+      &:hover {
+        transform: scale(1.05);
       }
     }
   }
@@ -272,8 +453,6 @@ export const SectionCards = styled.section`
     justify-content: space-between;
 
     div {
-      /* border: 1px solid red; */
-
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -289,11 +468,9 @@ export const SectionCards = styled.section`
       h3 {
         font-size: 40px;
         margin-bottom: 12px;
-        /* font-weight:200; */
       }
 
       div {
-        /* border: 1px solid red; */
         margin: 0px;
         height: 50px;
 
@@ -308,7 +485,6 @@ export const SectionCards = styled.section`
 
         span {
           font-weight: 200;
-          /* font-size: 40px; */
         }
       }
     }
@@ -324,7 +500,6 @@ export const CardWarning = styled.div<WarningPros>`
 
   h2 {
     display: flex;
-    /* flex-direction: column; */
 
     font-size: 40px;
     font-family: 'Dosis';
