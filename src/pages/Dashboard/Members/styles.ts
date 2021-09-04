@@ -6,6 +6,7 @@ import {
   titleColor,
   primaryColor,
   tertiaryColor,
+  featuredColor,
 } from '../../../styles/paletsColorers';
 
 interface SectionProps {
@@ -205,8 +206,8 @@ export const Projects = styled.div`
     }
 
     p {
-      margin-right: 16px;
       width: 100%;
+      margin-top: 4px;
 
       font-size: 18px;
       color: #a8a8b3;
@@ -218,6 +219,8 @@ export const Projects = styled.div`
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: flex-end;
+      padding-right: 16px;
 
       span {
         margin-top: -20px;
@@ -232,6 +235,63 @@ export const Projects = styled.div`
     svg {
       margin-left: auto;
       color: #cbcbd6;
+    }
+
+    button {
+      font-size: 12px;
+      height: auto;
+      width: fit-content;
+      padding: 4px;
+    }
+  }
+`;
+
+export const ModalResetPassowrd = styled.div`
+  z-index: 2000;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+
+  background: ${transparentize(0.5, featuredColor)};
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  div {
+    /* margin: auto; */
+    max-width: 500px;
+    padding: 8px;
+    background: ${secondaryBackground};
+    border-radius: 8px;
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      width: 100%;
+      font-size: 28px;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      p {
+        font-size: 20px;
+      }
+      padding: 8px 0;
+    }
+
+    footer {
+      margin-top: 16px;
+      display: flex;
+
+      button {
+        margin: 0 4px;
+        height: auto;
+        font-size: 18px;
+      }
     }
   }
 `;

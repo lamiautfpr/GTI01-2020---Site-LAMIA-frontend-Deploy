@@ -164,7 +164,7 @@ const Dashboard: React.FC = () => {
         data.append('avatar', e.target.files[0]);
 
         api
-          .patch('/members/avatar', data, {
+          .patch('/members', data, {
             headers: { authorization: `Bearer ${token}` },
           })
           .then((response) => {

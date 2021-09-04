@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
@@ -16,6 +18,7 @@ import {
 import { GiNinjaHead } from 'react-icons/gi';
 import { OptionTypeBase } from 'react-select';
 import { Link, useRouteMatch, useHistory } from 'react-router-dom';
+import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { useAuth } from '../../../hooks/Auth';
 import { useToast } from '../../../hooks/Toast';
 import getValidationErrors from '../../../utils/getValidationErrors';
@@ -28,7 +31,14 @@ import Select from '../../../components/Select';
 
 // import imgMemberDefault from '../../../assets/imgDefault/member.jpg';
 
-import { Container, Content, HeaderSection, Section, Projects } from './styles';
+import {
+  Container,
+  Content,
+  HeaderSection,
+  Section,
+  Projects,
+  ModalResetPassowrd,
+} from './styles';
 import AppError from '../../../utils/AppError';
 import imgMemberDefault from '../../../assets/imgDefault/member.jpg';
 import { ImageProps } from '../../../../myTypes/Images';
@@ -67,6 +77,11 @@ interface MemberEditableProps {
   office: string;
 }
 
+interface MemberResetPassword {
+  id: string;
+  name: string;
+}
+
 const DashboardMembers: React.FC = () => {
   const { params } = useRouteMatch<MembersParams>();
   const history = useHistory();
@@ -78,6 +93,11 @@ const DashboardMembers: React.FC = () => {
 
   const [offices, setOffices] = useState<OfficesProps[]>([]);
   const [editable, setEditable] = useState(false);
+  const [isvisibleModal, setIsvisibleModal] = useState(false);
+  const [
+    memberResetPassword,
+    setMemberResetPassword,
+  ] = useState<MemberResetPassword | null>(null);
   const [member, setMember] = useState<MemberEditableProps | undefined>(
     undefined,
   );
@@ -232,6 +252,51 @@ const DashboardMembers: React.FC = () => {
     [offices],
   );
 
+  const openModal = useCallback((data: MemberResetPassword) => {
+    setMemberResetPassword(data);
+    setIsvisibleModal(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setMemberResetPassword(null);
+    setIsvisibleModal(false);
+  }, []);
+
+  const handleResetPassword = useCallback(
+    (id?: string) => {
+      if (!id) {
+        setMemberResetPassword(null);
+        setIsvisibleModal(false);
+        return;
+      }
+
+      api
+        .patch(
+          `/members/reset-password/${id}`,
+          {},
+          {
+            headers: { authorization: `Bearer ${token}` },
+          },
+        )
+        .then(() => {
+          addToast({
+            type: 'success',
+            title: 'Senha resetada!',
+          });
+        })
+        .catch(() => {
+          addToast({
+            type: 'error',
+            title: 'Erro ao resetar a senha!',
+          });
+        });
+
+      setMemberResetPassword(null);
+      setIsvisibleModal(false);
+    },
+    [addToast, token],
+  );
+
   useEffect(() => {
     api.get(`members/`).then((response) => {
       setOffices(response.data);
@@ -347,24 +412,40 @@ const DashboardMembers: React.FC = () => {
               <p>{office.description}</p>
             </header>
             <Projects>
-              {office.members.map((member) => (
+              {office.members.map((memberList) => (
                 <Link
-                  key={member.login}
-                  to={`/dashboard/members/${member.login}`}
+                  key={memberList.login}
+                  to={`/dashboard/members/${memberList.login}`}
                 >
                   <img
-                    src={member.avatar ? member.avatar.src : imgMemberDefault}
-                    alt={member.name}
+                    src={
+                      memberList.avatar
+                        ? memberList.avatar.src
+                        : imgMemberDefault
+                    }
+                    alt={memberList.name}
                   />
 
                   <strong>
-                    {member.name}
+                    {memberList.name}
                     <span>
                       <FaMailBulk size={14} />
-                      {member.email}
+                      {memberList.email}
                     </span>
                   </strong>
-                  <p>{member.description}</p>
+                  <div>
+                    <Button
+                      onClick={() =>
+                        openModal({
+                          id: `${memberList.id}`,
+                          name: memberList.name,
+                        })
+                      }
+                    >
+                      Resetar senha
+                    </Button>
+                    <p>{memberList.description}</p>
+                  </div>
                   <div>
                     <FaChevronRight size={20} />
                   </div>
@@ -374,6 +455,35 @@ const DashboardMembers: React.FC = () => {
           </Section>
         ))}
       </Content>
+      {isvisibleModal && (
+        <ModalResetPassowrd>
+          <div>
+            <header>Tem certeza deseja resetar a senha ?</header>
+            <main>
+              <p>
+                Essa ação irá alterar a senha do usuário:
+                <strong>{` ${memberResetPassword?.name}.`}</strong>
+              </p>
+            </main>
+            <footer>
+              <Button
+                type="button"
+                background="#ac3030"
+                onClick={() => closeModal()}
+              >
+                NÃO
+              </Button>
+              <Button
+                type="button"
+                background="#2e656a"
+                onClick={() => handleResetPassword(memberResetPassword?.id)}
+              >
+                SIM
+              </Button>
+            </footer>
+          </div>
+        </ModalResetPassowrd>
+      )}
     </Container>
   );
 };
