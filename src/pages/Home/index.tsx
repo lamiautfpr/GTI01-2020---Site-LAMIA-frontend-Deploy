@@ -124,7 +124,7 @@ const Home: React.FC = () => {
                   <img src={n.coverUrl} alt={n.title} />
                   <div>
                     <h2>{n.title}</h2>
-                    <p>{n.content.split('\n')[0]}</p>
+                    <p>{n.content.split('\\n')[0]}</p>
                   </div>
                 </div>
                 <Link to={`news/${n.id}`}>
