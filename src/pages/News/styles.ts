@@ -31,9 +31,7 @@ export const Main = styled.main`
     font-weight: normal;
     font-size: 16px;
     line-height: 20px;
-    white-space: pre-line
-
-    color: #d61818;
+    white-space: pre-line;
     span {
       color: ${secondaryColor};
     }
@@ -45,22 +43,21 @@ export const Main = styled.main`
     font-weight: normal;
     font-size: 20px;
     line-height: 30px;
-
   }
-  a{
+  a {
     font-family: Source Sans Pro;
     font-style: normal;
     font-weight: normal;
     font-size: 20px;
     line-height: 30px;
 
-color:${primaryColor};
-transition: 0.3s ease;
+    color: ${primaryColor};
+    transition: 0.3s ease;
   }
-a:hover{
-  transform:translateX(8px);
-  color:${tertiaryColor};
-}
+  a:hover {
+    transform: translateX(8px);
+    color: ${tertiaryColor};
+  }
 `;
 
 export const Cover = styled.div`
@@ -109,7 +106,7 @@ export const ShelfGallery = styled.div`
   }
 `;
 export const HeaderSection = styled.header`
-  margin: 4px 0 8px 0;
+  margin: 4px 0 24px 0;
 
   font-family: Source Sans Pro;
   font-style: normal;

@@ -63,8 +63,10 @@ const News: React.FC = () => {
           <HeaderSection>
             <h2>Descrição</h2>
           </HeaderSection>
-          <p>{news.content}</p>
-          <hr />
+          {news.content.split('\\n').map((item, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <p key={`${i}-news`}>{item}</p>
+          ))}
 
           {news.pictures?.length > 0 && (
             <>
@@ -92,7 +94,6 @@ const News: React.FC = () => {
                   ) : null}
                 </ModalGateway>
               </ShelfGallery>
-              <hr />
             </>
           )}
           <HeaderSection>
@@ -100,7 +101,6 @@ const News: React.FC = () => {
           </HeaderSection>
           <p className="info">
             <a href={news.source}>{news.font}</a>
-            <hr />
           </p>
         </Main>
       )}
