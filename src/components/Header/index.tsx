@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 // import imgLogo from '../../assets/logo.jpg';
 
-import { Title } from './style';
+import { Title, Button } from './style';
 
 interface HeaderProps {
   title?: string;
@@ -36,6 +36,11 @@ const Header: React.FC<HeaderProps> = ({ title = 'LAMIA' }: HeaderProps) => {
       <h1>{title}</h1>
       <p>{subTitle}</p>
       <span>UTFPR Campus Santa Helena</span>
+
+      <section>
+        <strong>Processo Seletivo Já Está Aberto!</strong>
+        <Button to="/processo-seletivo">CADASTRE-SE JÁ</Button>
+      </section>
     </Title>
   );
 };

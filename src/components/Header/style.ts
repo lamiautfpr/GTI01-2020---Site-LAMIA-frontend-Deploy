@@ -1,4 +1,12 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { shade, transparentize } from 'polished';
+
+import {
+  tertiaryColor,
+  secondaryBackground,
+  featuredColor,
+} from '../../styles/paletsColorers';
 
 import logo from '../../assets/logoHeader.jpg';
 
@@ -67,5 +75,36 @@ export const Title = styled.header`
     margin-top: 4px;
 
     font-size: 20px;
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+    padding: 8px;
+
+    border-radius: 4px;
+    /* background-color: ${featuredColor}; */
+
+    font-size: 24px;
+    text-align: center;
+    font-weight: 300;
+    color: #fff;
+  }
+`;
+
+export const Button = styled(Link)`
+  text-decoration: none;
+  background-color: ${tertiaryColor};
+  margin: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  color: ${secondaryBackground};
+  transition: all 0.2s;
+
+  &:hover {
+    background: ${shade(0.1, tertiaryColor)};
   }
 `;
