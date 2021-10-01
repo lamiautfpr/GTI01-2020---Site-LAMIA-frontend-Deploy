@@ -1,5 +1,5 @@
 import { shade, transparentize } from 'polished';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import {
   featuredColor,
   primaryColor,
