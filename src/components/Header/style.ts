@@ -1,14 +1,12 @@
-import styled from 'styled-components';
+import { shade } from 'polished';
 import { Link } from 'react-router-dom';
-import { shade, transparentize } from 'polished';
-
-import {
-  tertiaryColor,
-  secondaryBackground,
-  featuredColor,
-} from '../../styles/paletsColorers';
-
+import styled from 'styled-components';
 import logo from '../../assets/logoHeader.jpg';
+import {
+  featuredColor,
+  secondaryBackground,
+  tertiaryColor,
+} from '../../styles/paletsColorers';
 
 export const Title = styled.header`
   display: flex;
