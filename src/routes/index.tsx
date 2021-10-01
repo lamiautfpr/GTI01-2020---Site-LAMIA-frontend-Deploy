@@ -18,6 +18,7 @@ import Member from '../pages/Member';
 import ProjectView from '../pages/Work';
 import NewsList from '../pages/NewsList';
 import News from '../pages/News';
+import ProcessoSeletivo from '../pages/ProcessoSeletivo';
 
 // Switch é para apresentar uma rota de cada vez
 
@@ -27,6 +28,8 @@ const Routes: React.FC = () => (
     <Route path="/news" exact component={NewsList} />
     <Route path="/news/:id" exact component={News} />
     <Route path="/members" exact component={ListMembers} />
+
+    <Route path="/processo-seletivo" exact component={ProcessoSeletivo} />
 
     <Route path="/login" exact component={Login} />
 

@@ -6,7 +6,13 @@ import { HashLink } from 'react-router-hash-link';
 import { Nav, NavItem } from './style';
 
 interface IMenuBurgerProps {
-  page?: 'members' | 'products' | 'projects' | 'publications' | 'home';
+  page?:
+    | 'members'
+    | 'products'
+    | 'projects'
+    | 'publications'
+    | 'home'
+    | 'recruitment';
 }
 
 const NavBar: React.FC<IMenuBurgerProps> = ({ page }) => {
@@ -66,6 +72,9 @@ const NavBar: React.FC<IMenuBurgerProps> = ({ page }) => {
         </NavItem>
         <NavItem active={page === 'members'}>
           <Link to="/members">Integrantes</Link>
+        </NavItem>
+        <NavItem active={page === 'recruitment'}>
+          <Link to="/processo-seletivo">Processo Seletivo</Link>
         </NavItem>
       </ul>
     </Nav>
