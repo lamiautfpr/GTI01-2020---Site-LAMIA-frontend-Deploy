@@ -1,5 +1,6 @@
 FROM node:14.15.5-alpine AS builder
-ENV NODE_ENV production
+ENV NODE_ENV=production
+ENV REACT_APP_API_URL=https://app.lamia.sh.utfpr.edu.br
 # Add a work directory
 WORKDIR /app
 # Cache and Install dependencies
