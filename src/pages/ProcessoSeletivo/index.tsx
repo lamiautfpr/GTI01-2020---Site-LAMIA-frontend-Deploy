@@ -1,13 +1,67 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
+import Carousel, { Modal, ModalGateway } from 'react-images';
+import Gallery from 'react-photo-gallery';
+import { ImageProps } from '../../../myTypes/Images';
 import Recrutament01 from '../../assets/imgDefault/Recrutament_01.jpeg';
 import Recrutament02 from '../../assets/imgDefault/Recrutament_02.jpeg';
-import Recrutament03 from '../../assets/imgDefault/Recrutament_03.jpeg';
+import Recrutament03 from '../../assets/imgDefault/Recrutament_03.jpg';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
-import { HeaderSection, Main, ScheduleTable, SectionLine } from './style';
+import {
+  HeaderSection,
+  Main,
+  ScheduleTable,
+  SectionLine,
+  SubTitle,
+  ShelfGallery,
+} from './style';
+
+const pictures: ImageProps[] = [
+  {
+    id: 0,
+    src: Recrutament01,
+    source: Recrutament01,
+    name: '5º Reunião Geral Lamia',
+    path: Recrutament01,
+    width: 0,
+    height: 0,
+  },
+  {
+    id: 2,
+    src: Recrutament02,
+    source: Recrutament02,
+    name: '6º Reunião Geral Lamia',
+    path: Recrutament02,
+    width: 0,
+    height: 0,
+  },
+  {
+    id: 3,
+    src: Recrutament03,
+    source: Recrutament03,
+    name: '4º Reunião Geral Lamia',
+    path: Recrutament03,
+    width: 0,
+    height: 0,
+  },
+];
 
 const ProcessoSelectivo: React.FC = () => {
+  // Gallery
+  const [currentImage, setCurrentImage] = useState(0);
+  const [viewerIsOpen, setViewerIsOpen] = useState(false);
+
+  const openLightbox = useCallback((event, { index }) => {
+    setCurrentImage(index);
+    setViewerIsOpen(true);
+  }, []);
+
+  const closeLightbox = useCallback((): void => {
+    setCurrentImage(0);
+    setViewerIsOpen(false);
+  }, []);
+
   return (
     <>
       <Header />
@@ -41,7 +95,7 @@ const ProcessoSelectivo: React.FC = () => {
                 </a>
               </p>
               <ScheduleTable>
-                <h3>CRONOGRAMA DE EXECUÇÃO DO EDITAL</h3>
+                <SubTitle>CRONOGRAMA DE EXECUÇÃO DO EDITAL</SubTitle>
                 <div>
                   <div>
                     <div>Publicação do edital</div>
@@ -84,11 +138,26 @@ const ProcessoSelectivo: React.FC = () => {
                 </div>
               </ScheduleTable>
             </div>
-            <aside>
-              <img src={Recrutament01} alt="LAMIA" />
-              <img src={Recrutament02} alt="LAMIA" />
-              <img src={Recrutament03} alt="LAMIA" />
-            </aside>
+          </div>
+          <div>
+            <SubTitle>Nosso Time</SubTitle>
+            <ShelfGallery>
+              <Gallery margin={8} photos={pictures} onClick={openLightbox} />
+              <ModalGateway>
+                {viewerIsOpen ? (
+                  <Modal onClose={closeLightbox}>
+                    <Carousel
+                      currentIndex={currentImage}
+                      views={pictures.map((x) => ({
+                        ...x,
+                        srcset: x.source,
+                        caption: x.name,
+                      }))}
+                    />
+                  </Modal>
+                ) : null}
+              </ModalGateway>
+            </ShelfGallery>
           </div>
         </SectionLine>
         <hr />

@@ -61,9 +61,11 @@ export const SectionLine = styled.section`
 
   > div {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
 
+    /* align-items: center; */
+    justify-content: space-between;
+    padding: 0 32px;
     margin-bottom: 16px;
     margin-top: 16px;
 
@@ -72,9 +74,6 @@ export const SectionLine = styled.section`
       flex-direction: column;
       align-items: flex-start;
 
-      max-width: 950px;
-      padding: 0 8px;
-
       header {
         margin-bottom: 8px;
 
@@ -82,28 +81,13 @@ export const SectionLine = styled.section`
         color: ${titleColor};
       }
     }
-
-    aside {
-      display: flex;
-      flex-direction: column;
-
-      img {
-        flex-shrink: 0;
-
-        & + img {
-          margin-top: 32px;
-        }
-
-        height: 200px;
-        width: 200px;
-        border-radius: 50%;
-        -webkit-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
-        box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
-        object-fit: cover;
-      }
-    }
   }
+`;
+
+export const SubTitle = styled.h3`
+  color: ${featuredColor};
+  font-size: 24px;
+  margin-bottom: 8px;
 `;
 
 export const ScheduleTable = styled.div`
@@ -112,12 +96,6 @@ export const ScheduleTable = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-
-  h3 {
-    color: ${featuredColor};
-    font-size: 24px;
-    margin-bottom: 8px;
-  }
 
   > div {
     border: 0.5px solid ${transparentize(0.5, featuredColor)};
@@ -145,6 +123,33 @@ export const ScheduleTable = styled.div`
         flex-direction: column;
         justify-content: center;
       }
+    }
+  }
+`;
+
+export const ShelfGallery = styled.div`
+  max-width: 1200px;
+  margin: 12px auto;
+
+  .react-photo-gallery--gallery {
+    > div {
+      justify-content: center;
+    }
+  }
+
+  img {
+    max-width: 350px;
+    height: auto;
+
+    border-radius: 8px;
+    transition: 0.3s;
+
+    -webkit-box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.5);
+
+    &:hover {
+      transform: scale(1.05);
     }
   }
 `;
