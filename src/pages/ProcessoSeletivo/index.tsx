@@ -33,7 +33,7 @@ const ProcessoSelectivo: React.FC = () => {
               <p>
                 Pedimos para que todos interessados a participar do processo
                 para lerem o
-                <a href="http://">
+                <a href="https://bit.ly/RegulamentoLAMIA" target="blank">
                   {' '}
                   REGULAMENTO INTERNO PARA O PROCESSO SELETIVO 2021/2 DO
                   LABORATÓRIO DE APRENDIZADO DE MÁQUINA E IMAGENS APLICADOS À
@@ -49,24 +49,24 @@ const ProcessoSelectivo: React.FC = () => {
                   </div>
                   <div>
                     <div>Período de inscrição de estudantes</div>
-                    <div>04/10 a 15/10/2021 </div>
+                    <div>04/10/2021 a 15/10/2021 </div>
                   </div>
                   <div>
                     <div>Publicação das inscrições deferidas</div>
-                    <div>17/10 às 18h</div>
+                    <div>17/10/2021 às 18h</div>
                   </div>
                   <div>
                     <div>Entrevistas</div>
-                    <div>18/10 a 23/10</div>
+                    <div>18/10/2021 a 23/10/2021</div>
                   </div>
                   <div>
                     <div>
                       Publicação do resultado provisório
                       <a href="https://bit.ly/1FasePSLAMIA" target="blank">
-                        <strong>Resultados Prelimirares</strong>
+                        <strong>Resultado Preliminar</strong>
                       </a>
                     </div>
-                    <div>24/10 às 18h</div>
+                    <div>24/10/2021 às 18h</div>
                   </div>
                   <div>
                     <div>Interposição de recursos</div>
@@ -76,7 +76,7 @@ const ProcessoSelectivo: React.FC = () => {
                     <div>
                       Homologação do resultado final
                       <a href="https://bit.ly/2FasePSLAMIA" target="blank">
-                        <strong>Resultados Final</strong>
+                        <strong>Resultado Final</strong>
                       </a>
                     </div>
                     <div>26/10/2021 às 18h</div>
