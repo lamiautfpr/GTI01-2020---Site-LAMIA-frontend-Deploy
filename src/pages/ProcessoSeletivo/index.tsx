@@ -121,7 +121,12 @@ const ProcessoSelectivo: React.FC = () => {
                     <div>18/10/2021 a 23/10/2021</div>
                   </div>
                   <div>
-                    <div>Publicação do resultado provisório</div>
+                    <div>
+                      Publicação do resultado provisório
+                      <a href="https://bit.ly/2FasePSLAMIA" target="blank">
+                        <strong>Resultado Provisório</strong>
+                      </a>
+                    </div>
                     <div>24/10/2021 às 18h</div>
                   </div>
                   <div>
