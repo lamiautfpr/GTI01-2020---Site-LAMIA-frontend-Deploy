@@ -1,5 +1,6 @@
 import { shade, transparentize } from 'polished';
 import styled, { css } from 'styled-components';
+import { device } from '../../styles/device';
 import {
   featuredColor,
   primaryColor,
@@ -31,6 +32,10 @@ export const HeaderSection = styled.header`
     );
 
     position: absolute;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 20px;
   }
 `;
 
@@ -93,6 +98,10 @@ export const SectionLine = styled.section`
       -moz-box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
       box-shadow: 0px 0px 48px -24px rgba(0, 0, 0, 0.75);
       object-fit: none;
+
+      @media ${device.tablet} {
+        display: none;
+      }
     }
   }
 `;
@@ -151,6 +160,31 @@ export const SectionNews = styled.section`
 
             color: #000000;
           }
+
+          @media ${device.tablet} {
+            img {
+              height: 100px;
+              width: 100px;
+            }
+
+            h2 {
+              margin: 0;
+            }
+
+            p {
+              display: none;
+            }
+          }
+
+          @media ${device.mobileL} {
+            align-items: center;
+            flex-direction: column;
+
+            h2 {
+              margin-top: 8px;
+              font-size: 20px;
+            }
+          }
         }
 
         a {
@@ -194,6 +228,7 @@ export const SectionNews = styled.section`
       bottom: 16px;
     }
   }
+
   > a {
     width: 173px;
     height: 46px;
@@ -261,7 +296,8 @@ export const SectionColumn = styled.section`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    a,
+
+    > a,
     div {
       display: flex;
       flex-direction: column;
@@ -298,6 +334,40 @@ export const SectionColumn = styled.section`
       h2 {
         margin-bottom: 4px;
         transition: 0.3s ease-out;
+      }
+    }
+
+    @media ${device.tablet} {
+      flex-direction: column;
+
+      > a,
+      div {
+        /* margin: 0;
+
+        flex-direction: row;
+        justify-content: center;
+        align-items: center; */
+
+        img {
+          /* margin: 0;
+          margin-right: 8px; */
+          width: 100px;
+          height: 100px;
+        }
+
+        h2 {
+          margin: 0;
+          font-size: 1.2em;
+        }
+
+        p {
+          display: none;
+        }
+
+        & + a,
+        & + div {
+          margin-top: 16px;
+        }
       }
     }
   }
@@ -353,6 +423,12 @@ export const SectionVip = styled.section`
         transform: translateX(2px);
 
         color: ${transparentize(0, featuredColor)};
+      }
+
+      @media ${device.mobileL} {
+        margin: 0;
+        width: 100%;
+        text-align: center;
       }
     }
 
@@ -412,10 +488,17 @@ export const SectionVip = styled.section`
 
         max-width: 256px;
         max-height: 256px;
+        width: 100%;
+        height: auto;
       }
 
       &:hover {
         transform: scale(1.05);
+      }
+
+      @media ${device.tablet} {
+        max-width: 200px;
+        max-height: 200px;
       }
     }
   }
@@ -430,6 +513,7 @@ export const SectionCards = styled.section`
   flex-direction: column;
 
   > div {
+    max-width: 1200px;
     transition: 0.3s;
     margin: 32px 0px;
 
@@ -448,11 +532,13 @@ export const SectionCards = styled.section`
     transform: translateY(8px);
   }
 
-  div {
+  > div {
+    max-width: 1200px;
     display: flex;
     justify-content: space-between;
+    width: 100%;
 
-    div {
+    > div {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -487,6 +573,23 @@ export const SectionCards = styled.section`
           font-weight: 200;
         }
       }
+
+      @media ${device.tablet} {
+        width: 100%;
+        height: auto;
+        padding: 12px 0;
+
+        h3 {
+          font-size: 24px;
+        }
+        div {
+          font-size: 32px;
+        }
+      }
+    }
+
+    @media ${device.mobileL} {
+      flex-direction: column;
     }
   }
 `;

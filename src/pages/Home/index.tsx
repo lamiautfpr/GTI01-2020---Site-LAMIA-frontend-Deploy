@@ -128,7 +128,7 @@ const Home: React.FC = () => {
                   </div>
                 </div>
                 <Link to={`news/${n.id}`}>
-                  Todas Notícias
+                  Ler Notícia
                   <BsChevronDoubleRight />
                 </Link>
               </div>
