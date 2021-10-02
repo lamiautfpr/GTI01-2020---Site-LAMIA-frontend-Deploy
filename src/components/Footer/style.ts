@@ -5,6 +5,7 @@ import {
   secondaryBackground,
   tertiaryColor,
 } from '../../styles/paletsColorers';
+import { device } from '../../styles/device';
 
 export const Contact = styled.footer`
   max-width: 1200px;
@@ -130,6 +131,21 @@ export const Contact = styled.footer`
       strong {
         margin-top: 8px;
       }
+    }
+  }
+
+
+  @media ${device.tablet} {
+    .quote{
+      display: none;
+    }
+    .contacts {
+      max-width: 100%;
+      margin-right: 0px;
+    }
+
+    p {
+      margin-top: 32px;
     }
   }
 `;

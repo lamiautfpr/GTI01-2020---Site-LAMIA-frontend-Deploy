@@ -1,5 +1,6 @@
 import { shade, transparentize } from 'polished';
 import styled from 'styled-components';
+import { device } from '../../styles/device';
 import {
   featuredColor,
   primaryColor,
@@ -32,6 +33,10 @@ export const HeaderSection = styled.header`
 
     position: absolute;
   }
+
+  @media ${device.mobileL} {
+    font-size: 20px;
+  }
 `;
 
 export const Main = styled.main`
@@ -63,7 +68,6 @@ export const SectionLine = styled.section`
     display: flex;
     flex-direction: column;
 
-    /* align-items: center; */
     justify-content: space-between;
     padding: 0 32px;
     margin-bottom: 16px;
@@ -81,6 +85,10 @@ export const SectionLine = styled.section`
         color: ${titleColor};
       }
     }
+
+    @media ${device.mobileL} {
+      padding: 0 8px;
+    }
   }
 `;
 
@@ -91,8 +99,8 @@ export const SubTitle = styled.h3`
 `;
 
 export const ScheduleTable = styled.div`
-  margin: 8px;
-  padding: 8px;
+  margin: 8px 0;
+  padding: 8px 0;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -139,6 +147,7 @@ export const ShelfGallery = styled.div`
 
   img {
     max-width: 350px;
+    width: 100%;
     height: auto;
 
     border-radius: 8px;

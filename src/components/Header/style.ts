@@ -2,6 +2,7 @@ import { shade } from 'polished';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../../assets/logoHeader.jpg';
+import { device } from '../../styles/device';
 import {
   featuredColor,
   secondaryBackground,
@@ -14,6 +15,10 @@ export const Title = styled.header`
   align-items: center;
 
   padding: 40px 80px 16px 80px;
+
+  @media ${device.mobileL} {
+      padding-inline: 8px;
+  }
 
   .img {
     width: 120px;
@@ -63,6 +68,10 @@ export const Title = styled.header`
         opacity: 0;
       }
     }
+
+    @media ${device.mobileL} {
+      font-size: 20px;
+    }
   }
 
   span {
@@ -73,6 +82,10 @@ export const Title = styled.header`
     margin-top: 4px;
 
     font-size: 20px;
+
+    @media ${device.mobileL} {
+      font-size: 18px;
+    }
   }
 
   section {

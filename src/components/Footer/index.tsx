@@ -33,13 +33,14 @@ const Footer: React.FC = () => {
             <strong>Paul Allen</strong>
           </p>
         </section>
-        <section>
+        <section className="contacts">
           <h2>Contato</h2>
           <span>
             <FaPhoneAlt size={16} />
             <strong>Telefone: </strong>
-              (45) 99835-7976</span>
-            <span>
+            (45) 99835-7976
+          </span>
+          <span>
             <FaStreetView size={24} />
             <strong>Endereço: </strong>
             Prolongamento da Rua Cerejeira, s/n Bairro - São Luiz, Santa Helena
@@ -74,7 +75,7 @@ const Footer: React.FC = () => {
           </ul>
         </section>
       </div>
-      <p>
+      <p className="copyright">
         Jecé Xavier & Rafael Lechensque
         <FaCopyright size={20} />
         LAMIA 2020
