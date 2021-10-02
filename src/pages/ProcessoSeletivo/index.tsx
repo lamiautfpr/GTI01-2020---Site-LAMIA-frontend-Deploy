@@ -106,25 +106,27 @@ const ProcessoSelectivo: React.FC = () => {
                     <div>04/10/2021 a 15/10/2021 </div>
                   </div>
                   <div>
-                    <div>Publicação das inscrições deferidas</div>
-                    <div>17/10/2021 às 18h</div>
-                  </div>
-                  <div>
-                    <div>Entrevistas</div>
-                    <div>18/10/2021 a 23/10/2021</div>
-                  </div>
-                  <div>
                     <div>
-                      Publicação do resultado provisório
+                      Lista Preliminar de Classificados na 1º Etapa
                       <a href="https://bit.ly/1FasePSLAMIA" target="blank">
                         <strong>Resultado Preliminar</strong>
                       </a>
                     </div>
+                    <div>17/10/2021 às 18h</div>
+                  </div>
+                  <div>
+                    <div>
+                      Entrevistas (enviado por e-mail os horários e link)
+                    </div>
+                    <div>18/10/2021 a 23/10/2021</div>
+                  </div>
+                  <div>
+                    <div>Publicação do resultado provisório</div>
                     <div>24/10/2021 às 18h</div>
                   </div>
                   <div>
                     <div>Interposição de recursos</div>
-                    <div>25/10/2021</div>
+                    <div>25/10/2021 até as 18h</div>
                   </div>
                   <div>
                     <div>
