@@ -39,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'LAMIA' }: HeaderProps) => {
 
       <section>
         <strong>Processo Seletivo Já Está Aberto!</strong>
-        <Button to="/processo-seletivo">CADASTRE-SE JÁ</Button>
+        <Button to="/processo-seletivo">INSCREVA-SE JÁ</Button>
       </section>
     </Title>
   );

@@ -107,9 +107,9 @@ const ProcessoSelectivo: React.FC = () => {
                   </div>
                   <div>
                     <div>
-                      Lista Preliminar de Classificados na 1º Etapa
+                      Publicação das inscrições deferidas
                       <a href="https://bit.ly/1FasePSLAMIA" target="blank">
-                        <strong>Resultado Preliminar</strong>
+                        <strong>Resultado das inscrições deferidas</strong>
                       </a>
                     </div>
                     <div>17/10/2021 às 18h</div>
@@ -122,9 +122,9 @@ const ProcessoSelectivo: React.FC = () => {
                   </div>
                   <div>
                     <div>
-                      Publicação do resultado provisório
+                      Publicação do resultado preliminar
                       <a href="https://bit.ly/2FasePSLAMIA" target="blank">
-                        <strong>Resultado Provisório</strong>
+                        <strong>Resultado Preliminar</strong>
                       </a>
                     </div>
                     <div>24/10/2021 às 18h</div>

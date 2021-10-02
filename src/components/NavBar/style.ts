@@ -1,9 +1,11 @@
 import styled, { css } from 'styled-components';
-
+import { shade, transparentize } from 'polished';
 import {
   secondaryBackground,
   tertiaryColor,
+  secondaryColor,
 } from '../../styles/paletsColorers';
+import { device } from '../../styles/device';
 
 interface IPropsItemMenu {
   active?: boolean;
@@ -41,8 +43,77 @@ export const Nav = styled.nav`
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media ${device.tablet} {
+      display: none;
+    }
+  }
+  /* *** BUGER MENU *** */
+  .bm-burger-button {
+    position: fixed;
+    width: 36px;
+    height: 30px;
+    right: 36px;
+    top: 24px;
+    display: none;
+
+    @media ${device.tablet} {
+      display: block;
+    }
+  }
+  .bm-burger-bars {
+    border-radius: 4px;
+    background: ${tertiaryColor};
+    transition: all 0.2s ease-out;
+  }
+  .bm-burger-bars-hover {
+    background: ${shade(0.1, tertiaryColor)};
+  }
+  .bm-cross-button {
+    height: 32px;
+    width: 32px;
+  }
+  .bm-cross {
+    font-size: 24px;
+    background: ${tertiaryColor};
+    width: 4px;
+    height: 16px;
+  }
+  .bm-menu-wrap {
+    position: fixed;
+    height: 100%;
+    top: 0px;
+  }
+  .bm-menu {
+    background: #fff;
+    padding: 2.5em 1.5em 0;
+    font-size: 1.15em;
+    right: 10px;
+  }
+  .bm-morph-shape {
+    fill: #373a47;
+  }
+
+  .bm-item-list {
+    color: #b8b7ad;
+    padding: 0.8em;
+
+    li + li {
+      margin-top: 12px;
+    }
+  }
+  .bm-item {
+    display: inline-block;
   }
 `;
+
+export const styleBugerMenu = {
+  bmOverlay: {
+    position: 'fixed',
+    top: '24px',
+    background: transparentize(0.25, secondaryColor),
+  },
+};
 
 export const NavItem = styled.li<IPropsItemMenu>`
   padding: 12px;
@@ -153,3 +224,5 @@ export const NavItem = styled.li<IPropsItemMenu>`
       }
     `}
 `;
+
+export const BugerMenu = styled.nav``;
