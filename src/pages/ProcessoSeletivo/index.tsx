@@ -76,23 +76,23 @@ const ProcessoSelectivo: React.FC = () => {
           <div>
             <div>
               <p>
-                Considerando o Regimento Interno do Grupo de Pesquisa, o
-                Laboratório de Aprendizado de Máquina e Imagens Aplicados à
-                Indústria – LAMIA, que tem como missão produzir conhecimento
-                acadêmico e soluções para a indústria por meio de pesquisas nas
-                áreas de Ciência de Dados e Visão Computacional, torna público a
-                abertura de vagas para discentes dos cursos na área da
-                computação e afins da UTFPR.
+                Considerando o Regimento Interno do Laboratório de Aprendizado
+                de Máquina e Imagens Aplicados à Indústria – LAMIA, que tem como
+                missão produzir conhecimento acadêmico e soluções para a
+                indústria por meio de pesquisas nas áreas de Ciência de Dados e
+                Visão Computacional, este torna público a abertura de vagas para
+                discentes dos cursos das áreas de computação e afins da UTFPR.
               </p>
               <p>
-                Pedimos para que todos interessados a participar do processo
-                para lerem o
+                Todos os interessados a participar do processo seletivo devem
+                ler o
                 <a href="https://bit.ly/RegulamentoLAMIA" target="blank">
                   {' '}
-                  REGULAMENTO INTERNO PARA O PROCESSO SELETIVO 2021/2 DO
-                  LABORATÓRIO DE APRENDIZADO DE MÁQUINA E IMAGENS APLICADOS À
-                  INDÚSTRIA – LAMIA.
+                  REGULAMENTO INTERNO PARA O PROCESSO SELETIVO 2021/2 DO LAMIA
                 </a>
+                , e seguirem as instruções que lá estão para acessarem o
+                formulário de inscrições, bem como terem conhecimento das demais
+                etapas e prazos do processo seletivo.
               </p>
               <ScheduleTable>
                 <SubTitle>CRONOGRAMA DE EXECUÇÃO DO EDITAL</SubTitle>
