@@ -43,7 +43,7 @@ interface MemberFormProps {
   login: string;
   name: string;
   email: string;
-  office_id: number;
+  patentId: number;
 }
 
 interface MembersListProps {
@@ -69,8 +69,8 @@ interface MemberEditableProps {
   login: string;
   name: string;
   email: string;
-  office_id: PatentsProps;
-  office: string;
+  patentId: PatentsProps;
+  patent: string;
 }
 
 interface MemberResetPassword {
@@ -114,7 +114,7 @@ const DashboardMembers: React.FC = () => {
             .required('E-mail obrigatório')
             .email('Digite um e-maio valido'),
           // eslint-disable-next-line @typescript-eslint/camelcase
-          office_id: Yup.number().required('Patente obrigatória'),
+          patentId: Yup.number().required('Patente obrigatória'),
         });
 
         await schema.validate(data, {
@@ -122,7 +122,7 @@ const DashboardMembers: React.FC = () => {
         });
 
         if (params.login) {
-          if (data.office_id === member?.office_id.value) {
+          if (data.patentId === member?.patentId.value) {
             return;
           }
 
@@ -132,7 +132,7 @@ const DashboardMembers: React.FC = () => {
 
           setPatents((old) => {
             const officeRemoveMember = old.find(
-              (state) => state.id === member?.office_id.value,
+              (state) => state.id === member?.patentId.value,
             );
 
             if (officeRemoveMember) {
@@ -141,7 +141,7 @@ const DashboardMembers: React.FC = () => {
               );
 
               const officeAddMember = old.find(
-                (state) => state.id === response.data.office_id,
+                (state) => state.id === response.data.patentId,
               );
 
               if (officeAddMember) {
@@ -169,8 +169,8 @@ const DashboardMembers: React.FC = () => {
             email: response.data.email,
             login: params.login,
             // eslint-disable-next-line @typescript-eslint/camelcase
-            office_id: response.data.office,
-            office: response.data.patent.name,
+            patentId: response.data.office,
+            patent: response.data.patent.name,
           });
 
           setEditable(false);
@@ -181,7 +181,7 @@ const DashboardMembers: React.FC = () => {
 
           setPatents((old) => {
             const office = old.find(
-              (state) => state.id === response.data.office_id,
+              (state) => state.id === response.data.patentId,
             );
 
             if (office) {
@@ -301,7 +301,13 @@ const DashboardMembers: React.FC = () => {
         },
       })
       .then((response) => {
-        setPatents(response.data);
+        setPatents(
+          response.data.map((patent) => ({
+            ...patent,
+            label: patent.name,
+            value: patent.id,
+          })),
+        );
       });
   }, []);
 
@@ -309,14 +315,14 @@ const DashboardMembers: React.FC = () => {
     formRef.current?.setErrors({});
 
     if (params.login) {
-      api.get(`${params.login}`).then((response) => {
+      newApi.get(`members/${params.login}`).then((response) => {
         setMember({
           name: response.data.name,
           email: response.data.email,
           login: params.login,
           // eslint-disable-next-line @typescript-eslint/camelcase
-          office_id: response.data.office,
-          office: response.data.patent.name,
+          patentId: response.data.patent,
+          patent: response.data.patent.name,
         });
       });
       setEditable(false);
@@ -337,7 +343,8 @@ const DashboardMembers: React.FC = () => {
         </HeaderSection>
         <Form ref={formRef} onSubmit={handleSubmit} initialData={member}>
           <header>
-            Novo Integrante
+            {!params.login ? 'Casdastrar Novo ' : `Editar `}
+            Integrante
             <div className="bar" />
           </header>
           <div className="form-group">
@@ -376,15 +383,15 @@ const DashboardMembers: React.FC = () => {
               type="text"
               placeholder="Selecione a Patente!"
               disabled
-              value={member?.office}
+              value={member?.patent}
             />
           ) : (
             <Select
-              name="office_id"
+              name="patentId"
               icon={FaMedal}
               placeholder="Selecione a Patente!"
               options={patents}
-              defaultValue={member?.office_id || null}
+              defaultValue={member?.patentId || null}
             />
           )}
 
