@@ -19,7 +19,7 @@ export interface IMembersProps {
   lattes?: string | null;
   quoteName: string;
   description: string;
-  avatar?: ImageProps;
+  avatar?: string;
   patent: IWorksFilters;
 }
 

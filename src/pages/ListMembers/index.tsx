@@ -25,7 +25,7 @@ interface MembersListProps {
   name: string;
   email: string;
   description: string;
-  avatar?: ImageProps;
+  avatar?: string;
 }
 
 interface OfficesProps extends OptionTypeBase {
@@ -91,7 +91,7 @@ const ListProjects: React.FC = () => {
               {office.members.map((member) => (
                 <Link key={member.login} to={`/${member.login}`}>
                   <img
-                    src={member.avatar ? member.avatar.src : imgMemberDefault}
+                    src={member.avatar ? member.avatar : imgMemberDefault}
                     alt={member.name}
                   />
 

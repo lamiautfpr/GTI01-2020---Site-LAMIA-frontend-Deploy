@@ -117,7 +117,7 @@ const Member: React.FC = () => {
               <div className="imgBorde">
                 <div>
                   <img
-                    src={member.avatar ? member.avatar.src : imgMemberDefault}
+                    src={member.avatar ? member.avatar : imgMemberDefault}
                     alt={member.name}
                   />
                 </div>

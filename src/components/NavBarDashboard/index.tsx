@@ -37,7 +37,7 @@ const NavBarDashboard: React.FC<IMenuBurgerProps> = ({ page }) => {
         <Link to="/dashboard">
           <div>
             <img
-              src={member.avatar ? member.avatar.src : imgMemberDefault}
+              src={member.avatar ? member.avatar : imgMemberDefault}
               alt={member.name}
             />
             <div>

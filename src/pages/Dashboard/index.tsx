@@ -197,7 +197,7 @@ const Dashboard: React.FC = () => {
           <section>
             <div className="img">
               <img
-                src={member.avatar ? member.avatar.src : imgMemberDefault}
+                src={member.avatar ? member.avatar : imgMemberDefault}
                 alt="Json Doe"
               />
               <label htmlFor="avatar">
