@@ -67,7 +67,7 @@ const NavBarDashboard: React.FC<IMenuBurgerProps> = ({ page }) => {
         {[...hasPermission, 'Membro'].includes(member.patent.name) && (
           <>
             <ItemMenu active={page === 'works'}>
-              <Link to="/dashboard/works">Produtos</Link>
+              <Link to="/dashboard/works">Trabalhos</Link>
             </ItemMenu>
           </>
         )}
