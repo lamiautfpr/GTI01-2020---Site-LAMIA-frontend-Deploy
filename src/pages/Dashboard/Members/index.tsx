@@ -78,6 +78,7 @@ interface MemberEditableProps {
 interface MemberResetPassword {
   id: string;
   name: string;
+  login: string;
 }
 
 const DashboardMembers: React.FC = () => {
@@ -268,16 +269,16 @@ const DashboardMembers: React.FC = () => {
   }, []);
 
   const handleResetPassword = useCallback(
-    (id?: string) => {
-      if (!id) {
+    (login?: string) => {
+      if (!login) {
         setMemberResetPassword(null);
         setIsvisibleModal(false);
         return;
       }
 
-      api
+      newApi
         .patch(
-          `/members/reset-password/${id}`,
+          `/auth/reset-password/${login}`,
           {},
           {
             headers: { authorization: `Bearer ${token}` },
@@ -289,10 +290,11 @@ const DashboardMembers: React.FC = () => {
             title: 'Senha resetada!',
           });
         })
-        .catch(() => {
+        .catch((error) => {
           addToast({
             type: 'error',
             title: 'Erro ao resetar a senha!',
+            description: error.response.data.errors,
           });
         });
 
@@ -458,6 +460,7 @@ const DashboardMembers: React.FC = () => {
                         openModal({
                           id: `${memberList.id}`,
                           name: memberList.name,
+                          login: memberList.login,
                         })
                       }
                     >
@@ -495,7 +498,7 @@ const DashboardMembers: React.FC = () => {
               <Button
                 type="button"
                 background="#2e656a"
-                onClick={() => handleResetPassword(memberResetPassword?.id)}
+                onClick={() => handleResetPassword(memberResetPassword?.login)}
               >
                 SIM
               </Button>
