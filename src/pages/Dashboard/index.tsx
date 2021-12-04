@@ -1,29 +1,27 @@
-import React, { useRef, useCallback, ChangeEvent } from 'react';
-import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
-import * as Yup from 'yup';
-import { MdLock, MdMail } from 'react-icons/md';
+import { Form } from '@unform/web';
+import React, { ChangeEvent, useCallback, useRef } from 'react';
 import {
   FaCamera,
-  FaUserNinja,
   FaGithub,
   FaLinkedinIn,
   FaUserGraduate,
+  FaUserNinja,
   FaUserTie,
 } from 'react-icons/fa';
-import { useAuth, IMembersProps } from '../../hooks/Auth';
-import { useToast } from '../../hooks/Toast';
-import getValidationErrors from '../../utils/getValidationErrors';
-import NavBarDashboard from '../../components/NavBarDashboard';
+import { MdLock, MdMail } from 'react-icons/md';
+import * as Yup from 'yup';
+import imgMemberDefault from '../../assets/imgDefault/member.jpg';
+import Button from '../../components/Button';
 import Input from '../../components/Input';
 import Textarea from '../../components/Input/Textarea';
-import Button from '../../components/Button';
-import api, { newApi } from '../../services/api';
-
-import imgMemberDefault from '../../assets/imgDefault/member.jpg';
-
-import { Container, Content, HeaderSection } from './styles';
+import NavBarDashboard from '../../components/NavBarDashboard';
+import { IMembersProps, useAuth } from '../../hooks/Auth';
+import { useToast } from '../../hooks/Toast';
+import { newApi } from '../../services/api';
 import AppError from '../../utils/AppError';
+import getValidationErrors from '../../utils/getValidationErrors';
+import { Container, Content, HeaderSection } from './styles';
 
 interface IMemberFormProps extends Omit<IMembersProps, 'avatar'> {
   oldPassword?: string;
@@ -164,8 +162,8 @@ const Dashboard: React.FC = () => {
 
         data.append('avatar', e.target.files[0]);
 
-        api
-          .patch('/members', data, {
+        newApi
+          .patch('/members/avatar', data, {
             headers: { authorization: `Bearer ${token}` },
           })
           .then((response) => {
