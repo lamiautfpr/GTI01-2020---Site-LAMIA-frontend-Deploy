@@ -25,7 +25,7 @@ const NavBarDashboard: React.FC<IMenuBurgerProps> = ({ page }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [permitted, setPermitted] = useState(() => {
     const checkPermission = officesPermitted.find(
-      (officePermitted) => `${officePermitted}` === member.office.value,
+      (officePermitted) => `${officePermitted}` === member.patent.name,
     );
 
     return !!checkPermission;
@@ -47,7 +47,7 @@ const NavBarDashboard: React.FC<IMenuBurgerProps> = ({ page }) => {
           </div>
           <span>
             <FaMedal size={32} />
-            {member.office.label}
+            {member.patent.name}
           </span>
           <div className="bar" />
         </Link>
@@ -56,7 +56,7 @@ const NavBarDashboard: React.FC<IMenuBurgerProps> = ({ page }) => {
       <ul>
         {/* Apenas para Administrador, Coordenador, Orientador */}
         {['Administrador', 'Coordenador', 'Orientador'].includes(
-          member.office.label,
+          member.patent.name,
         ) && (
           <ItemMenu active={page === 'members'}>
             <Link to="/dashboard/members">Integrantes</Link>

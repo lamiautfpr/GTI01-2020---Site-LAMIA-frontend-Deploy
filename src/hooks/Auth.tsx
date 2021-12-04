@@ -1,21 +1,26 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
-import api, { newApi } from '../services/api';
 import { ImageProps } from '../../myTypes/Images';
-import { SelectItem } from '../../myTypes/SelectItem';
+import { newApi } from '../services/api';
 import { useToast } from './Toast';
+
+interface IWorksFilters {
+  id: string;
+  name: string;
+  description?: string;
+}
 
 export interface IMembersProps {
   id: number;
-  login: string;
-  quoteName: string;
   name: string;
   email: string;
-  description: string;
-  office: SelectItem;
-  avatar?: ImageProps;
+  login: string;
   linkedin?: string | null;
   gitHub?: string | null;
   lattes?: string | null;
+  quoteName: string;
+  description: string;
+  avatar?: ImageProps;
+  patent: IWorksFilters;
 }
 
 interface IAuthState {

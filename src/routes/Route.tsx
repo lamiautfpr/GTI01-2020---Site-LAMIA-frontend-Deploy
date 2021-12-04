@@ -41,7 +41,7 @@ const Route: React.FC<RouteProps> = ({
             );
           }
 
-          if (permittedFor && !permittedFor.includes(member.office.value)) {
+          if (permittedFor && !permittedFor.includes(member.patent.name)) {
             return (
               <Redirect
                 to={{ pathname: '/dashboard', state: { from: location } }}

@@ -73,7 +73,7 @@ const Member: React.FC = () => {
                     <div className="icons">
                       <div className="office">
                         <FaMedal size={21} />
-                        <span>{member.office.label}</span>
+                        <span>{member.patent.name}</span>
                       </div>
                       {member.gitHub && (
                         <a

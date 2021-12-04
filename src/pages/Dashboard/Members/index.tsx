@@ -170,7 +170,7 @@ const DashboardMembers: React.FC = () => {
             login: params.login,
             // eslint-disable-next-line @typescript-eslint/camelcase
             office_id: response.data.office,
-            office: response.data.office.label,
+            office: response.data.patent.name,
           });
 
           setEditable(false);
@@ -310,7 +310,7 @@ const DashboardMembers: React.FC = () => {
           login: params.login,
           // eslint-disable-next-line @typescript-eslint/camelcase
           office_id: response.data.office,
-          office: response.data.office.label,
+          office: response.data.patent.name,
         });
       });
       setEditable(false);
@@ -388,27 +388,27 @@ const DashboardMembers: React.FC = () => {
           </Button>
         </Form>
 
-        {offices.map((office, index) => (
+        {offices.map((patent, index) => (
           <Section
-            key={office.value}
-            isOpen={!!office.isOpen}
-            height={office.members.length}
+            key={patent.name}
+            isOpen={!!patent.isOpen}
+            height={patent.members.length}
           >
             <header onClick={() => handleOffice(index)}>
               <div>
                 <FaMedal size={28} />
-                <h2>{office.label}</h2>
+                <h2>{patent.label}</h2>
                 <div className="bar" />
-                {office.isOpen ? (
+                {patent.isOpen ? (
                   <MdKeyboardArrowDown size={28} />
                 ) : (
                   <MdKeyboardArrowLeft size={28} />
                 )}
               </div>
-              <p>{office.description}</p>
+              <p>{patent.description}</p>
             </header>
             <Projects>
-              {office.members.map((memberList) => (
+              {patent.members.map((memberList) => (
                 <Link
                   key={memberList.login}
                   to={`/dashboard/members/${memberList.login}`}
