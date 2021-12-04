@@ -12,7 +12,7 @@ import {
 } from 'react-icons/fa';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
 
-import api from '../../services/api';
+import api, { newApi } from '../../services/api';
 
 import iconLattes from '../../assets/icons/lattes.svg';
 import imgMemberDefault from '../../assets/imgDefault/member.jpg';
@@ -31,13 +31,8 @@ interface MembersParams {
   login: string;
 }
 
-interface WorkMemberProps {
-  scholarship: boolean;
-  workData: WorkListProps;
-}
-
 interface MembersPageProps extends IMembersProps {
-  works: WorkMemberProps[];
+  works: WorkListProps[];
 }
 
 const Member: React.FC = () => {
@@ -47,7 +42,7 @@ const Member: React.FC = () => {
   const [member, setMember] = useState<MembersPageProps | null>(null);
 
   useEffect(() => {
-    api.get<MembersPageProps>(`${params.login}`).then((response) => {
+    newApi.get<MembersPageProps>(`members/${params.login}`).then((response) => {
       setMember(response.data);
       setGetApi(true);
     });
@@ -131,77 +126,79 @@ const Member: React.FC = () => {
             </Title>
             {member.works.length > 0 ? (
               <Shelf>
-                {member.works.map(({ workData }) => (
-                  <Card key={workData.id}>
-                    <img
-                      src={
-                        workData.pictures.length > 0
-                          ? workData.pictures[0].src
-                          : imgWorkDefault
-                      }
-                      alt="Capa do Projeto"
-                    />
-                    {/* <div className="imgCase" /> */}
-                    <div className="bookContainer">
-                      <div className="content">
-                        <Link to={`/work/${workData.id}`}>
-                          <button type="button"> Saiba mais </button>
-                        </Link>
+                {member.works.map((workData) => {
+                  return (
+                    <Card key={workData.id}>
+                      <img
+                        src={
+                          workData.pictures?.length > 0
+                            ? workData.pictures[0].src
+                            : imgWorkDefault
+                        }
+                        alt="Capa do Projeto"
+                      />
+                      {/* <div className="imgCase" /> */}
+                      <div className="bookContainer">
+                        <div className="content">
+                          <Link to={`/work/${workData.slug}`}>
+                            <button type="button"> Saiba mais </button>
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                    <div className="informationContainer">
-                      <h2 className="title">
-                        {workData.title.length <= 25
-                          ? workData.title
-                          : `${workData.title.slice(0, 25)}...`}
-                      </h2>
-                      <div className="primaryInformation">
-                        {workData.areaExpertise.length > 0 && (
-                          <span>
-                            <FaListUl size={16} />
-                            {workData.areaExpertise.map(
-                              (area) => `${area.name}; `,
-                            )}
-                          </span>
-                        )}
-                        {workData.types.length > 0 && (
-                          <span>
-                            <FaRegClipboard size={16} />
-                            {workData.types.map((type) => `${type.name}; `)}
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="moreInformation">
-                        <div className="infoDateContainer">
-                          {workData.urlGithub && (
-                            <a
-                              href={workData.urlGithub}
-                              target="bank"
-                              className="box git"
-                            >
-                              <FaGithub size={24} />
-                              <p>Repositório</p>
-                            </a>
+                      <div className="informationContainer">
+                        <h2 className="title">
+                          {workData.title.length <= 25
+                            ? workData.title
+                            : `${workData.title.slice(0, 25)}...`}
+                        </h2>
+                        <div className="primaryInformation">
+                          {workData.areaExpertise.length > 0 && (
+                            <span>
+                              <FaListUl size={16} />
+                              {workData.areaExpertise.map(
+                                (area) => `${area.name}; `,
+                              )}
+                            </span>
                           )}
+                          {workData.types.length > 0 && (
+                            <span>
+                              <FaRegClipboard size={16} />
+                              {workData.types.map((type) => `${type.name}; `)}
+                            </span>
+                          )}
+                        </div>
 
-                          <div className="box Date">
-                            <FaRegCalendarAlt size={24} />
-                            <p>{workData.startDate}</p>
+                        <div className="moreInformation">
+                          <div className="infoDateContainer">
+                            {workData.urlGithub && (
+                              <a
+                                href={workData.urlGithub}
+                                target="bank"
+                                className="box git"
+                              >
+                                <FaGithub size={24} />
+                                <p>Repositório</p>
+                              </a>
+                            )}
+
+                            <div className="box Date">
+                              <FaRegCalendarAlt size={24} />
+                              <p>{workData.startDate}</p>
+                            </div>
+                          </div>
+                          <div className="objective">
+                            <p>
+                              {`${workData.objective?.slice(0, 80)}`}
+                              {workData.objective &&
+                                workData.objective.length > 80 &&
+                                '...'}
+                            </p>
                           </div>
                         </div>
-                        <div className="objective">
-                          <p>
-                            {`${workData.objective?.slice(0, 80)}`}
-                            {workData.objective &&
-                              workData.objective.length > 80 &&
-                              '...'}
-                          </p>
-                        </div>
                       </div>
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  );
+                })}
               </Shelf>
             ) : (
               <CardWarning>
