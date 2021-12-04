@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
+import process from 'process';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   FaChevronRight,
@@ -56,6 +57,8 @@ interface MembersListProps {
 }
 
 interface PatentsProps extends OptionTypeBase {
+  id?: string;
+  name: string;
   isOpen?: boolean;
   description: string | null;
   members: MembersListProps[];
@@ -109,12 +112,11 @@ const DashboardMembers: React.FC = () => {
       try {
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
-          login: Yup.string().required('Login obrigatório'),
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('Digite um e-maio valido'),
           // eslint-disable-next-line @typescript-eslint/camelcase
-          patentId: Yup.number().required('Patente obrigatória'),
+          patentId: Yup.string().required('Patente obrigatória'),
         });
 
         await schema.validate(data, {
@@ -175,13 +177,13 @@ const DashboardMembers: React.FC = () => {
 
           setEditable(false);
         } else {
-          const response = await api.post('/members', data, {
+          const response = await newApi.post('/members', data, {
             headers: { authorization: `Bearer ${token}` },
           });
 
           setPatents((old) => {
             const office = old.find(
-              (state) => state.id === response.data.patentId,
+              (state) => state.id === response.data.patent.id,
             );
 
             if (office) {
@@ -357,16 +359,17 @@ const DashboardMembers: React.FC = () => {
               disabled={!!member}
               value={member?.name}
             />
-
-            <Input
-              icon={FaUserNinja}
-              name="login"
-              type="text"
-              placeholder="Login do novo integrante"
-              isFormGroup
-              disabled={!!member}
-              value={member?.login}
-            />
+            {!!process.env.REACT_APP_NEW_API_FLAG && (
+              <Input
+                icon={FaUserNinja}
+                name="login"
+                type="text"
+                placeholder="Login do novo integrante"
+                isFormGroup
+                disabled={!!member}
+                value={member?.login}
+              />
+            )}
           </div>
           <Input
             icon={MdMail}
