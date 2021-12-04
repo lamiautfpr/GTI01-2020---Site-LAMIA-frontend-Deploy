@@ -115,7 +115,9 @@ export const Section = styled.section<SectionProps>`
     ${(props) =>
       props.height &&
       css`
-        height: ${`${props.height * 145}px`};
+        height: ${`${
+          props.height * (114 + 16)
+        }px`}; //114 Height of the Card + 16 margin
       `}
 
     ${(props) =>
@@ -153,6 +155,7 @@ export const Projects = styled.div`
     padding: 24px;
     display: block;
     text-decoration: none;
+    height: 114px;
 
     display: flex;
     align-items: center;
