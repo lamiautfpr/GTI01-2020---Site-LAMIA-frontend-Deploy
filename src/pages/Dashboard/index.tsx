@@ -25,7 +25,7 @@ import imgMemberDefault from '../../assets/imgDefault/member.jpg';
 import { Container, Content, HeaderSection } from './styles';
 import AppError from '../../utils/AppError';
 
-interface IMemberFormProps extends IMembersProps {
+interface IMemberFormProps extends Omit<IMembersProps, 'avatar'> {
   oldPassword?: string;
   password?: string;
   confirmPassword?: string;
