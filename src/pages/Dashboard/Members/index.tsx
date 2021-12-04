@@ -43,7 +43,7 @@ interface MemberFormProps {
   login: string;
   name: string;
   email: string;
-  patentId: number;
+  patentId: string;
 }
 
 interface MembersListProps {
@@ -71,8 +71,8 @@ interface MemberEditableProps {
   login: string;
   name: string;
   email: string;
-  patentId: PatentsProps;
-  patent: string;
+  patentId: string;
+  patent: PatentsProps;
 }
 
 interface MemberResetPassword {
@@ -123,17 +123,25 @@ const DashboardMembers: React.FC = () => {
         });
 
         if (params.login) {
-          if (data.patentId === member?.patentId.value) {
+          console.log(member);
+
+          if (data.patentId === member?.patentId) {
             return;
           }
 
-          const response = await api.patch('/members/office', data, {
-            headers: { authorization: `Bearer ${token}` },
-          });
+          const response = await newApi.patch(
+            `/members/${params.login}/patent`,
+            {
+              newPatentId: data.patentId,
+            },
+            {
+              headers: { authorization: `Bearer ${token}` },
+            },
+          );
 
           setPatents((old) => {
             const officeRemoveMember = old.find(
-              (state) => state.id === member?.patentId.value,
+              (state) => state.id === member?.patentId,
             );
 
             if (officeRemoveMember) {
@@ -142,7 +150,7 @@ const DashboardMembers: React.FC = () => {
               );
 
               const officeAddMember = old.find(
-                (state) => state.id === response.data.patentId,
+                (state) => state.id === response.data.patent.id,
               );
 
               if (officeAddMember) {
@@ -170,8 +178,8 @@ const DashboardMembers: React.FC = () => {
             email: response.data.email,
             login: params.login,
             // eslint-disable-next-line @typescript-eslint/camelcase
-            patentId: response.data.office,
-            patent: response.data.patent.name,
+            patentId: response.data.patent.id,
+            patent: response.data.patent,
           });
 
           setEditable(false);
@@ -322,8 +330,8 @@ const DashboardMembers: React.FC = () => {
           email: response.data.email,
           login: params.login,
           // eslint-disable-next-line @typescript-eslint/camelcase
-          patentId: response.data.patent,
-          patent: response.data.patent.name,
+          patentId: response.data.patent.id,
+          patent: response.data.patent,
         });
       });
       setEditable(false);
@@ -385,7 +393,7 @@ const DashboardMembers: React.FC = () => {
               type="text"
               placeholder="Selecione a Patente!"
               disabled
-              value={member?.patent}
+              value={member?.patent.name}
             />
           ) : (
             <Select
@@ -393,7 +401,7 @@ const DashboardMembers: React.FC = () => {
               icon={FaMedal}
               placeholder="Selecione a Patente!"
               options={patents}
-              defaultValue={member?.patentId || null}
+              defaultValue={member?.patent || null}
             />
           )}
 
