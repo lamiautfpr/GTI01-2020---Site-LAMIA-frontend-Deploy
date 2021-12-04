@@ -4,7 +4,7 @@ import visaoComputacional from './icons/Visao_Computacional.jpg';
 
 import CategoryEvent from './imgDefault/CategoryEvent.jpeg';
 import CategoryProduct from './imgDefault/CategoryProduct.png';
-import CategoryProject from './imgDefault/CategoryProject.png';
+import CategoryProject from './imgDefault/CategoryProject.jpeg';
 import CategoryPublication from './imgDefault/CategoryPublication.jpeg';
 
 export const mission = `O **LAMIA** foi [fundado](https://docs.google.com/document/d/1Bsb-5jm2Bvfl0CYmVhzFFtQob-jdt0_yLIa-UxRL-zw/edit?usp=sharing) no início do ano de 2019 pelo professor Dr. Thiago França Naves com um pequeno grupo de alunos do curso de [Ciência da Computação](http://www.utfpr.edu.br/cursos/coordenacoes/graduacao/santa-helena/sh-ciencia-da-computacao). Em junho do mesmo ano a professora Dra. Arlete Terezinha Beuren e o professor Me. Anderson Brilhador se juntaram formando o time de orientadores do laboratório.

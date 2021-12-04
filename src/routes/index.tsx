@@ -5,6 +5,7 @@ import Dashboard from '../pages/Dashboard';
 import DashboardMembers from '../pages/Dashboard/Members';
 import DashboardExperiseAreas from '../pages/Dashboard/ExperiseAreas';
 import DashboardCategories from '../pages/Dashboard/Categories';
+import DashboardTypes from '../pages/Dashboard/TypesWorks';
 import UnderConstruction from '../pages/Dashboard/UnderConstruction';
 import Home from '../pages/Home';
 import ListProducts from '../pages/List/Products';
@@ -75,7 +76,14 @@ const Routes: React.FC = () => (
     <Route
       path="/dashboard/types"
       exact
-      component={UnderConstruction}
+      component={DashboardTypes}
+      isPrivate
+      permittedFor={hasPermission}
+    />
+    <Route
+      path="/dashboard/types/:name"
+      exact
+      component={DashboardTypes}
       isPrivate
       permittedFor={hasPermission}
     />
