@@ -27,7 +27,7 @@ interface ICategoryProps extends IWorksFilters {
   types: ISelectItem[];
 }
 
-const page = 'Produtos';
+const page = 'Publicações';
 
 const List: React.FC = () => {
   // database
@@ -170,7 +170,7 @@ const List: React.FC = () => {
     <>
       <Header title="LAMIA - Projetos" />
 
-      <NavBar page="products" />
+      <NavBar page="publications" />
 
       <Main>
         <SectionFilters name="">

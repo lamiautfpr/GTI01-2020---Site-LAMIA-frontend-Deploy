@@ -5,8 +5,8 @@ import Route from './Route';
 import Home from '../pages/Home';
 
 import ListProducts from '../pages/List/Products';
-// import ListProjects from '../pages/List/Projects';
-// import ListPublications from '../pages/List/Publications';
+import ListProjects from '../pages/List/Projects';
+import ListPublications from '../pages/List/Publications';
 import Login from '../pages/Login';
 
 import Dashboard from '../pages/Dashboard';
@@ -31,8 +31,8 @@ const Routes: React.FC = () => (
     <Route path="/login" exact component={Login} />
 
     <Route path="/works/products" exact component={ListProducts} />
-    <Route path="/works/projects" exact component={ListProducts} />
-    <Route path="/works/publications" exact component={ListProducts} />
+    <Route path="/works/projects" exact component={ListProjects} />
+    <Route path="/works/publications" exact component={ListPublications} />
 
     <Route path="/work/:id" exact component={ProjectView} />
 
