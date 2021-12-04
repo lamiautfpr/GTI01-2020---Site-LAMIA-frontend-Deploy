@@ -18,7 +18,7 @@ import NavBarDashboard from '../../components/NavBarDashboard';
 import Input from '../../components/Input';
 import Textarea from '../../components/Input/Textarea';
 import Button from '../../components/Button';
-import api from '../../services/api';
+import api, { newApi } from '../../services/api';
 
 import imgMemberDefault from '../../assets/imgDefault/member.jpg';
 
@@ -27,7 +27,7 @@ import AppError from '../../utils/AppError';
 
 interface IMemberFormProps extends Omit<IMembersProps, 'avatar'> {
   oldPassword?: string;
-  password?: string;
+  newPassword?: string;
   confirmPassword?: string;
 }
 
@@ -36,6 +36,7 @@ const Dashboard: React.FC = () => {
   const { member, token, updateMember } = useAuth();
   const { addToast } = useToast();
 
+  // TODO: Add login on the update
   const handleSubmit = useCallback(
     async (data: IMemberFormProps) => {
       try {
@@ -43,16 +44,16 @@ const Dashboard: React.FC = () => {
 
         const shema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
-          quoteName: Yup.string().required('Nome de citação obrigatório'),
-          description: Yup.string(),
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('Digite um e-maio valido'),
-          gitHub: Yup.string(),
           linkedin: Yup.string(),
+          gitHub: Yup.string(),
           lattes: Yup.string(),
+          quoteName: Yup.string().required('Nome de citação obrigatório'),
+          description: Yup.string(),
           oldPassword: Yup.string(),
-          password: Yup.string().when('oldPassword', {
+          newPassword: Yup.string().when('oldPassword', {
             is: (val) => !!val.length,
             then: Yup.string().min(
               8,
@@ -70,7 +71,7 @@ const Dashboard: React.FC = () => {
               otherwise: Yup.string(),
             })
             .oneOf(
-              [Yup.ref('password'), ''],
+              [Yup.ref('newPassword'), ''],
               'Duas senhas diferentes, qual devo salvar?',
             ),
         });
@@ -81,38 +82,25 @@ const Dashboard: React.FC = () => {
 
         if (
           data.oldPassword?.length === 0 &&
-          (data.password?.length !== 0 || data.confirmPassword?.length !== 0)
+          (data.newPassword?.length !== 0 || data.confirmPassword?.length !== 0)
         ) {
           throw new AppError(
             'Para atualizar a senha é preciso confirmar a senha atual!',
           );
         }
 
-        if (data.linkedin?.length === 0) {
-          // eslint-disable-next-line no-param-reassign
-          data.linkedin = null;
-        }
+        // TODO Refatorar
+        Object.keys(data).forEach((key) => {
+          if (data[key]?.length === 0) {
+            // eslint-disable-next-line no-param-reassign
+            delete data[key];
+          }
+        });
 
-        if (data.gitHub?.length === 0) {
-          // eslint-disable-next-line no-param-reassign
-          data.gitHub = null;
-        }
-
-        if (data.lattes?.length === 0) {
-          // eslint-disable-next-line no-param-reassign
-          data.lattes = null;
-        }
-
-        if (data.oldPassword?.length === 0 && data.password?.length === 0) {
-          // eslint-disable-next-line no-param-reassign
-          delete data.oldPassword;
-          // eslint-disable-next-line no-param-reassign
-          delete data.password;
-        }
-
-        const response = await api.put('/members', data, {
+        const response = await newApi.put('/members', data, {
           headers: { authorization: `Bearer ${token}` },
         });
+
         updateMember(response.data);
         addToast({
           type: 'success',
@@ -120,7 +108,7 @@ const Dashboard: React.FC = () => {
         });
 
         formRef.current?.clearField('oldPassword');
-        formRef.current?.clearField('password');
+        formRef.current?.clearField('newPassword');
         formRef.current?.clearField('confirmPassword');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -129,6 +117,7 @@ const Dashboard: React.FC = () => {
           formRef.current?.setErrors(errors);
           return;
         }
+
         if (err instanceof AppError) {
           addToast({
             type: 'error',
@@ -137,11 +126,23 @@ const Dashboard: React.FC = () => {
           });
           return;
         }
+
         if (err.response.status === 401) {
           addToast({
             type: 'error',
             title: 'Dados inválidos',
             description: err.response.data.error,
+          });
+          return;
+        }
+
+        if (err.response.status === 400) {
+          console.log(err.response.data);
+
+          addToast({
+            type: 'error',
+            title: 'Dados inválidos',
+            description: err.response.data.errors,
           });
           return;
         }
@@ -252,6 +253,7 @@ const Dashboard: React.FC = () => {
             http://lattes.cnpq.br/
           </Input>
 
+          {/* TODO: ATAULIZAR Layload - area de senha */}
           <div className="form-group password">
             <Input
               icon={MdLock}
@@ -262,7 +264,7 @@ const Dashboard: React.FC = () => {
             />
             <Input
               icon={MdLock}
-              name="password"
+              name="newPassword"
               type="password"
               placeholder="Nova Senha"
               isFormGroup

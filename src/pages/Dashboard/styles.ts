@@ -83,12 +83,14 @@ export const Content = styled.div`
           }
         }
       }
+
       .form {
         width: 100%;
         > div {
           margin: 16px 0;
         }
       }
+
       @media ${device.laptop} {
         flex-direction: column;
         .form {
@@ -101,8 +103,19 @@ export const Content = styled.div`
     }
 
     .password {
-      margin-top: 40px;
+      margin-top: 32px;
       width: 100%;
+
+      @media ${device.laptopL} {
+        flex-direction: column;
+        > div {
+          margin-left: 0;
+
+          & + div {
+            margin-top: 8px;
+          }
+        }
+      }
     }
   }
 `;
