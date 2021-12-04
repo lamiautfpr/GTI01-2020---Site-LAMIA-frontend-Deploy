@@ -70,7 +70,7 @@ const ListProjects: React.FC = () => {
       <Main>
         {offices.map((office, index) => (
           <Section
-            key={office.value}
+            key={`${index}`}
             isOpen={!!office.isOpen}
             height={office.members.length}
           >
