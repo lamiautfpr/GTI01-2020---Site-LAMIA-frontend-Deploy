@@ -37,11 +37,11 @@ export const compareDateASC = (
   work2: WorkListProps,
 ): number => {
   // a should come before b in the sorted order
-  if (work1.dateBegin < work2.dateBegin) {
+  if (work1.startDate < work2.startDate) {
     return -1;
     // a should come after b in the sorted order
   }
-  if (work1.dateBegin > work2.dateBegin) {
+  if (work1.startDate > work2.startDate) {
     return 1;
     // a and b are the same
   }
@@ -61,11 +61,11 @@ export const compareDateDESC = (
   work2: WorkListProps,
 ): number => {
   // a should come before b in the sorted order
-  if (work1.dateBegin > work2.dateBegin) {
+  if (work1.startDate > work2.startDate) {
     return -1;
     // a should come after b in the sorted order
   }
-  if (work1.dateBegin < work2.dateBegin) {
+  if (work1.startDate < work2.startDate) {
     return 1;
     // a and b are the same
   }

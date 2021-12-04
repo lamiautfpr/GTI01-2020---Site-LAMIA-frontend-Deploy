@@ -201,7 +201,7 @@ const List: React.FC = () => {
 
         <Projects>
           {works.map((work) => (
-            <Link key={work.id} to={`/work/${work.id}`}>
+            <Link key={work.id} to={`/work/${work.slug}`}>
               <img
                 src={
                   work.pictures?.length > 0
@@ -217,7 +217,7 @@ const List: React.FC = () => {
               <div>
                 <strong>
                   {work.title}
-                  <span>{work.dateBegin}</span>
+                  <span>{work.startDate}</span>
                 </strong>
                 <div>
                   <div>

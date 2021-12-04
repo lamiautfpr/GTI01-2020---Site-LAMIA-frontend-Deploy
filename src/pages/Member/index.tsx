@@ -187,7 +187,7 @@ const Member: React.FC = () => {
 
                           <div className="box Date">
                             <FaRegCalendarAlt size={24} />
-                            <p>{workData.dateBegin}</p>
+                            <p>{workData.startDate}</p>
                           </div>
                         </div>
                         <div className="objective">

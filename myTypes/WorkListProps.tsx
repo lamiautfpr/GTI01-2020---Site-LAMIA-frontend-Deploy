@@ -1,10 +1,9 @@
-import { SelectItem } from './SelectItem';
 import { ImageProps } from './Images';
 
 interface MemberProps {
   name: string;
   login: string;
-  avatar: ImageProps | null;
+  avatar: string | null;
 }
 
 interface WorksMemberProps {
@@ -37,6 +36,7 @@ interface IWorksFilters {
 }
 
 export interface WorkListProps {
+  slug: string;
   id: number;
   title: string;
   objective: string;
@@ -46,7 +46,8 @@ export interface WorkListProps {
   areaExpertise: IWorksFilters[];
   worksMember: WorksMemberProps[];
   partners: PartnerProps[];
-  dateBegin: Date;
+  startDate: Date;
+  endDate: Date;
   pictures: ImageProps[];
   urlGithub?: string;
 }

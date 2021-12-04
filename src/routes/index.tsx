@@ -34,7 +34,7 @@ const Routes: React.FC = () => (
     <Route path="/works/projects" exact component={ListProjects} />
     <Route path="/works/publications" exact component={ListPublications} />
 
-    <Route path="/work/:id" exact component={ProjectView} />
+    <Route path="/work/:slug" exact component={ProjectView} />
 
     <Route path="/dashboard" exact component={Dashboard} isPrivate />
     <Route
