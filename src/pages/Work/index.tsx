@@ -49,7 +49,7 @@ const ProjectView: React.FC = () => {
 
   useEffect(() => {
     newApi.get(`works/${params.slug}`).then((response) => {
-      const aa = {
+      setWork({
         ...response.data,
         worksMember: response.data.members.map((member) => ({
           responsibility: 'Membro',
@@ -59,12 +59,7 @@ const ProjectView: React.FC = () => {
             avatar: member.avatar,
           },
         })),
-      };
-
-      console.log('BATATA');
-      console.log('BATATA', aa);
-
-      setWork(aa);
+      });
       setGetApi(true);
     });
   }, [params.slug]);

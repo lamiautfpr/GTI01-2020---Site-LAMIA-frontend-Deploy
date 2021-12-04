@@ -1,21 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
-
-import { Link } from 'react-router-dom';
-import { FaMedal, FaChevronRight, FaMailBulk } from 'react-icons/fa';
-
-import { OptionTypeBase } from 'react-select';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FaChevronRight, FaMailBulk, FaMedal } from 'react-icons/fa';
 import { MdKeyboardArrowDown, MdKeyboardArrowLeft } from 'react-icons/md';
-import api from '../../services/api';
-
-import imgMemberDefault from '../../assets/imgDefault/member.jpg';
+import { Link } from 'react-router-dom';
+import { OptionTypeBase } from 'react-select';
 //
 import { ImageProps } from '../../../myTypes/Images';
-import {} from '../../utils/orderArray';
-
-import { Main, Projects, Section } from './style';
+import imgMemberDefault from '../../assets/imgDefault/member.jpg';
+import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
-import Footer from '../../components/Footer';
+import { newApi } from '../../services/api';
+import { Main, Projects, Section } from './style';
 
 export const listOrder = [
   { value: 0, description: null, label: 'A-Z' },
@@ -55,9 +50,15 @@ const ListProjects: React.FC = () => {
 
   // Functions for get list works
   useEffect(() => {
-    api.get(`members/`).then((response) => {
-      setOffices(response.data);
-    });
+    newApi
+      .get(`members/patents`, {
+        params: {
+          orderBy: 'createAt',
+        },
+      })
+      .then((response) => {
+        setOffices(response.data);
+      });
   }, []);
 
   return (
@@ -88,7 +89,7 @@ const ListProjects: React.FC = () => {
             </header>
             <Projects>
               {office.members.map((member) => (
-                <Link to={`/${member.login}`}>
+                <Link key={member.login} to={`/${member.login}`}>
                   <img
                     src={member.avatar ? member.avatar.src : imgMemberDefault}
                     alt={member.name}

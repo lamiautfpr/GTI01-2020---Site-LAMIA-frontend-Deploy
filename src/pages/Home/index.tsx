@@ -101,7 +101,6 @@ const Home: React.FC = () => {
       });
 
     newApi.get(`members/patents/Orientador`).then((response) => {
-      console.log(response);
       setAdvisors(response.data.members);
     });
 
