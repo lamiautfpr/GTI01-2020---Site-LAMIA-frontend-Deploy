@@ -4,19 +4,19 @@ import { FaMedal } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 
 import { Container, Header, ItemMenu, Footer } from './styles';
-import { useAuth, officesPermitted } from '../../hooks/Auth';
+import { useAuth, officesPermitted, hasPermission } from '../../hooks/Auth';
 import Button from '../Button';
 
 import imgMemberDefault from '../../assets/imgDefault/member.jpg';
 
-interface IMenuBurgerProps {
+export interface IMenuBurgerProps {
   page?:
     | 'members'
-    | 'Produtos'
-    | 'Projetos'
-    | 'Publicações'
-    | 'phrases'
-    | 'administrative';
+    | 'expertise-areas'
+    | 'categories'
+    | 'types'
+    | 'works'
+    | 'phrases';
 }
 
 const NavBarDashboard: React.FC<IMenuBurgerProps> = ({ page }) => {
@@ -54,22 +54,31 @@ const NavBarDashboard: React.FC<IMenuBurgerProps> = ({ page }) => {
       </Header>
 
       <ul>
-        {/* Apenas para Administrador, Coordenador, Orientador */}
-        {['Administrador', 'Coordenador', 'Orientador'].includes(
-          member.patent.name,
-        ) && (
-          <ItemMenu active={page === 'members'}>
-            <Link to="/dashboard/members">Integrantes</Link>
-          </ItemMenu>
+        {hasPermission.includes(member.patent.name) && (
+          <>
+            <ItemMenu active={page === 'members'}>
+              <Link to="/dashboard/members">Integrantes</Link>
+            </ItemMenu>
+            <ItemMenu active={page === 'expertise-areas'}>
+              <Link to="/dashboard/expertise-areas">Área de Atuação</Link>
+            </ItemMenu>
+            <ItemMenu active={page === 'categories'}>
+              <Link to="/dashboard/categories">Categorias de trabalho</Link>
+            </ItemMenu>
+            <ItemMenu active={page === 'types'}>
+              <Link to="/dashboard/types">Tipos de trabalho</Link>
+            </ItemMenu>
+          </>
         )}
-        <ItemMenu active={page === 'Produtos'}>
-          <Link to="/dashboard/products">Produtos</Link>
-        </ItemMenu>
-        <ItemMenu active={page === 'Projetos'}>
-          <Link to="/dashboard/projects">Projetos</Link>
-        </ItemMenu>
-        <ItemMenu active={page === 'Publicações'}>
-          <Link to="/dashboard/publications">Publicações</Link>
+        {[...hasPermission, 'Membro'].includes(member.patent.name) && (
+          <>
+            <ItemMenu active={page === 'works'}>
+              <Link to="/dashboard/works">Produtos</Link>
+            </ItemMenu>
+          </>
+        )}
+        <ItemMenu active={page === 'phrases'}>
+          <Link to="/dashboard/phrases">Frases para Rodapé</Link>
         </ItemMenu>
       </ul>
 

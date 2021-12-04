@@ -9,6 +9,8 @@ interface IWorksFilters {
   description?: string;
 }
 
+export const hasPermission = ['Administrador', 'Coordenador', 'Orientador'];
+
 export interface IMembersProps {
   id: number;
   name: string;

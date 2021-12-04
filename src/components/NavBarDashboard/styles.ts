@@ -131,6 +131,8 @@ export const ItemMenu = styled.li<IPropsItemMenu>`
 
     font-family: 'Quicksand';
     font-size: 20px;
+
+    text-align: center;
   }
 
   transition: 0.3s;
