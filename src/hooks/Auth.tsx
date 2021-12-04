@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
-import api from '../services/api';
+import api, { newApi } from '../services/api';
 import { ImageProps } from '../../myTypes/Images';
 import { SelectItem } from '../../myTypes/SelectItem';
 import { useToast } from './Toast';
@@ -24,7 +24,7 @@ interface IAuthState {
 }
 
 interface ISignInCredentials {
-  login: string;
+  username: string;
   password: string;
 }
 
@@ -54,19 +54,21 @@ export const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(
-    async ({ login, password }) => {
+    async ({ username, password }) => {
       try {
-        const response = await api.post('sessions', {
-          login,
+        const response = await newApi.post('auth/login', {
+          username,
           password,
         });
 
-        const { token, member } = response.data;
+        console.log(response.data);
 
-        localStorage.setItem('@LAMIA:token', token);
+        const { auth, member } = response.data;
+
+        localStorage.setItem('@LAMIA:token', auth.accessToken);
         localStorage.setItem('@LAMIA:member', JSON.stringify(member));
 
-        setData({ token, member });
+        setData({ token: auth.accessToken, member });
       } catch (error) {
         addToast({
           type: 'error',
