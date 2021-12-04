@@ -26,7 +26,7 @@ import NavBarDashboard from '../../../components/NavBarDashboard';
 import Select from '../../../components/Select';
 import { useAuth } from '../../../hooks/Auth';
 import { useToast } from '../../../hooks/Toast';
-import api from '../../../services/api';
+import api, { newApi } from '../../../services/api';
 import AppError from '../../../utils/AppError';
 import getValidationErrors from '../../../utils/getValidationErrors';
 // import imgMemberDefault from '../../../assets/imgDefault/member.jpg';
@@ -55,7 +55,7 @@ interface MembersListProps {
   avatar?: ImageProps;
 }
 
-interface OfficesProps extends OptionTypeBase {
+interface PatentsProps extends OptionTypeBase {
   isOpen?: boolean;
   description: string | null;
   members: MembersListProps[];
@@ -69,7 +69,7 @@ interface MemberEditableProps {
   login: string;
   name: string;
   email: string;
-  office_id: OfficesProps;
+  office_id: PatentsProps;
   office: string;
 }
 
@@ -87,7 +87,7 @@ const DashboardMembers: React.FC = () => {
   const { token } = useAuth();
   const { addToast } = useToast();
 
-  const [offices, setOffices] = useState<OfficesProps[]>([]);
+  const [patents, setPatents] = useState<PatentsProps[]>([]);
   const [editable, setEditable] = useState(false);
   const [isvisibleModal, setIsvisibleModal] = useState(false);
   const [
@@ -130,7 +130,7 @@ const DashboardMembers: React.FC = () => {
             headers: { authorization: `Bearer ${token}` },
           });
 
-          setOffices((old) => {
+          setPatents((old) => {
             const officeRemoveMember = old.find(
               (state) => state.id === member?.office_id.value,
             );
@@ -179,7 +179,7 @@ const DashboardMembers: React.FC = () => {
             headers: { authorization: `Bearer ${token}` },
           });
 
-          setOffices((old) => {
+          setPatents((old) => {
             const office = old.find(
               (state) => state.id === response.data.office_id,
             );
@@ -234,18 +234,18 @@ const DashboardMembers: React.FC = () => {
     [addToast, editable, history, member, params.login, token],
   );
 
-  const handleOffice = useCallback(
+  const handlePatent = useCallback(
     (index) => {
-      const office = offices[index];
+      const office = patents[index];
 
       office.isOpen = !office.isOpen;
-      setOffices(
-        [...offices, (offices[index] = office)].filter(
-          (_, i) => i !== offices.length,
+      setPatents(
+        [...patents, (patents[index] = office)].filter(
+          (_, i) => i !== patents.length,
         ),
       );
     },
-    [offices],
+    [patents],
   );
 
   const openModal = useCallback((data: MemberResetPassword) => {
@@ -294,9 +294,15 @@ const DashboardMembers: React.FC = () => {
   );
 
   useEffect(() => {
-    api.get(`members/`).then((response) => {
-      setOffices(response.data);
-    });
+    newApi
+      .get(`members/patents`, {
+        params: {
+          orderBy: 'createAt',
+        },
+      })
+      .then((response) => {
+        setPatents(response.data);
+      });
   }, []);
 
   useEffect(() => {
@@ -377,7 +383,7 @@ const DashboardMembers: React.FC = () => {
               name="office_id"
               icon={FaMedal}
               placeholder="Selecione a Patente!"
-              options={offices}
+              options={patents}
               defaultValue={member?.office_id || null}
             />
           )}
@@ -388,13 +394,13 @@ const DashboardMembers: React.FC = () => {
           </Button>
         </Form>
 
-        {offices.map((patent, index) => (
+        {patents.map((patent, index) => (
           <Section
             key={patent.name}
             isOpen={!!patent.isOpen}
             height={patent.members.length}
           >
-            <header onClick={() => handleOffice(index)}>
+            <header onClick={() => handlePatent(index)}>
               <div>
                 <FaMedal size={28} />
                 <h2>{patent.label}</h2>

@@ -28,24 +28,24 @@ interface MembersListProps {
   avatar?: string;
 }
 
-interface OfficesProps extends OptionTypeBase {
+interface PatentsProps extends OptionTypeBase {
   isOpen?: boolean;
   description: string | null;
   members: MembersListProps[];
 }
 
 const ListProjects: React.FC = () => {
-  const [offices, setOffices] = useState<OfficesProps[]>([]);
+  const [patents, setPatents] = useState<PatentsProps[]>([]);
 
   const handleOffice = useCallback(
     (index) => {
-      const office = offices[index];
+      const office = patents[index];
 
       office.isOpen = !office.isOpen;
-      setOffices([...offices, (offices[index] = office)]);
-      setOffices(offices.filter((_, i) => i !== offices.length));
+      setPatents([...patents, (patents[index] = office)]);
+      setPatents(patents.filter((_, i) => i !== patents.length));
     },
-    [offices],
+    [patents],
   );
 
   // Functions for get list works
@@ -57,7 +57,7 @@ const ListProjects: React.FC = () => {
         },
       })
       .then((response) => {
-        setOffices(response.data);
+        setPatents(response.data);
       });
   }, []);
 
@@ -68,7 +68,7 @@ const ListProjects: React.FC = () => {
       <NavBar page="members" />
 
       <Main>
-        {offices.map((office, index) => (
+        {patents.map((office, index) => (
           <Section
             key={`${index}`}
             isOpen={!!office.isOpen}
