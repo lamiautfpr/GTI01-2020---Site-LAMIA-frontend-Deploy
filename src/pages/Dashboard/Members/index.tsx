@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
-import process from 'process';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   FaChevronRight,
