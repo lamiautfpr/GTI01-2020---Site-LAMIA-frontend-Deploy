@@ -30,14 +30,20 @@ interface PartnerProps {
   linkPage: string | null;
 }
 
+interface IWorksFilters {
+  id: string;
+  name: string;
+  description?: string;
+}
+
 export interface WorkListProps {
   id: number;
   title: string;
   objective: string;
   abstractCard: string | null;
   categories: CategoryProps[];
-  types: SelectItem[];
-  areaExpertise: SelectItem[];
+  types: IWorksFilters[];
+  areaExpertise: IWorksFilters[];
   worksMember: WorksMemberProps[];
   partners: PartnerProps[];
   dateBegin: Date;

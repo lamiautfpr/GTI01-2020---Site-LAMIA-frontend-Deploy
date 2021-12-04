@@ -11,7 +11,7 @@ import { useAuth } from '../hooks/Auth';
 interface RouteProps extends ReactDOMRouteProps {
   isPrivate?: boolean;
   component: React.ComponentType;
-  permittedFor?: number[];
+  permittedFor?: string[];
 }
 
 const Route: React.FC<RouteProps> = ({

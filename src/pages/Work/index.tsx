@@ -121,15 +121,13 @@ const ProjectView: React.FC = () => {
                         {work.types.length > 0 && (
                           <span>
                             <FaRegClipboard />
-                            {work.types.map((type) => `${type.label}; `)}
+                            {work.types.map((type) => `${type.name}; `)}
                           </span>
                         )}
                         {work.areaExpertise.length > 0 && (
                           <span>
                             <FaListUl />
-                            {work.areaExpertise.map(
-                              (area) => `${area.label}; `,
-                            )}
+                            {work.areaExpertise.map((area) => `${area.name}; `)}
                           </span>
                         )}
                       </div>

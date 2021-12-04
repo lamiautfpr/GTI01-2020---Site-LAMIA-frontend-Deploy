@@ -160,14 +160,14 @@ const Member: React.FC = () => {
                           <span>
                             <FaListUl size={16} />
                             {workData.areaExpertise.map(
-                              (area) => `${area.label}; `,
+                              (area) => `${area.name}; `,
                             )}
                           </span>
                         )}
                         {workData.types.length > 0 && (
                           <span>
                             <FaRegClipboard size={16} />
-                            {workData.types.map((type) => `${type.label}; `)}
+                            {workData.types.map((type) => `${type.name}; `)}
                           </span>
                         )}
                       </div>
