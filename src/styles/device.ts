@@ -5,6 +5,7 @@ enum size {
   tablet = '768px',
   laptop = '1024px',
   laptopL = '1200px',
+  laptopLL = '1400px',
   desktop = '2560px',
 }
 
@@ -15,5 +16,6 @@ export const device = {
   tablet: `(max-width: ${size.tablet})`,
   laptop: `(max-width: ${size.laptop})`,
   laptopL: `(max-width: ${size.laptopL})`,
+  laptopLL: `(max-width: ${size.laptopLL})`,
   desktop: `(max-width: ${size.desktop})`,
 };

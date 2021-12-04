@@ -26,7 +26,7 @@ import NavBarDashboard from '../../../components/NavBarDashboard';
 import Select from '../../../components/Select';
 import { useAuth } from '../../../hooks/Auth';
 import { useToast } from '../../../hooks/Toast';
-import api, { newApi } from '../../../services/api';
+import { newApi } from '../../../services/api';
 import AppError from '../../../utils/AppError';
 import getValidationErrors from '../../../utils/getValidationErrors';
 // import imgMemberDefault from '../../../assets/imgDefault/member.jpg';

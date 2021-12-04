@@ -6,36 +6,21 @@ import { Container, Content, HeaderSection } from './styles';
 
 const UnderConstruction: React.FC = () => {
   const { path } = useRouteMatch();
-  const [title, setTitle] = useState<
-    'Publicações' | 'Produtos' | 'Projetos' | undefined
-  >(() => {
-    if (path.includes('publications')) {
-      return 'Publicações';
+  const [title, setTitle] = useState<'Frases' | undefined>(() => {
+    if (path.includes('phrases')) {
+      return 'Frases';
     }
-    if (path.includes('products')) {
-      return 'Produtos';
-    }
-    if (path.includes('projects')) {
-      return 'Projetos';
-    }
-    return undefined;
   });
 
   useEffect(() => {
-    if (path.includes('publications')) {
-      setTitle('Publicações');
-    } else if (path.includes('products')) {
-      setTitle('Produtos');
-    } else if (path.includes('projects')) {
-      setTitle('Projetos');
-    } else {
-      setTitle(undefined);
+    if (path.includes('phrases')) {
+      setTitle('Frases');
     }
   }, [path]);
 
   return (
     <Container>
-      <NavBarDashboard page={title} />
+      <NavBarDashboard page="phrases" />
       <Content>
         <HeaderSection>
           <h2>{title}</h2>

@@ -10,13 +10,7 @@ import Button from '../Button';
 import imgMemberDefault from '../../assets/imgDefault/member.jpg';
 
 export interface IMenuBurgerProps {
-  page?:
-    | 'members'
-    | 'expertise-areas'
-    | 'categories'
-    | 'types'
-    | 'works'
-    | 'phrases';
+  page?: string;
 }
 
 const NavBarDashboard: React.FC<IMenuBurgerProps> = ({ page }) => {

@@ -53,6 +53,13 @@ const Routes: React.FC = () => (
       permittedFor={hasPermission}
     />
     <Route
+      path="/dashboard/expertise-areas/:name"
+      exact
+      component={DashboardExperiseAreas}
+      isPrivate
+      permittedFor={hasPermission}
+    />
+    <Route
       path="/dashboard/categories"
       exact
       component={UnderConstruction}
