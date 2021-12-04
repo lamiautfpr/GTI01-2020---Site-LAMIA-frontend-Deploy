@@ -7,7 +7,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FaListUl, FaMailBulk } from 'react-icons/fa';
 import { Link, useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
-import { imageAreaExpertises as imageDefault } from '../../../assets/dataStatistic';
+import { imageCategories as imageDefault } from '../../../assets/dataStatistic';
 import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 import Textarea from '../../../components/Input/Textarea';
@@ -28,10 +28,10 @@ interface IAreasExpertiseProps {
 }
 
 const Page = {
-  title: 'Área de Atuação',
+  title: 'Categoria',
   Icon: FaListUl,
-  pathRequest: '/areas-expertise',
-  page: 'expertise-areas',
+  pathRequest: '/categories',
+  page: 'categories',
 };
 
 const DashboardMembers: React.FC = () => {

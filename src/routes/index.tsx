@@ -4,6 +4,7 @@ import { hasPermission } from '../hooks/Auth';
 import Dashboard from '../pages/Dashboard';
 import DashboardMembers from '../pages/Dashboard/Members';
 import DashboardExperiseAreas from '../pages/Dashboard/ExperiseAreas';
+import DashboardCategories from '../pages/Dashboard/Categories';
 import UnderConstruction from '../pages/Dashboard/UnderConstruction';
 import Home from '../pages/Home';
 import ListProducts from '../pages/List/Products';
@@ -62,7 +63,13 @@ const Routes: React.FC = () => (
     <Route
       path="/dashboard/categories"
       exact
-      component={UnderConstruction}
+      component={DashboardCategories}
+      permittedFor={hasPermission}
+    />
+    <Route
+      path="/dashboard/categories/:name"
+      exact
+      component={DashboardCategories}
       permittedFor={hasPermission}
     />
     <Route
