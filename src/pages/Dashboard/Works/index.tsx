@@ -163,7 +163,7 @@ const DashboardWorks: React.FC = () => {
             <div className="bar" />
           </div>
         </HeaderSection>
-        <Form ref={formRef} onSubmit={handleSubmit}>
+        {/* <Form ref={formRef} onSubmit={handleSubmit}>
           <header>
             <div>
               Casdastrar Novo
@@ -183,7 +183,7 @@ const DashboardWorks: React.FC = () => {
             Salvar Trabalho
             <FaMailBulk size={24} />
           </Button>
-        </Form>
+        </Form> */}
 
         <Main>
           <header>
@@ -217,14 +217,28 @@ const DashboardWorks: React.FC = () => {
           {works?.map((work, index) => (
             <Link key={index} to={`/dashboard/works/:${work.slug}`}>
               <div>
-                <strong>
-                  {work.title}
-                  <span>
-                    <FaMailBulk size={14} />
-                  </span>
-                </strong>
+                <strong>{work.title}</strong>
+                <p>{work.objective}</p>
               </div>
-              <p>{work.objective}</p>
+
+              <div>
+                <span>
+                  <strong>Área de Atuação(ões):</strong>
+                  {work.areaExpertise.map((a) => ` ${a.name};`)}
+                </span>
+                <div className="bar" />
+                <span>
+                  <strong>Categoria(s):</strong>
+                  {work.categories.map((c) => ` ${c.name};`)}
+                </span>
+                <div className="bar" />
+                <span>Tipo(s):{work.types.map((t) => ` ${t.name};`)}</span>
+                <div className="bar" />
+                <span>
+                  <strong>Integrantes (Login):</strong>
+                  {work.members.map((m) => ` ${m.login};`)}
+                </span>
+              </div>
             </Link>
           ))}
 

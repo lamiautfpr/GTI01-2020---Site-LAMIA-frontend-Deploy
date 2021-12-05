@@ -105,30 +105,67 @@ export const Main = styled.main`
     & + a {
       margin-top: 16px;
     }
-
     background-color: ${secondaryBackground};
-
     border-radius: 8px;
+
+    height: auto;
     width: 100%;
     padding: 24px;
-    display: block;
-    text-decoration: none;
     height: auto;
 
+    display: block;
     display: flex;
+    flex-direction: row;
+    text-decoration: none;
+
     align-items: center;
     transition: all 0.2s;
 
-    p {
-      font-weight: 600;
+    font-size: 20px;
+    color: ${primaryColor};
 
-      width: 100%;
-      margin-top: 4px;
+    > div {
+      display: flex;
+      flex-direction: column;
+      align-items: baseline;
 
-      font-size: 18px;
-      color: #a8a8b3;
+      > strong {
+        width: 100%;
+
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      p {
+        font-weight: 600;
+
+        width: 80%;
+        margin-top: 8px;
+
+        font-size: 18px;
+        color: #a8a8b3;
+      }
+
+      .bar {
+        margin: 4px 0;
+        background: ${tertiaryColor};
+      }
+
+      span {
+        padding: 4px;
+
+        font-size: 18px;
+        color: ${transparentize(0.35, primaryColor)};
+
+        svg {
+          margin-right: 4px;
+          color: ${transparentize(0.35, primaryColor)};
+        }
+      }
     }
-
     &:hover {
       background: ${transparentize(0.00001, secondaryBackground)};
 
@@ -137,55 +174,6 @@ export const Main = styled.main`
       box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.75);
 
       transform: translateY(-8px);
-    }
-    > div {
-      display: flex;
-      flex-direction: row;
-
-      img {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        margin-right: 8px;
-        object-fit: cover;
-      }
-
-      strong {
-        min-width: 210px;
-
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: baseline;
-
-        font-size: 20px;
-        color: ${primaryColor};
-
-        span {
-          margin-top: 4px;
-
-          font-size: 18px;
-          color: ${transparentize(0.35, primaryColor)};
-
-          svg {
-            margin-right: 4px;
-            color: ${transparentize(0.35, primaryColor)};
-          }
-        }
-      }
-    }
-
-    @media ${device.laptopLL} {
-      height: auto;
-      flex-direction: column;
-
-      > div {
-        justify-content: center;
-        align-items: center;
-      }
-      p {
-        margin-top: 8px;
-      }
     }
   }
 `;
