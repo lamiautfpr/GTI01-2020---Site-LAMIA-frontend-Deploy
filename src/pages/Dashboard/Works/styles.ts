@@ -127,6 +127,7 @@ export const Main = styled.main`
     display: block;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     text-decoration: none;
 
     align-items: center;
@@ -153,7 +154,7 @@ export const Main = styled.main`
       p {
         font-weight: 600;
 
-        width: 80%;
+        width: 85%;
         margin-top: 8px;
 
         font-size: 18px;
@@ -166,13 +167,14 @@ export const Main = styled.main`
       }
 
       span {
+        display: flex;
+        align-items: center;
         padding: 4px;
 
         font-size: 18px;
         color: ${transparentize(0.35, primaryColor)};
 
         svg {
-          margin-right: 4px;
           color: ${transparentize(0.35, primaryColor)};
         }
       }

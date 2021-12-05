@@ -15,6 +15,7 @@ import {
   MdLink,
   MdQrCode,
   MdVisibility,
+  MdVisibilityOff,
 } from 'react-icons/md';
 import { Link, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -28,8 +29,8 @@ import { useToast } from '../../../hooks/Toast';
 import { newApi } from '../../../services/api';
 import AppError from '../../../utils/AppError';
 import getValidationErrors from '../../../utils/getValidationErrors';
-import { Container, Content, HeaderSection, Main, SelectPage } from './styles';
 import slugigy from '../../../utils/slugify';
+import { Container, Content, HeaderSection, Main, SelectPage } from './styles';
 
 interface IClassificationWorkProps {
   id: string;
@@ -99,28 +100,59 @@ const DashboardWorks: React.FC = () => {
           endDate: Yup.string().optional(),
           visible: Yup.boolean().required('Visualização obrigatório'),
 
-          members: Yup.array().min(1, 'Membros obrigatório'),
-          areaExpertise: Yup.array().min(1, 'Áreas de Atuação obrigatório'),
-          categories: Yup.array().min(1, 'Categorias obrigatório'),
-          types: Yup.array().min(1, 'Tipos obrigatório'),
+          members: Yup.array()
+            .of(Yup.string().uuid())
+            .min(1, 'Membros obrigatório'),
+          areaExpertise: Yup.array()
+            .of(Yup.string().uuid())
+            .min(1, 'Áreas de Atuação obrigatório'),
+          categories: Yup.array()
+            .of(Yup.string().uuid())
+            .min(1, 'Categorias obrigatório'),
+          types: Yup.array()
+            .of(Yup.string().uuid())
+            .min(1, 'Tipos obrigatório'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        // await newApi.post(`works`, data, {
-        //   headers: { authorization: `Bearer ${token}` },
-        // });
+        // TODO Refatorar
+        Object.keys(data).forEach((key) => {
+          if (data[key]?.length === 0) {
+            // eslint-disable-next-line no-param-reassign
+            delete data[key];
+          } else if (Array.isArray(data[key])) {
+            data[key] = data[key].map((item) => ({ id: item }));
+          }
+        });
+
+        const response = await newApi.post(`works`, data, {
+          headers: { authorization: `Bearer ${token}` },
+        });
+
+        if (paginationInfo?.currentPage === 1) {
+          setWorks((oldSate) => {
+            if (
+              paginationInfo?.totalItemsCurrentPage ===
+              paginationInfo?.itemsPerPage
+            ) {
+              return [response.data, ...oldSate.splice(-1, 1)];
+            }
+            return [response.data, ...oldSate];
+          });
+        }
 
         addToast({
           type: 'success',
           title: 'Cadastraado com sucesso!',
         });
 
-        formRef.current?.clearField('name');
-        formRef.current?.clearField('description');
+        formRef.current?.reset();
       } catch (err) {
+        console.log('TO AQUI DEU ERROR', err);
+
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
 
@@ -151,7 +183,7 @@ const DashboardWorks: React.FC = () => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, paginationInfo],
   );
 
   useEffect(() => {
@@ -314,18 +346,20 @@ const DashboardWorks: React.FC = () => {
               name="members"
               icon={MdGroups}
               placeholder="Membros"
-              getOptionLabel={(option) => option.name}
-              getOptionValue={(option) => option.id}
-              options={optionsForSelect.members}
+              options={optionsForSelect.members?.map((option) => ({
+                label: option.name,
+                value: option.id,
+              }))}
               isMulti
             />
             <Select
               name="areaExpertise"
               icon={MdCategory}
               placeholder="Área de atuação"
-              getOptionLabel={(option) => option.name}
-              getOptionValue={(option) => option.id}
-              options={optionsForSelect.areaExpertise}
+              options={optionsForSelect.areaExpertise?.map((option) => ({
+                label: option.name,
+                value: option.id,
+              }))}
               isMulti
             />
           </div>
@@ -334,18 +368,20 @@ const DashboardWorks: React.FC = () => {
               name="categories"
               icon={MdCategory}
               placeholder="Categorias"
-              getOptionLabel={(option) => option.name}
-              getOptionValue={(option) => option.id}
-              options={optionsForSelect.categories}
+              options={optionsForSelect.categories?.map((option) => ({
+                label: option.name,
+                value: option.id,
+              }))}
               isMulti
             />
             <Select
               name="types"
               icon={MdCategory}
               placeholder="Tipos"
-              getOptionLabel={(option) => option.name}
-              getOptionValue={(option) => option.id}
-              options={optionsForSelect.types}
+              options={optionsForSelect.types?.map((option) => ({
+                label: option.name,
+                value: option.id,
+              }))}
               isMulti
             />
           </div>
@@ -394,10 +430,28 @@ const DashboardWorks: React.FC = () => {
             <Link key={index} to={`/dashboard/works/:${work.slug}`}>
               <div>
                 <strong>{work.title}</strong>
+                <span>
+                  Está{' '}
+                  {work.visible ? (
+                    <>
+                      Visivel (<MdVisibility size={16} />)
+                    </>
+                  ) : (
+                    <>
+                      Oculto (<MdVisibilityOff size={16} />)
+                    </>
+                  )}{' '}
+                  ao Público
+                </span>
                 <p>{work.objective}</p>
               </div>
 
               <div>
+                <span>
+                  <strong>Data de Início:</strong>
+                  {work.startDate}
+                </span>
+                <div className="bar" />
                 <span>
                   <strong>Área de Atuação(ões):</strong>
                   {work.areaExpertise.map((a) => ` ${a.name};`)}
