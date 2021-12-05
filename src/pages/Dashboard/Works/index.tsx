@@ -11,10 +11,12 @@ import * as Yup from 'yup';
 import {
   MdArticle,
   MdCategory,
+  MdDescription,
   MdGroups,
   MdLink,
   MdQrCode,
   MdVisibility,
+  MdVisibilityOff,
 } from 'react-icons/md';
 import Button from '../../../components/Button';
 import Input from '../../../components/Input';
@@ -28,6 +30,7 @@ import getValidationErrors from '../../../utils/getValidationErrors';
 import { Container, Content, HeaderSection, Main, SelectPage } from './styles';
 import Select from '../../../components/Select';
 import { BsCalendar2DateFill } from 'react-icons/bs';
+import { BiTargetLock } from 'react-icons/bi';
 
 interface IClassificationWorkProps {
   id: string;
@@ -35,7 +38,7 @@ interface IClassificationWorkProps {
   description: string;
 }
 
-interface IWorkProps {
+interface IWorkProps extends ISelectItem {
   id: number;
   internalCode: string; //
   title: string; //
@@ -45,6 +48,9 @@ interface IWorkProps {
   startDate: Date; //
   endDate?: Date; //
   visible: boolean; //
+}
+
+interface ISelectItem {
   members: IMembersProps[];
   areaExpertise: IClassificationWorkProps[];
   categories: IClassificationWorkProps[];
@@ -70,6 +76,9 @@ const DashboardWorks: React.FC = () => {
 
   const [works, setWorks] = useState<IWorkProps[]>([]);
   const [paginationInfo, setPaginationInfo] = useState<IPaginationProps>();
+  const [optionsForSelect, setOptionsForSelect] = useState<ISelectItem>(
+    {} as ISelectItem,
+  );
 
   const handleSubmit = useCallback(
     async (data: Omit<IWorkProps, 'id' | 'quantityWorks'>) => {
@@ -131,7 +140,6 @@ const DashboardWorks: React.FC = () => {
   useEffect(() => {
     const locationPage = location.search.replace('?page=', '');
 
-    // eslint-disable-next-line radix
     const currentPage = parseInt(locationPage) || 1;
 
     newApi
@@ -157,9 +165,56 @@ const DashboardWorks: React.FC = () => {
           );
         }
 
-        console.log(pagination);
-
         setPaginationInfo({ ...pagination, butonsPage });
+      });
+
+    const requestParamsForSelectOptions = {
+      orderBy: 'name',
+      direction: 'ASC',
+    };
+
+    newApi
+      .get(`/works/areas-expertise`, {
+        params: { ...requestParamsForSelectOptions },
+      })
+      .then((response) => {
+        setOptionsForSelect((oldSate) => ({
+          ...oldSate,
+          areaExpertise: response.data,
+        }));
+      });
+
+    newApi
+      .get(`/works/categories`, {
+        params: { ...requestParamsForSelectOptions },
+      })
+      .then((response) => {
+        setOptionsForSelect((oldSate) => ({
+          ...oldSate,
+          categories: response.data,
+        }));
+      });
+
+    newApi
+      .get(`/works/types`, {
+        params: { ...requestParamsForSelectOptions },
+      })
+      .then((response) => {
+        setOptionsForSelect((oldSate) => ({
+          ...oldSate,
+          types: response.data,
+        }));
+      });
+
+    newApi
+      .get(`members`, {
+        params: { ...requestParamsForSelectOptions },
+      })
+      .then((response) => {
+        setOptionsForSelect((oldSate) => ({
+          ...oldSate,
+          members: response.data,
+        }));
       });
   }, [location.search]);
 
@@ -193,8 +248,8 @@ const DashboardWorks: React.FC = () => {
               icon={MdVisibility}
               placeholder="Para o público?"
               options={[
-                { value: 'true', label: 'Visível' },
-                { value: 'false', label: 'Oculto' },
+                { value: true, label: 'Visível' },
+                { value: false, label: 'Oculto' },
               ]}
             />
           </div>
@@ -240,14 +295,18 @@ const DashboardWorks: React.FC = () => {
               name="members"
               icon={MdGroups}
               placeholder="Membros"
-              options={[]}
+              getOptionLabel={(option) => option.name}
+              getOptionValue={(option) => option.id}
+              options={optionsForSelect.members}
               isMulti
             />
             <Select
-              name="types"
+              name="areaExpertise"
               icon={MdCategory}
               placeholder="Área de atuação"
-              options={[]}
+              getOptionLabel={(option) => option.name}
+              getOptionValue={(option) => option.id}
+              options={optionsForSelect.areaExpertise}
               isMulti
             />
           </div>
@@ -256,18 +315,23 @@ const DashboardWorks: React.FC = () => {
               name="categories"
               icon={MdCategory}
               placeholder="Categorias"
-              options={[]}
+              getOptionLabel={(option) => option.name}
+              getOptionValue={(option) => option.id}
+              options={optionsForSelect.categories}
               isMulti
             />
             <Select
               name="types"
               icon={MdCategory}
               placeholder="Tipos"
-              options={[]}
+              getOptionLabel={(option) => option.name}
+              getOptionValue={(option) => option.id}
+              options={optionsForSelect.types}
               isMulti
             />
           </div>
           <Textarea
+            icon={BiTargetLock}
             name="objective"
             placeholder="Qual foi o objetivo deste trabalho?"
           />

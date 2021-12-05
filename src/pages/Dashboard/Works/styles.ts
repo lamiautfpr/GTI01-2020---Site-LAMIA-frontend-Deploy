@@ -94,10 +94,10 @@ export const Content = styled.div`
         border-radius: 8px;
       }
 
-      div:nth-child(1) {
+      > div:nth-child(1) {
         margin-right: 12px;
       }
-      div:nth-child(2) {
+      > div:nth-child(2) {
         margin-left: 12px;
       }
     }
