@@ -4,33 +4,32 @@
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { BiTargetLock } from 'react-icons/bi';
+import { BsCalendar2DateFill } from 'react-icons/bs';
 import { FaGithub, FaMailBulk } from 'react-icons/fa';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { Link, useLocation } from 'react-router-dom';
-import * as Yup from 'yup';
 import {
   MdArticle,
   MdCategory,
-  MdDescription,
   MdGroups,
   MdLink,
   MdQrCode,
   MdVisibility,
-  MdVisibilityOff,
 } from 'react-icons/md';
+import { Link, useLocation } from 'react-router-dom';
+import * as Yup from 'yup';
 import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 import Textarea from '../../../components/Input/Textarea';
 import NavBarDashboard from '../../../components/NavBarDashboard';
+import Select from '../../../components/Select';
 import { IMembersProps, useAuth } from '../../../hooks/Auth';
 import { useToast } from '../../../hooks/Toast';
 import { newApi } from '../../../services/api';
 import AppError from '../../../utils/AppError';
 import getValidationErrors from '../../../utils/getValidationErrors';
 import { Container, Content, HeaderSection, Main, SelectPage } from './styles';
-import Select from '../../../components/Select';
-import { BsCalendar2DateFill } from 'react-icons/bs';
-import { BiTargetLock } from 'react-icons/bi';
+import slugigy from '../../../utils/slugify';
 
 interface IClassificationWorkProps {
   id: string;
@@ -75,17 +74,35 @@ const DashboardWorks: React.FC = () => {
   const location = useLocation();
 
   const [works, setWorks] = useState<IWorkProps[]>([]);
+  const [slug, setSlug] = useState<string | undefined>();
   const [paginationInfo, setPaginationInfo] = useState<IPaginationProps>();
   const [optionsForSelect, setOptionsForSelect] = useState<ISelectItem>(
     {} as ISelectItem,
   );
 
+  const createSlug = useCallback((title: string) => {
+    setSlug(slugigy(title));
+  }, []);
+
   const handleSubmit = useCallback(
-    async (data: Omit<IWorkProps, 'id' | 'quantityWorks'>) => {
+    async (data: Omit<IWorkProps, 'id'>) => {
+      console.log(data);
+
       try {
         const schema = Yup.object().shape({
-          name: Yup.string().required('Nome obrigatório'),
-          description: Yup.string().required('Descrição obrigatório'),
+          internalCode: Yup.string().required('Código interno obrigatório'),
+          title: Yup.string().required('Título obrigatório'),
+          slug: Yup.string().required('Slug obrigatório'),
+          objective: Yup.string().optional(),
+          github: Yup.string().optional(),
+          startDate: Yup.string().required('Data de Início obrigatório'),
+          endDate: Yup.string().optional(),
+          visible: Yup.boolean().required('Visualização obrigatório'),
+
+          members: Yup.array().min(1, 'Membros obrigatório'),
+          areaExpertise: Yup.array().min(1, 'Áreas de Atuação obrigatório'),
+          categories: Yup.array().min(1, 'Categorias obrigatório'),
+          types: Yup.array().min(1, 'Tipos obrigatório'),
         });
 
         await schema.validate(data, {
@@ -258,12 +275,14 @@ const DashboardWorks: React.FC = () => {
             name="title"
             type="text"
             placeholder="Titulo do Trabalho"
+            onChange={(e) => createSlug(e.target.value)}
           />
           <Input
             icon={MdLink}
             name="slug"
             type="text"
             placeholder="Slug do Trabalho"
+            value={slug}
             disabled
           />
           <div className="form-group">
