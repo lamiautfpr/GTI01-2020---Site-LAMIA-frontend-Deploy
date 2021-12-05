@@ -3,8 +3,6 @@ import { FaChevronRight, FaMailBulk, FaMedal } from 'react-icons/fa';
 import { MdKeyboardArrowDown, MdKeyboardArrowLeft } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { OptionTypeBase } from 'react-select';
-//
-import { ImageProps } from '../../../myTypes/Images';
 import imgMemberDefault from '../../assets/imgDefault/member.jpg';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';

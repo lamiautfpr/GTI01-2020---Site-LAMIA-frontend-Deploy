@@ -1,10 +1,8 @@
 import { transparentize } from 'polished';
 import styled, { css } from 'styled-components';
-import { device } from '../../../styles/device';
 import {
   primaryColor,
   secondaryBackground,
-  secondaryColor,
   tertiaryColor,
   titleColor,
 } from '../../../styles/paletsColorers';

@@ -4,17 +4,15 @@
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { FaGithub, FaMailBulk, FaUserNinja } from 'react-icons/fa';
+import { FaGithub, FaMailBulk } from 'react-icons/fa';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { Link, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
 import {
   MdArticle,
   MdCategory,
-  MdGroupAdd,
   MdGroups,
   MdLink,
-  MdOutlineDateRange,
   MdQrCode,
   MdVisibility,
 } from 'react-icons/md';
@@ -30,7 +28,6 @@ import getValidationErrors from '../../../utils/getValidationErrors';
 import { Container, Content, HeaderSection, Main, SelectPage } from './styles';
 import Select from '../../../components/Select';
 import { BsCalendar2DateFill } from 'react-icons/bs';
-import SelectBox from '../../../components/SelectBox';
 
 interface IClassificationWorkProps {
   id: string;

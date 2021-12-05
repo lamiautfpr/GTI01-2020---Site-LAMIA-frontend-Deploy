@@ -1,5 +1,4 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
-import { ImageProps } from '../../myTypes/Images';
 import { newApi } from '../services/api';
 import { useToast } from './Toast';
 

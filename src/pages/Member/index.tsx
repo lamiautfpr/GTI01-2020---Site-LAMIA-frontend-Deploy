@@ -1,31 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import {
-  FaLinkedinIn,
   FaEnvelope,
-  FaGithubSquare,
-  FaRegCalendarAlt,
   FaGithub,
-  FaRegClipboard,
+  FaGithubSquare,
+  FaLinkedinIn,
   FaListUl,
   FaMedal,
+  FaRegCalendarAlt,
+  FaRegClipboard,
 } from 'react-icons/fa';
+import { Link, useRouteMatch } from 'react-router-dom';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
-
-import api, { newApi } from '../../services/api';
-
 import iconLattes from '../../assets/icons/lattes.svg';
 import imgMemberDefault from '../../assets/imgDefault/member.jpg';
 import imgWorkDefault from '../../assets/imgDefault/work1.png';
-
 import imgDoubt from '../../assets/imgWarning/doubt.jpg';
 import imgTraining from '../../assets/imgWarning/training.gif';
-
-import { Main, Headline, Title, Shelf, Card, CardWarning } from './style';
+import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
-import Footer from '../../components/Footer';
 import { IMembersProps } from '../../hooks/Auth';
+import { newApi } from '../../services/api';
+import { Card, CardWarning, Headline, Main, Shelf, Title } from './style';
 
 interface MembersParams {
   login: string;
