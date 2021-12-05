@@ -5,7 +5,7 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FaListUl, FaMailBulk } from 'react-icons/fa';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import Button from '../../../components/Button';
 import Input from '../../../components/Input';
@@ -18,7 +18,7 @@ import AppError from '../../../utils/AppError';
 import getValidationErrors from '../../../utils/getValidationErrors';
 import { Container, Content, HeaderSection, Main } from './styles';
 
-interface IAreasExpertiseProps {
+interface ITypesProps {
   id: number;
   name: string;
   description?: string | null;
@@ -32,20 +32,16 @@ const Page = {
   page: 'types',
 };
 
-const DashboardMembers: React.FC = () => {
-  const history = useHistory();
-
+const DashboardTypes: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { token } = useAuth();
   const { addToast } = useToast();
 
-  const [expertiseAreas, setExpertiseAreas] = useState<IAreasExpertiseProps[]>(
-    [],
-  );
+  const [types, setTypes] = useState<ITypesProps[]>([]);
 
   const handleSubmit = useCallback(
-    async (data: Omit<IAreasExpertiseProps, 'id' | 'quantityWorks'>) => {
+    async (data: Omit<ITypesProps, 'id' | 'quantityWorks'>) => {
       try {
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
@@ -60,13 +56,13 @@ const DashboardMembers: React.FC = () => {
           headers: { authorization: `Bearer ${token}` },
         });
 
-        setExpertiseAreas((oldState) => [
+        setTypes((oldState) => [
           ...oldState,
           {
             name: data.name,
             description: data.description,
             quantityWorks: 0,
-          } as IAreasExpertiseProps,
+          } as ITypesProps,
         ]);
         addToast({
           type: 'success',
@@ -106,7 +102,7 @@ const DashboardMembers: React.FC = () => {
         });
       }
     },
-    [addToast, history, token],
+    [addToast, token],
   );
 
   useEffect(() => {
@@ -117,7 +113,7 @@ const DashboardMembers: React.FC = () => {
         },
       })
       .then((response) => {
-        return setExpertiseAreas(
+        return setTypes(
           response.data.map((area) => ({
             ...area,
             quantityWorks: area.works ? area.works.length : 0,
@@ -162,21 +158,21 @@ const DashboardMembers: React.FC = () => {
             Lista de {Page.title}
             <div className="bar" />
           </header>
-          {expertiseAreas?.map((expertiseArea, index) => (
+          {types?.map((typeWork, index) => (
             <Link
               key={index}
-              to={`/dashboard/expertise-areas/:${expertiseArea.name}`}
+              to={`/dashboard/expertise-areas/:${typeWork.name}`}
             >
               <div>
                 <strong>
-                  {expertiseArea.name}
+                  {typeWork.name}
                   <span>
                     <FaMailBulk size={14} />
-                    Total de Trabalhos: {expertiseArea.quantityWorks}
+                    Total de Trabalhos: {typeWork.quantityWorks}
                   </span>
                 </strong>
               </div>
-              <p>{expertiseArea.description}</p>
+              <p>{typeWork.description}</p>
             </Link>
           ))}
         </Main>
@@ -185,4 +181,4 @@ const DashboardMembers: React.FC = () => {
   );
 };
 
-export default DashboardMembers;
+export default DashboardTypes;

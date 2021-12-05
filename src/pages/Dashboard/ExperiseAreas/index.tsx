@@ -5,7 +5,7 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FaListUl, FaMailBulk } from 'react-icons/fa';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import { imageAreaExpertises as imageDefault } from '../../../assets/dataStatistic';
 import Button from '../../../components/Button';
@@ -20,7 +20,7 @@ import getValidationErrors from '../../../utils/getValidationErrors';
 import imgDefault from '../../../assets/imgDefault/work2.png';
 import { Container, Content, HeaderSection, Main } from './styles';
 
-interface IAreasExpertiseProps {
+interface IExpertiseAreasProps {
   id: number;
   name: string;
   description?: string | null;
@@ -34,20 +34,18 @@ const Page = {
   page: 'expertise-areas',
 };
 
-const DashboardMembers: React.FC = () => {
-  const history = useHistory();
-
+const DashboardExpertiseAreas: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { token } = useAuth();
   const { addToast } = useToast();
 
-  const [expertiseAreas, setExpertiseAreas] = useState<IAreasExpertiseProps[]>(
+  const [expertiseAreas, setExpertiseAreas] = useState<IExpertiseAreasProps[]>(
     [],
   );
 
   const handleSubmit = useCallback(
-    async (data: Omit<IAreasExpertiseProps, 'id' | 'quantityWorks'>) => {
+    async (data: Omit<IExpertiseAreasProps, 'id' | 'quantityWorks'>) => {
       try {
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
@@ -68,7 +66,7 @@ const DashboardMembers: React.FC = () => {
             name: data.name,
             description: data.description,
             quantityWorks: 0,
-          } as IAreasExpertiseProps,
+          } as IExpertiseAreasProps,
         ]);
         addToast({
           type: 'success',
@@ -108,7 +106,7 @@ const DashboardMembers: React.FC = () => {
         });
       }
     },
-    [addToast, history, token],
+    [addToast, token],
   );
 
   useEffect(() => {
@@ -191,4 +189,4 @@ const DashboardMembers: React.FC = () => {
   );
 };
 
-export default DashboardMembers;
+export default DashboardExpertiseAreas;
