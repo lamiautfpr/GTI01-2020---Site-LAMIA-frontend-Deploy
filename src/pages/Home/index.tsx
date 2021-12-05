@@ -179,7 +179,9 @@ const Home: React.FC = () => {
                     <h2>{work.title}</h2>
                   </header>
                   <p>
-                    {work.objective.length <= 130
+                    {!work.objective
+                      ? 'Estamos preparando a melhor texto para este trabalho...'
+                      : work.objective.length <= 130
                       ? work.objective
                       : `${work.objective?.slice(0, 130)}...`}
                   </p>
