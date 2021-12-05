@@ -85,10 +85,23 @@ export const Content = styled.div`
     margin-bottom: 40px;
 
     .input-form,
-    > div {
+    .textarea-form {
       -webkit-box-shadow: 0px 0px 2px 0px rgba(138, 138, 138, 1);
       -moz-box-shadow: 0px 0px 2px 0px rgba(138, 138, 138, 1);
       box-shadow: 0px 0px 2px 0px rgba(138, 138, 138, 1);
+    }
+
+    .form-group {
+      > div > div {
+        border-radius: 8px;
+      }
+
+      div:nth-child(1) {
+        margin-right: 12px;
+      }
+      div:nth-child(2) {
+        margin-left: 12px;
+      }
     }
   }
 `;

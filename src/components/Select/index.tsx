@@ -11,7 +11,7 @@ import { IconBaseProps } from 'react-icons';
 import { Container, Content, Error } from './style';
 import { primaryColor, secondaryColor } from '../../styles/paletsColorers';
 
-interface Props extends CreatableProps<OptionTypeBase> {
+interface Props extends CreatableProps<OptionTypeBase, true> {
   name: string;
   icon?: React.ComponentType<IconBaseProps>;
 }

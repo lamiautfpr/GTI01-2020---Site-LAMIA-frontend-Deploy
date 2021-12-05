@@ -54,6 +54,7 @@ const Textarea: React.FC<ITextareaProps> = ({
 
   return (
     <Container
+      className="textarea-form"
       width={width}
       isFormGroup={isFormGroup}
       isErrored={!!error}

@@ -4,10 +4,20 @@
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { FaMailBulk } from 'react-icons/fa';
+import { FaGithub, FaMailBulk, FaUserNinja } from 'react-icons/fa';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { Link, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
+import {
+  MdArticle,
+  MdCategory,
+  MdGroupAdd,
+  MdGroups,
+  MdLink,
+  MdOutlineDateRange,
+  MdQrCode,
+  MdVisibility,
+} from 'react-icons/md';
 import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 import Textarea from '../../../components/Input/Textarea';
@@ -18,6 +28,9 @@ import { newApi } from '../../../services/api';
 import AppError from '../../../utils/AppError';
 import getValidationErrors from '../../../utils/getValidationErrors';
 import { Container, Content, HeaderSection, Main, SelectPage } from './styles';
+import Select from '../../../components/Select';
+import { BsCalendar2DateFill } from 'react-icons/bs';
+import SelectBox from '../../../components/SelectBox';
 
 interface IClassificationWorkProps {
   id: string;
@@ -27,14 +40,14 @@ interface IClassificationWorkProps {
 
 interface IWorkProps {
   id: number;
-  internalCode: string;
-  title: string;
-  slug: string;
-  objective?: string;
+  internalCode: string; //
+  title: string; //
+  slug: string; //
+  objective?: string; //
   github?: string;
-  startDate: Date;
-  endDate?: Date;
-  visible: boolean;
+  startDate: Date; //
+  endDate?: Date; //
+  visible: boolean; //
   members: IMembersProps[];
   areaExpertise: IClassificationWorkProps[];
   categories: IClassificationWorkProps[];
@@ -163,27 +176,110 @@ const DashboardWorks: React.FC = () => {
             <div className="bar" />
           </div>
         </HeaderSection>
-        {/* <Form ref={formRef} onSubmit={handleSubmit}>
+        <Form ref={formRef} onSubmit={handleSubmit}>
           <header>
             <div>
-              Casdastrar Novo
+              Casdastrar
               <div className="bar" />
             </div>
           </header>
+          <div className="form-group">
+            <Input
+              icon={MdQrCode}
+              name="internalCode"
+              type="text"
+              placeholder="Código interno"
+              isFormGroup
+            />
+            <Select
+              name="visible"
+              icon={MdVisibility}
+              placeholder="Para o público?"
+              options={[
+                { value: 'true', label: 'Visível' },
+                { value: 'false', label: 'Oculto' },
+              ]}
+            />
+          </div>
           <Input
-            icon={FaMailBulk}
-            name="name"
+            icon={MdArticle}
+            name="title"
             type="text"
-            placeholder="Nome da nova Área de Atuação"
-            isFormGroup
+            placeholder="Titulo do Trabalho"
           />
-          <Textarea name="description" placeholder="" />
+          <Input
+            icon={MdLink}
+            name="slug"
+            type="text"
+            placeholder="Slug do Trabalho"
+            disabled
+          />
+          <div className="form-group">
+            <Input
+              icon={BsCalendar2DateFill}
+              name="startDate"
+              type="text"
+              placeholder="Data de Início"
+              isFormGroup
+            />
+            <Input
+              icon={BsCalendar2DateFill}
+              name="endDate"
+              type="text"
+              placeholder="Data de Término"
+              isFormGroup
+            />
+          </div>
+          <Input
+            icon={FaGithub}
+            name="gitHub"
+            type="text"
+            placeholder="lamiautfpr/GTI01-2020---Site-LAMIA"
+          >
+            https://github.com/
+          </Input>
+          <div className="form-group">
+            <Select
+              name="members"
+              icon={MdGroups}
+              placeholder="Membros"
+              options={[]}
+              isMulti
+            />
+            <Select
+              name="types"
+              icon={MdCategory}
+              placeholder="Área de atuação"
+              options={[]}
+              isMulti
+            />
+          </div>
+          <div className="form-group">
+            <Select
+              name="categories"
+              icon={MdCategory}
+              placeholder="Categorias"
+              options={[]}
+              isMulti
+            />
+            <Select
+              name="types"
+              icon={MdCategory}
+              placeholder="Tipos"
+              options={[]}
+              isMulti
+            />
+          </div>
+          <Textarea
+            name="objective"
+            placeholder="Qual foi o objetivo deste trabalho?"
+          />
 
           <Button width="320px" type="submit">
             Salvar Trabalho
             <FaMailBulk size={24} />
           </Button>
-        </Form> */}
+        </Form>
 
         <Main>
           <header>

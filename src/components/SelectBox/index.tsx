@@ -11,7 +11,7 @@ import { SelectItem } from '../../../myTypes/SelectItem';
 interface SelectBoxProps {
   options: SelectItem[];
   placeholder?: string;
-  label: string;
+  label?: string;
   isMulti?: boolean;
   width?: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,7 +52,7 @@ const SelectBox: React.FC<SelectBoxProps> = ({
 
   return (
     <>
-      <Label>{label}</Label>
+      {label && <Label>{label}</Label>}
       <Container
         components={animatedComponents}
         closeMenuOnSelect={!isMulti}
