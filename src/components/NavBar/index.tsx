@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
@@ -10,24 +10,26 @@ interface IMenuBurgerProps {
 }
 
 const NavBar: React.FC<IMenuBurgerProps> = ({ page }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isUsedNewAPI, _] = useState<boolean>(
+    !!process.env.REACT_APP_NEW_API_FLAG,
+  );
+
   return (
     <Nav>
       <ul>
         <NavItem active={page === 'home'}>
           <Link to="/">Home</Link>
           <ul className="DropDraw">
-            <NavItem>
-              <HashLink smooth to="/#Statistics">
-                Linhas de Códigos Produzidas
-              </HashLink>
-            </NavItem>
-            <li>
-              <NavItem>
-                <HashLink smooth to="/#News">
-                  Notícias
-                </HashLink>
-              </NavItem>
-            </li>
+            {!isUsedNewAPI && (
+              <li>
+                <NavItem>
+                  <HashLink smooth to="/#News">
+                    Notícias
+                  </HashLink>
+                </NavItem>
+              </li>
+            )}
             <NavItem>
               <HashLink smooth to="/#Mission">
                 Missão
@@ -39,15 +41,22 @@ const NavBar: React.FC<IMenuBurgerProps> = ({ page }) => {
               </HashLink>
             </NavItem>
             <NavItem>
+              <HashLink smooth to="/#Statistics">
+                Linhas de Códigos Produzidas
+              </HashLink>
+            </NavItem>
+            <NavItem>
               <HashLink smooth to="/#AreasExpertise">
                 Áreas de Atuação
               </HashLink>
             </NavItem>
-            <NavItem>
-              <HashLink smooth to="/#Partners">
-                Parceiros
-              </HashLink>
-            </NavItem>
+            {!isUsedNewAPI && (
+              <NavItem>
+                <HashLink smooth to="/#Partners">
+                  Parceiros
+                </HashLink>
+              </NavItem>
+            )}
             <NavItem>
               <HashLink smooth to="/#Advisors">
                 Orientadores

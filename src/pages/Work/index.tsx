@@ -8,22 +8,17 @@ import {
 } from 'react-icons/fa';
 import { GiBookshelf } from 'react-icons/gi';
 import Carousel, { Modal, ModalGateway } from 'react-images';
+import ReactMarkdown from 'react-markdown';
 import Gallery from 'react-photo-gallery';
 import { Link, useRouteMatch } from 'react-router-dom';
-
-import ReactMarkdown from 'react-markdown';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
-import api from '../../services/api';
-
 import imgMemberDefault from '../../assets/imgDefault/member.jpg';
 import imgWorkDefault from '../../assets/imgDefault/work1.png';
-
 import imgDemand from '../../assets/imgWarning/demand.gif';
-
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
-
+import { newApi } from '../../services/api';
 import {
   Aside,
   CardWarning,
@@ -31,14 +26,14 @@ import {
   HeaderSection,
   HeadTitle,
   Main,
+  Participant,
   SectionColumn,
   SectionText,
   ShelfGallery,
-  Participant,
 } from './style';
 
 interface WorkParams {
-  id: string;
+  slug: string;
 }
 
 const ProjectView: React.FC = () => {
@@ -53,11 +48,21 @@ const ProjectView: React.FC = () => {
   const [work, setWork] = useState<WorkListProps | null>(null);
 
   useEffect(() => {
-    api.get(`work/${params.id}`).then((response) => {
-      setWork(response.data);
+    newApi.get(`works/${params.slug}`).then((response) => {
+      setWork({
+        ...response.data,
+        worksMember: response.data.members.map((member) => ({
+          responsibility: 'Membro',
+          memberData: {
+            name: member.name,
+            login: member.login,
+            avatar: member.avatar,
+          },
+        })),
+      });
       setGetApi(true);
     });
-  }, [params.id]);
+  }, [params.slug]);
 
   const openLightbox = useCallback((event, { index }) => {
     setCurrentImage(index);
@@ -87,7 +92,7 @@ const ProjectView: React.FC = () => {
                   <div>
                     <img
                       src={
-                        work.pictures.length > 0
+                        work.pictures?.length > 0
                           ? work.pictures[0].src
                           : imgWorkDefault
                       }
@@ -121,15 +126,13 @@ const ProjectView: React.FC = () => {
                         {work.types.length > 0 && (
                           <span>
                             <FaRegClipboard />
-                            {work.types.map((type) => `${type.label}; `)}
+                            {work.types.map((type) => `${type.name}; `)}
                           </span>
                         )}
                         {work.areaExpertise.length > 0 && (
                           <span>
                             <FaListUl />
-                            {work.areaExpertise.map(
-                              (area) => `${area.label}; `,
-                            )}
+                            {work.areaExpertise.map((area) => `${area.name}; `)}
                           </span>
                         )}
                       </div>
@@ -148,7 +151,7 @@ const ProjectView: React.FC = () => {
                         )}
                         <div className="box">
                           <FaRegCalendarAlt />
-                          <p>{work.dateBegin}</p>
+                          <p>{work.startDate}</p>
                         </div>
                       </section>
                     </Aside>
@@ -167,7 +170,7 @@ const ProjectView: React.FC = () => {
                                 <img
                                   src={
                                     memberData.avatar
-                                      ? memberData.avatar.src
+                                      ? memberData.avatar
                                       : imgMemberDefault
                                   }
                                   alt={memberData.name}
@@ -184,7 +187,7 @@ const ProjectView: React.FC = () => {
                         seja um parceiro
                       </a>
                       <div>
-                        {work.partners.map((partner) => (
+                        {work.partners?.map((partner) => (
                           <Participant title={partner.name} key={partner.id}>
                             <a href={partner.linkPage || '#'} target="_blank">
                               <img
@@ -203,7 +206,7 @@ const ProjectView: React.FC = () => {
                   </div>
                 </SectionColumn>
               </Content>
-              {work.pictures.length > 0 && (
+              {work.pictures?.length > 0 && (
                 <>
                   <HeaderSection>Galeria</HeaderSection>
                   <ShelfGallery>

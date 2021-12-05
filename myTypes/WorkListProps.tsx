@@ -1,10 +1,9 @@
-import { SelectItem } from './SelectItem';
 import { ImageProps } from './Images';
 
 interface MemberProps {
   name: string;
   login: string;
-  avatar: ImageProps | null;
+  avatar: string | null;
 }
 
 interface WorksMemberProps {
@@ -30,17 +29,25 @@ interface PartnerProps {
   linkPage: string | null;
 }
 
+interface IWorksFilters {
+  id: string;
+  name: string;
+  description?: string;
+}
+
 export interface WorkListProps {
+  slug: string;
   id: number;
   title: string;
   objective: string;
   abstractCard: string | null;
   categories: CategoryProps[];
-  types: SelectItem[];
-  areaExpertise: SelectItem[];
+  types: IWorksFilters[];
+  areaExpertise: IWorksFilters[];
   worksMember: WorksMemberProps[];
   partners: PartnerProps[];
-  dateBegin: Date;
+  startDate: Date;
+  endDate: Date;
   pictures: ImageProps[];
   urlGithub?: string;
 }

@@ -1,21 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
-
-import { Link } from 'react-router-dom';
-import { FaMedal, FaChevronRight, FaMailBulk } from 'react-icons/fa';
-
-import { OptionTypeBase } from 'react-select';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FaChevronRight, FaMailBulk, FaMedal } from 'react-icons/fa';
 import { MdKeyboardArrowDown, MdKeyboardArrowLeft } from 'react-icons/md';
-import api from '../../services/api';
-
+import { Link } from 'react-router-dom';
+import { OptionTypeBase } from 'react-select';
 import imgMemberDefault from '../../assets/imgDefault/member.jpg';
-//
-import { ImageProps } from '../../../myTypes/Images';
-import {} from '../../utils/orderArray';
-
-import { Main, Projects, Section } from './style';
+import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
-import Footer from '../../components/Footer';
+import { newApi } from '../../services/api';
+import { Main, Projects, Section } from './style';
 
 export const listOrder = [
   { value: 0, description: null, label: 'A-Z' },
@@ -30,34 +23,40 @@ interface MembersListProps {
   name: string;
   email: string;
   description: string;
-  avatar?: ImageProps;
+  avatar?: string;
 }
 
-interface OfficesProps extends OptionTypeBase {
+interface PatentsProps extends OptionTypeBase {
   isOpen?: boolean;
   description: string | null;
   members: MembersListProps[];
 }
 
 const ListProjects: React.FC = () => {
-  const [offices, setOffices] = useState<OfficesProps[]>([]);
+  const [patents, setPatents] = useState<PatentsProps[]>([]);
 
   const handleOffice = useCallback(
     (index) => {
-      const office = offices[index];
+      const office = patents[index];
 
       office.isOpen = !office.isOpen;
-      setOffices([...offices, (offices[index] = office)]);
-      setOffices(offices.filter((_, i) => i !== offices.length));
+      setPatents([...patents, (patents[index] = office)]);
+      setPatents(patents.filter((_, i) => i !== patents.length));
     },
-    [offices],
+    [patents],
   );
 
   // Functions for get list works
   useEffect(() => {
-    api.get(`members/`).then((response) => {
-      setOffices(response.data);
-    });
+    newApi
+      .get(`members/patents`, {
+        params: {
+          orderBy: 'createAt',
+        },
+      })
+      .then((response) => {
+        setPatents(response.data);
+      });
   }, []);
 
   return (
@@ -67,9 +66,9 @@ const ListProjects: React.FC = () => {
       <NavBar page="members" />
 
       <Main>
-        {offices.map((office, index) => (
+        {patents.map((office, index) => (
           <Section
-            key={office.value}
+            key={`${index}`}
             isOpen={!!office.isOpen}
             height={office.members.length}
           >
@@ -88,9 +87,9 @@ const ListProjects: React.FC = () => {
             </header>
             <Projects>
               {office.members.map((member) => (
-                <Link to={`/${member.login}`}>
+                <Link key={member.login} to={`/${member.login}`}>
                   <img
-                    src={member.avatar ? member.avatar.src : imgMemberDefault}
+                    src={member.avatar ? member.avatar : imgMemberDefault}
                     alt={member.name}
                   />
 

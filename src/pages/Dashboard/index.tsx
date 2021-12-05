@@ -1,33 +1,31 @@
-import React, { useRef, useCallback, ChangeEvent } from 'react';
-import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
-import * as Yup from 'yup';
-import { MdLock, MdMail } from 'react-icons/md';
+import { Form } from '@unform/web';
+import React, { ChangeEvent, useCallback, useRef } from 'react';
 import {
   FaCamera,
-  FaUserNinja,
   FaGithub,
   FaLinkedinIn,
   FaUserGraduate,
+  FaUserNinja,
   FaUserTie,
 } from 'react-icons/fa';
-import { useAuth, IMembersProps } from '../../hooks/Auth';
-import { useToast } from '../../hooks/Toast';
-import getValidationErrors from '../../utils/getValidationErrors';
-import NavBarDashboard from '../../components/NavBarDashboard';
+import { MdLock, MdMail } from 'react-icons/md';
+import * as Yup from 'yup';
+import imgMemberDefault from '../../assets/imgDefault/member.jpg';
+import Button from '../../components/Button';
 import Input from '../../components/Input';
 import Textarea from '../../components/Input/Textarea';
-import Button from '../../components/Button';
-import api from '../../services/api';
-
-import imgMemberDefault from '../../assets/imgDefault/member.jpg';
-
-import { Container, Content, HeaderSection } from './styles';
+import NavBarDashboard from '../../components/NavBarDashboard';
+import { IMembersProps, useAuth } from '../../hooks/Auth';
+import { useToast } from '../../hooks/Toast';
+import { newApi } from '../../services/api';
 import AppError from '../../utils/AppError';
+import getValidationErrors from '../../utils/getValidationErrors';
+import { Container, Content, HeaderSection } from './styles';
 
-interface IMemberFormProps extends IMembersProps {
+interface IMemberFormProps extends Omit<IMembersProps, 'avatar'> {
   oldPassword?: string;
-  password?: string;
+  newPassword?: string;
   confirmPassword?: string;
 }
 
@@ -36,6 +34,7 @@ const Dashboard: React.FC = () => {
   const { member, token, updateMember } = useAuth();
   const { addToast } = useToast();
 
+  // TODO: Add login on the update
   const handleSubmit = useCallback(
     async (data: IMemberFormProps) => {
       try {
@@ -43,16 +42,16 @@ const Dashboard: React.FC = () => {
 
         const shema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
-          quoteName: Yup.string().required('Nome de citação obrigatório'),
-          description: Yup.string(),
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('Digite um e-maio valido'),
-          gitHub: Yup.string(),
           linkedin: Yup.string(),
+          gitHub: Yup.string(),
           lattes: Yup.string(),
+          quoteName: Yup.string().required('Nome de citação obrigatório'),
+          description: Yup.string(),
           oldPassword: Yup.string(),
-          password: Yup.string().when('oldPassword', {
+          newPassword: Yup.string().when('oldPassword', {
             is: (val) => !!val.length,
             then: Yup.string().min(
               8,
@@ -70,7 +69,7 @@ const Dashboard: React.FC = () => {
               otherwise: Yup.string(),
             })
             .oneOf(
-              [Yup.ref('password'), ''],
+              [Yup.ref('newPassword'), ''],
               'Duas senhas diferentes, qual devo salvar?',
             ),
         });
@@ -81,38 +80,25 @@ const Dashboard: React.FC = () => {
 
         if (
           data.oldPassword?.length === 0 &&
-          (data.password?.length !== 0 || data.confirmPassword?.length !== 0)
+          (data.newPassword?.length !== 0 || data.confirmPassword?.length !== 0)
         ) {
           throw new AppError(
             'Para atualizar a senha é preciso confirmar a senha atual!',
           );
         }
 
-        if (data.linkedin?.length === 0) {
-          // eslint-disable-next-line no-param-reassign
-          data.linkedin = null;
-        }
+        // TODO Refatorar
+        Object.keys(data).forEach((key) => {
+          if (data[key]?.length === 0) {
+            // eslint-disable-next-line no-param-reassign
+            delete data[key];
+          }
+        });
 
-        if (data.gitHub?.length === 0) {
-          // eslint-disable-next-line no-param-reassign
-          data.gitHub = null;
-        }
-
-        if (data.lattes?.length === 0) {
-          // eslint-disable-next-line no-param-reassign
-          data.lattes = null;
-        }
-
-        if (data.oldPassword?.length === 0 && data.password?.length === 0) {
-          // eslint-disable-next-line no-param-reassign
-          delete data.oldPassword;
-          // eslint-disable-next-line no-param-reassign
-          delete data.password;
-        }
-
-        const response = await api.put('/members', data, {
+        const response = await newApi.put('/members', data, {
           headers: { authorization: `Bearer ${token}` },
         });
+
         updateMember(response.data);
         addToast({
           type: 'success',
@@ -120,7 +106,7 @@ const Dashboard: React.FC = () => {
         });
 
         formRef.current?.clearField('oldPassword');
-        formRef.current?.clearField('password');
+        formRef.current?.clearField('newPassword');
         formRef.current?.clearField('confirmPassword');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -129,6 +115,7 @@ const Dashboard: React.FC = () => {
           formRef.current?.setErrors(errors);
           return;
         }
+
         if (err instanceof AppError) {
           addToast({
             type: 'error',
@@ -137,11 +124,23 @@ const Dashboard: React.FC = () => {
           });
           return;
         }
+
         if (err.response.status === 401) {
           addToast({
             type: 'error',
             title: 'Dados inválidos',
             description: err.response.data.error,
+          });
+          return;
+        }
+
+        if (err.response.status === 400) {
+          console.log(err.response.data);
+
+          addToast({
+            type: 'error',
+            title: 'Dados inválidos',
+            description: err.response.data.errors,
           });
           return;
         }
@@ -163,8 +162,8 @@ const Dashboard: React.FC = () => {
 
         data.append('avatar', e.target.files[0]);
 
-        api
-          .patch('/members', data, {
+        newApi
+          .patch('/members/avatar', data, {
             headers: { authorization: `Bearer ${token}` },
           })
           .then((response) => {
@@ -197,7 +196,7 @@ const Dashboard: React.FC = () => {
           <section>
             <div className="img">
               <img
-                src={member.avatar ? member.avatar.src : imgMemberDefault}
+                src={member.avatar ? member.avatar : imgMemberDefault}
                 alt="Json Doe"
               />
               <label htmlFor="avatar">
@@ -252,6 +251,7 @@ const Dashboard: React.FC = () => {
             http://lattes.cnpq.br/
           </Input>
 
+          {/* TODO: ATAULIZAR Layload - area de senha */}
           <div className="form-group password">
             <Input
               icon={MdLock}
@@ -262,7 +262,7 @@ const Dashboard: React.FC = () => {
             />
             <Input
               icon={MdLock}
-              name="password"
+              name="newPassword"
               type="password"
               placeholder="Nova Senha"
               isFormGroup

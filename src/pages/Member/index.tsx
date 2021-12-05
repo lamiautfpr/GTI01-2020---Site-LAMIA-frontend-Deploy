@@ -1,43 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import {
-  FaLinkedinIn,
   FaEnvelope,
-  FaGithubSquare,
-  FaRegCalendarAlt,
   FaGithub,
-  FaRegClipboard,
+  FaGithubSquare,
+  FaLinkedinIn,
   FaListUl,
   FaMedal,
+  FaRegCalendarAlt,
+  FaRegClipboard,
 } from 'react-icons/fa';
+import { Link, useRouteMatch } from 'react-router-dom';
 import { WorkListProps } from '../../../myTypes/WorkListProps';
-
-import api from '../../services/api';
-
 import iconLattes from '../../assets/icons/lattes.svg';
 import imgMemberDefault from '../../assets/imgDefault/member.jpg';
 import imgWorkDefault from '../../assets/imgDefault/work1.png';
-
 import imgDoubt from '../../assets/imgWarning/doubt.jpg';
 import imgTraining from '../../assets/imgWarning/training.gif';
-
-import { Main, Headline, Title, Shelf, Card, CardWarning } from './style';
+import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
-import Footer from '../../components/Footer';
 import { IMembersProps } from '../../hooks/Auth';
+import { newApi } from '../../services/api';
+import { Card, CardWarning, Headline, Main, Shelf, Title } from './style';
 
 interface MembersParams {
   login: string;
 }
 
-interface WorkMemberProps {
-  scholarship: boolean;
-  workData: WorkListProps;
-}
-
 interface MembersPageProps extends IMembersProps {
-  works: WorkMemberProps[];
+  works: WorkListProps[];
 }
 
 const Member: React.FC = () => {
@@ -47,7 +38,7 @@ const Member: React.FC = () => {
   const [member, setMember] = useState<MembersPageProps | null>(null);
 
   useEffect(() => {
-    api.get<MembersPageProps>(`${params.login}`).then((response) => {
+    newApi.get<MembersPageProps>(`members/${params.login}`).then((response) => {
       setMember(response.data);
       setGetApi(true);
     });
@@ -73,7 +64,7 @@ const Member: React.FC = () => {
                     <div className="icons">
                       <div className="office">
                         <FaMedal size={21} />
-                        <span>{member.office.label}</span>
+                        <span>{member.patent.name}</span>
                       </div>
                       {member.gitHub && (
                         <a
@@ -117,7 +108,7 @@ const Member: React.FC = () => {
               <div className="imgBorde">
                 <div>
                   <img
-                    src={member.avatar ? member.avatar.src : imgMemberDefault}
+                    src={member.avatar ? member.avatar : imgMemberDefault}
                     alt={member.name}
                   />
                 </div>
@@ -131,77 +122,79 @@ const Member: React.FC = () => {
             </Title>
             {member.works.length > 0 ? (
               <Shelf>
-                {member.works.map(({ workData }) => (
-                  <Card key={workData.id}>
-                    <img
-                      src={
-                        workData.pictures.length > 0
-                          ? workData.pictures[0].src
-                          : imgWorkDefault
-                      }
-                      alt="Capa do Projeto"
-                    />
-                    {/* <div className="imgCase" /> */}
-                    <div className="bookContainer">
-                      <div className="content">
-                        <Link to={`/work/${workData.id}`}>
-                          <button type="button"> Saiba mais </button>
-                        </Link>
+                {member.works.map((workData) => {
+                  return (
+                    <Card key={workData.id}>
+                      <img
+                        src={
+                          workData.pictures?.length > 0
+                            ? workData.pictures[0].src
+                            : imgWorkDefault
+                        }
+                        alt="Capa do Projeto"
+                      />
+                      {/* <div className="imgCase" /> */}
+                      <div className="bookContainer">
+                        <div className="content">
+                          <Link to={`/work/${workData.slug}`}>
+                            <button type="button"> Saiba mais </button>
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                    <div className="informationContainer">
-                      <h2 className="title">
-                        {workData.title.length <= 25
-                          ? workData.title
-                          : `${workData.title.slice(0, 25)}...`}
-                      </h2>
-                      <div className="primaryInformation">
-                        {workData.areaExpertise.length > 0 && (
-                          <span>
-                            <FaListUl size={16} />
-                            {workData.areaExpertise.map(
-                              (area) => `${area.label}; `,
-                            )}
-                          </span>
-                        )}
-                        {workData.types.length > 0 && (
-                          <span>
-                            <FaRegClipboard size={16} />
-                            {workData.types.map((type) => `${type.label}; `)}
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="moreInformation">
-                        <div className="infoDateContainer">
-                          {workData.urlGithub && (
-                            <a
-                              href={workData.urlGithub}
-                              target="bank"
-                              className="box git"
-                            >
-                              <FaGithub size={24} />
-                              <p>Repositório</p>
-                            </a>
+                      <div className="informationContainer">
+                        <h2 className="title">
+                          {workData.title.length <= 25
+                            ? workData.title
+                            : `${workData.title.slice(0, 25)}...`}
+                        </h2>
+                        <div className="primaryInformation">
+                          {workData.areaExpertise.length > 0 && (
+                            <span>
+                              <FaListUl size={16} />
+                              {workData.areaExpertise.map(
+                                (area) => `${area.name}; `,
+                              )}
+                            </span>
                           )}
+                          {workData.types.length > 0 && (
+                            <span>
+                              <FaRegClipboard size={16} />
+                              {workData.types.map((type) => `${type.name}; `)}
+                            </span>
+                          )}
+                        </div>
 
-                          <div className="box Date">
-                            <FaRegCalendarAlt size={24} />
-                            <p>{workData.dateBegin}</p>
+                        <div className="moreInformation">
+                          <div className="infoDateContainer">
+                            {workData.urlGithub && (
+                              <a
+                                href={workData.urlGithub}
+                                target="bank"
+                                className="box git"
+                              >
+                                <FaGithub size={24} />
+                                <p>Repositório</p>
+                              </a>
+                            )}
+
+                            <div className="box Date">
+                              <FaRegCalendarAlt size={24} />
+                              <p>{workData.startDate}</p>
+                            </div>
+                          </div>
+                          <div className="objective">
+                            <p>
+                              {`${workData.objective?.slice(0, 80)}`}
+                              {workData.objective &&
+                                workData.objective.length > 80 &&
+                                '...'}
+                            </p>
                           </div>
                         </div>
-                        <div className="objective">
-                          <p>
-                            {`${workData.objective?.slice(0, 80)}`}
-                            {workData.objective &&
-                              workData.objective.length > 80 &&
-                              '...'}
-                          </p>
-                        </div>
                       </div>
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  );
+                })}
               </Shelf>
             ) : (
               <CardWarning>

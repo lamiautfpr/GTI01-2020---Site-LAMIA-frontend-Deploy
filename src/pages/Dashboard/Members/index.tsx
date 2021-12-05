@@ -26,7 +26,7 @@ import NavBarDashboard from '../../../components/NavBarDashboard';
 import Select from '../../../components/Select';
 import { useAuth } from '../../../hooks/Auth';
 import { useToast } from '../../../hooks/Toast';
-import api from '../../../services/api';
+import { newApi } from '../../../services/api';
 import AppError from '../../../utils/AppError';
 import getValidationErrors from '../../../utils/getValidationErrors';
 // import imgMemberDefault from '../../../assets/imgDefault/member.jpg';
@@ -43,7 +43,7 @@ interface MemberFormProps {
   login: string;
   name: string;
   email: string;
-  office_id: number;
+  patentId: string;
 }
 
 interface MembersListProps {
@@ -55,7 +55,9 @@ interface MembersListProps {
   avatar?: ImageProps;
 }
 
-interface OfficesProps extends OptionTypeBase {
+interface PatentsProps extends OptionTypeBase {
+  id?: string;
+  name: string;
   isOpen?: boolean;
   description: string | null;
   members: MembersListProps[];
@@ -69,13 +71,14 @@ interface MemberEditableProps {
   login: string;
   name: string;
   email: string;
-  office_id: OfficesProps;
-  office: string;
+  patentId: string;
+  patent: PatentsProps;
 }
 
 interface MemberResetPassword {
   id: string;
   name: string;
+  login: string;
 }
 
 const DashboardMembers: React.FC = () => {
@@ -87,7 +90,7 @@ const DashboardMembers: React.FC = () => {
   const { token } = useAuth();
   const { addToast } = useToast();
 
-  const [offices, setOffices] = useState<OfficesProps[]>([]);
+  const [patents, setPatents] = useState<PatentsProps[]>([]);
   const [editable, setEditable] = useState(false);
   const [isvisibleModal, setIsvisibleModal] = useState(false);
   const [
@@ -109,12 +112,11 @@ const DashboardMembers: React.FC = () => {
       try {
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
-          login: Yup.string().required('Login obrigatório'),
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('Digite um e-maio valido'),
           // eslint-disable-next-line @typescript-eslint/camelcase
-          office_id: Yup.number().required('Patente obrigatória'),
+          patentId: Yup.string().required('Patente obrigatória'),
         });
 
         await schema.validate(data, {
@@ -122,17 +124,25 @@ const DashboardMembers: React.FC = () => {
         });
 
         if (params.login) {
-          if (data.office_id === member?.office_id.value) {
+          console.log(member);
+
+          if (data.patentId === member?.patentId) {
             return;
           }
 
-          const response = await api.patch('/members/office', data, {
-            headers: { authorization: `Bearer ${token}` },
-          });
+          const response = await newApi.patch(
+            `/members/${params.login}/patent`,
+            {
+              newPatentId: data.patentId,
+            },
+            {
+              headers: { authorization: `Bearer ${token}` },
+            },
+          );
 
-          setOffices((old) => {
+          setPatents((old) => {
             const officeRemoveMember = old.find(
-              (state) => state.id === member?.office_id.value,
+              (state) => state.id === member?.patentId,
             );
 
             if (officeRemoveMember) {
@@ -141,7 +151,7 @@ const DashboardMembers: React.FC = () => {
               );
 
               const officeAddMember = old.find(
-                (state) => state.id === response.data.office_id,
+                (state) => state.id === response.data.patent.id,
               );
 
               if (officeAddMember) {
@@ -169,19 +179,19 @@ const DashboardMembers: React.FC = () => {
             email: response.data.email,
             login: params.login,
             // eslint-disable-next-line @typescript-eslint/camelcase
-            office_id: response.data.office,
-            office: response.data.office.label,
+            patentId: response.data.patent.id,
+            patent: response.data.patent,
           });
 
           setEditable(false);
         } else {
-          const response = await api.post('/members', data, {
+          const response = await newApi.post('/members', data, {
             headers: { authorization: `Bearer ${token}` },
           });
 
-          setOffices((old) => {
+          setPatents((old) => {
             const office = old.find(
-              (state) => state.id === response.data.office_id,
+              (state) => state.id === response.data.patent.id,
             );
 
             if (office) {
@@ -234,18 +244,18 @@ const DashboardMembers: React.FC = () => {
     [addToast, editable, history, member, params.login, token],
   );
 
-  const handleOffice = useCallback(
+  const handlePatent = useCallback(
     (index) => {
-      const office = offices[index];
+      const office = patents[index];
 
       office.isOpen = !office.isOpen;
-      setOffices(
-        [...offices, (offices[index] = office)].filter(
-          (_, i) => i !== offices.length,
+      setPatents(
+        [...patents, (patents[index] = office)].filter(
+          (_, i) => i !== patents.length,
         ),
       );
     },
-    [offices],
+    [patents],
   );
 
   const openModal = useCallback((data: MemberResetPassword) => {
@@ -259,16 +269,16 @@ const DashboardMembers: React.FC = () => {
   }, []);
 
   const handleResetPassword = useCallback(
-    (id?: string) => {
-      if (!id) {
+    (login?: string) => {
+      if (!login) {
         setMemberResetPassword(null);
         setIsvisibleModal(false);
         return;
       }
 
-      api
+      newApi
         .patch(
-          `/members/reset-password/${id}`,
+          `/auth/reset-password/${login}`,
           {},
           {
             headers: { authorization: `Bearer ${token}` },
@@ -280,10 +290,11 @@ const DashboardMembers: React.FC = () => {
             title: 'Senha resetada!',
           });
         })
-        .catch(() => {
+        .catch((error) => {
           addToast({
             type: 'error',
             title: 'Erro ao resetar a senha!',
+            description: error.response.data.errors,
           });
         });
 
@@ -294,23 +305,35 @@ const DashboardMembers: React.FC = () => {
   );
 
   useEffect(() => {
-    api.get(`members/`).then((response) => {
-      setOffices(response.data);
-    });
+    newApi
+      .get(`members/patents`, {
+        params: {
+          orderBy: 'createAt',
+        },
+      })
+      .then((response) => {
+        setPatents(
+          response.data.map((patent) => ({
+            ...patent,
+            label: patent.name,
+            value: patent.id,
+          })),
+        );
+      });
   }, []);
 
   useEffect(() => {
     formRef.current?.setErrors({});
 
     if (params.login) {
-      api.get(`${params.login}`).then((response) => {
+      newApi.get(`members/${params.login}`).then((response) => {
         setMember({
           name: response.data.name,
           email: response.data.email,
           login: params.login,
           // eslint-disable-next-line @typescript-eslint/camelcase
-          office_id: response.data.office,
-          office: response.data.office.label,
+          patentId: response.data.patent.id,
+          patent: response.data.patent,
         });
       });
       setEditable(false);
@@ -331,7 +354,8 @@ const DashboardMembers: React.FC = () => {
         </HeaderSection>
         <Form ref={formRef} onSubmit={handleSubmit} initialData={member}>
           <header>
-            Novo Integrante
+            {!params.login ? 'Casdastrar Novo ' : `Editar `}
+            Integrante
             <div className="bar" />
           </header>
           <div className="form-group">
@@ -344,16 +368,17 @@ const DashboardMembers: React.FC = () => {
               disabled={!!member}
               value={member?.name}
             />
-
-            <Input
-              icon={FaUserNinja}
-              name="login"
-              type="text"
-              placeholder="Login do novo integrante"
-              isFormGroup
-              disabled={!!member}
-              value={member?.login}
-            />
+            {!!process.env.REACT_APP_NEW_API_FLAG && (
+              <Input
+                icon={FaUserNinja}
+                name="login"
+                type="text"
+                placeholder="Login do novo integrante"
+                isFormGroup
+                disabled={!!member}
+                value={member?.login}
+              />
+            )}
           </div>
           <Input
             icon={MdMail}
@@ -370,15 +395,15 @@ const DashboardMembers: React.FC = () => {
               type="text"
               placeholder="Selecione a Patente!"
               disabled
-              value={member?.office}
+              value={member?.patent.name}
             />
           ) : (
             <Select
-              name="office_id"
+              name="patentId"
               icon={FaMedal}
               placeholder="Selecione a Patente!"
-              options={offices}
-              defaultValue={member?.office_id || null}
+              options={patents}
+              defaultValue={member?.patent || null}
             />
           )}
 
@@ -388,27 +413,27 @@ const DashboardMembers: React.FC = () => {
           </Button>
         </Form>
 
-        {offices.map((office, index) => (
+        {patents.map((patent, index) => (
           <Section
-            key={office.value}
-            isOpen={!!office.isOpen}
-            height={office.members.length}
+            key={patent.name}
+            isOpen={!!patent.isOpen}
+            height={patent.members.length}
           >
-            <header onClick={() => handleOffice(index)}>
+            <header onClick={() => handlePatent(index)}>
               <div>
                 <FaMedal size={28} />
-                <h2>{office.label}</h2>
+                <h2>{patent.label}</h2>
                 <div className="bar" />
-                {office.isOpen ? (
+                {patent.isOpen ? (
                   <MdKeyboardArrowDown size={28} />
                 ) : (
                   <MdKeyboardArrowLeft size={28} />
                 )}
               </div>
-              <p>{office.description}</p>
+              <p>{patent.description}</p>
             </header>
             <Projects>
-              {office.members.map((memberList) => (
+              {patent.members.map((memberList) => (
                 <Link
                   key={memberList.login}
                   to={`/dashboard/members/${memberList.login}`}
@@ -435,6 +460,7 @@ const DashboardMembers: React.FC = () => {
                         openModal({
                           id: `${memberList.id}`,
                           name: memberList.name,
+                          login: memberList.login,
                         })
                       }
                     >
@@ -472,7 +498,7 @@ const DashboardMembers: React.FC = () => {
               <Button
                 type="button"
                 background="#2e656a"
-                onClick={() => handleResetPassword(memberResetPassword?.id)}
+                onClick={() => handleResetPassword(memberResetPassword?.login)}
               >
                 SIM
               </Button>

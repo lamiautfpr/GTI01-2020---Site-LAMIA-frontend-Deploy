@@ -1,5 +1,5 @@
 export interface SelectItem {
-  value: number;
+  value: string;
   label: string;
   description: string | null;
 }

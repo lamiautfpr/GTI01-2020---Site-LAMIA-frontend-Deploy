@@ -1,0 +1,510 @@
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { FormHandles } from '@unform/core';
+import { Form } from '@unform/web';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { BiTargetLock } from 'react-icons/bi';
+import { BsCalendar2DateFill } from 'react-icons/bs';
+import { FaGithub, FaMailBulk } from 'react-icons/fa';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import {
+  MdArticle,
+  MdCategory,
+  MdGroups,
+  MdLink,
+  MdQrCode,
+  MdVisibility,
+  MdVisibilityOff,
+} from 'react-icons/md';
+import { Link, useLocation } from 'react-router-dom';
+import * as Yup from 'yup';
+import Button from '../../../components/Button';
+import Input from '../../../components/Input';
+import Textarea from '../../../components/Input/Textarea';
+import NavBarDashboard from '../../../components/NavBarDashboard';
+import Select from '../../../components/Select';
+import { IMembersProps, useAuth } from '../../../hooks/Auth';
+import { useToast } from '../../../hooks/Toast';
+import { newApi } from '../../../services/api';
+import AppError from '../../../utils/AppError';
+import getValidationErrors from '../../../utils/getValidationErrors';
+import slugigy from '../../../utils/slugify';
+import { Container, Content, HeaderSection, Main, SelectPage } from './styles';
+
+interface IClassificationWorkProps {
+  id: string;
+  name: string;
+  description: string;
+}
+
+interface IWorkProps extends ISelectItem {
+  id: number;
+  internalCode: string; //
+  title: string; //
+  slug: string; //
+  objective?: string; //
+  github?: string;
+  startDate: Date; //
+  endDate?: Date; //
+  visible: boolean; //
+}
+
+interface ISelectItem {
+  members: IMembersProps[];
+  areaExpertise: IClassificationWorkProps[];
+  categories: IClassificationWorkProps[];
+  types: IClassificationWorkProps[];
+}
+
+interface IPaginationProps {
+  currentPage: number;
+  totalPages: number;
+  itemsPerPage: string;
+  totalItems: number;
+  totalItemsCurrentPage: string;
+  butonsPage: React.FC[];
+}
+
+const DashboardWorks: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { token } = useAuth();
+  const { addToast } = useToast();
+
+  const location = useLocation();
+
+  const [works, setWorks] = useState<IWorkProps[]>([]);
+  const [slug, setSlug] = useState<string | undefined>();
+  const [paginationInfo, setPaginationInfo] = useState<IPaginationProps>();
+  const [optionsForSelect, setOptionsForSelect] = useState<ISelectItem>(
+    {} as ISelectItem,
+  );
+
+  const createSlug = useCallback((title: string) => {
+    setSlug(slugigy(title));
+  }, []);
+
+  const handleSubmit = useCallback(
+    async (data: Omit<IWorkProps, 'id'>) => {
+      console.log(data);
+
+      try {
+        const schema = Yup.object().shape({
+          internalCode: Yup.string().required('Código interno obrigatório'),
+          title: Yup.string().required('Título obrigatório'),
+          slug: Yup.string().required('Slug obrigatório'),
+          objective: Yup.string().optional(),
+          github: Yup.string().optional(),
+          startDate: Yup.string().required('Data de Início obrigatório'),
+          endDate: Yup.string().optional(),
+          visible: Yup.boolean().required('Visualização obrigatório'),
+
+          members: Yup.array()
+            .of(Yup.string().uuid())
+            .min(1, 'Membros obrigatório'),
+          areaExpertise: Yup.array()
+            .of(Yup.string().uuid())
+            .min(1, 'Áreas de Atuação obrigatório'),
+          categories: Yup.array()
+            .of(Yup.string().uuid())
+            .min(1, 'Categorias obrigatório'),
+          types: Yup.array()
+            .of(Yup.string().uuid())
+            .min(1, 'Tipos obrigatório'),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        // TODO Refatorar
+        Object.keys(data).forEach((key) => {
+          if (data[key]?.length === 0) {
+            // eslint-disable-next-line no-param-reassign
+            delete data[key];
+          } else if (Array.isArray(data[key])) {
+            data[key] = data[key].map((item) => ({ id: item }));
+          }
+        });
+
+        const response = await newApi.post(`works`, data, {
+          headers: { authorization: `Bearer ${token}` },
+        });
+
+        if (paginationInfo?.currentPage === 1) {
+          setWorks((oldSate) => {
+            if (
+              paginationInfo?.totalItemsCurrentPage ===
+              paginationInfo?.itemsPerPage
+            ) {
+              return [response.data, ...oldSate.splice(-1, 1)];
+            }
+            return [response.data, ...oldSate];
+          });
+        }
+
+        addToast({
+          type: 'success',
+          title: 'Cadastraado com sucesso!',
+        });
+
+        formRef.current?.reset();
+      } catch (err) {
+        console.log('TO AQUI DEU ERROR', err);
+
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+
+          formRef.current?.setErrors(errors);
+          return;
+        }
+        if (err instanceof AppError) {
+          addToast({
+            type: 'error',
+            title: 'Erro ao cadastrar novo membro',
+            description: err.mensagem,
+          });
+          return;
+        }
+        if (err.response.status) {
+          addToast({
+            type: 'error',
+            title: 'O Back-end retornou um erro',
+            description: err.response.data.errors,
+          });
+          return;
+        }
+        addToast({
+          type: 'error',
+          title: 'Internal Server ERROR',
+          description:
+            'Tente mais tarde! Caso erro persista entre em contato com o suporte :D',
+        });
+      }
+    },
+    [addToast, token, paginationInfo],
+  );
+
+  useEffect(() => {
+    const locationPage = location.search.replace('?page=', '');
+
+    const currentPage = parseInt(locationPage) || 1;
+
+    newApi
+      .get(`works`, {
+        params: {
+          orderBy: 'createAt',
+          direction: 'DESC',
+          perPage: 3,
+          page: currentPage,
+        },
+      })
+      .then((response) => {
+        const { works: workService, pagination } = response.data;
+        setWorks(workService);
+
+        const butonsPage = [] as any;
+
+        for (let p = 1; p <= pagination.totalPages; p++) {
+          butonsPage.push(
+            <li>
+              <Link to={`/dashboard/works?page=${p}`}>{p}</Link>
+            </li>,
+          );
+        }
+
+        setPaginationInfo({ ...pagination, butonsPage });
+      });
+
+    const requestParamsForSelectOptions = {
+      orderBy: 'name',
+      direction: 'ASC',
+    };
+
+    newApi
+      .get(`/works/areas-expertise`, {
+        params: { ...requestParamsForSelectOptions },
+      })
+      .then((response) => {
+        setOptionsForSelect((oldSate) => ({
+          ...oldSate,
+          areaExpertise: response.data,
+        }));
+      });
+
+    newApi
+      .get(`/works/categories`, {
+        params: { ...requestParamsForSelectOptions },
+      })
+      .then((response) => {
+        setOptionsForSelect((oldSate) => ({
+          ...oldSate,
+          categories: response.data,
+        }));
+      });
+
+    newApi
+      .get(`/works/types`, {
+        params: { ...requestParamsForSelectOptions },
+      })
+      .then((response) => {
+        setOptionsForSelect((oldSate) => ({
+          ...oldSate,
+          types: response.data,
+        }));
+      });
+
+    newApi
+      .get(`members`, {
+        params: { ...requestParamsForSelectOptions },
+      })
+      .then((response) => {
+        setOptionsForSelect((oldSate) => ({
+          ...oldSate,
+          members: response.data,
+        }));
+      });
+  }, [location.search]);
+
+  return (
+    <Container>
+      <NavBarDashboard page="works" />
+      <Content>
+        <HeaderSection>
+          <div>
+            <h2> Trabalhos </h2>
+            <div className="bar" />
+          </div>
+        </HeaderSection>
+        <Form ref={formRef} onSubmit={handleSubmit}>
+          <header>
+            <div>
+              Casdastrar
+              <div className="bar" />
+            </div>
+          </header>
+          <div className="form-group">
+            <Input
+              icon={MdQrCode}
+              name="internalCode"
+              type="text"
+              placeholder="Código interno"
+              isFormGroup
+            />
+            <Select
+              name="visible"
+              icon={MdVisibility}
+              placeholder="Para o público?"
+              options={[
+                { value: true, label: 'Visível' },
+                { value: false, label: 'Oculto' },
+              ]}
+            />
+          </div>
+          <Input
+            icon={MdArticle}
+            name="title"
+            type="text"
+            placeholder="Titulo do Trabalho"
+            onChange={(e) => createSlug(e.target.value)}
+          />
+          <Input
+            icon={MdLink}
+            name="slug"
+            type="text"
+            placeholder="Slug do Trabalho"
+            value={slug}
+            disabled
+          />
+          <div className="form-group">
+            <Input
+              icon={BsCalendar2DateFill}
+              name="startDate"
+              type="text"
+              placeholder="Data de Início"
+              isFormGroup
+            />
+            <Input
+              icon={BsCalendar2DateFill}
+              name="endDate"
+              type="text"
+              placeholder="Data de Término"
+              isFormGroup
+            />
+          </div>
+          <Input
+            icon={FaGithub}
+            name="gitHub"
+            type="text"
+            placeholder="lamiautfpr/GTI01-2020---Site-LAMIA"
+          >
+            https://github.com/
+          </Input>
+          <div className="form-group">
+            <Select
+              name="members"
+              icon={MdGroups}
+              placeholder="Membros"
+              options={optionsForSelect.members?.map((option) => ({
+                label: option.name,
+                value: option.id,
+              }))}
+              isMulti
+            />
+            <Select
+              name="areaExpertise"
+              icon={MdCategory}
+              placeholder="Área de atuação"
+              options={optionsForSelect.areaExpertise?.map((option) => ({
+                label: option.name,
+                value: option.id,
+              }))}
+              isMulti
+            />
+          </div>
+          <div className="form-group">
+            <Select
+              name="categories"
+              icon={MdCategory}
+              placeholder="Categorias"
+              options={optionsForSelect.categories?.map((option) => ({
+                label: option.name,
+                value: option.id,
+              }))}
+              isMulti
+            />
+            <Select
+              name="types"
+              icon={MdCategory}
+              placeholder="Tipos"
+              options={optionsForSelect.types?.map((option) => ({
+                label: option.name,
+                value: option.id,
+              }))}
+              isMulti
+            />
+          </div>
+          <Textarea
+            icon={BiTargetLock}
+            name="objective"
+            placeholder="Qual foi o objetivo deste trabalho?"
+          />
+
+          <Button width="320px" type="submit">
+            Salvar Trabalho
+            <FaMailBulk size={24} />
+          </Button>
+        </Form>
+
+        <Main>
+          <header>
+            <div>
+              Listar
+              <div className="bar" />
+            </div>
+            <aside>
+              <section>
+                <div>
+                  <strong>Página Atual: </strong>
+                  {paginationInfo?.currentPage}
+                </div>
+                <div>
+                  <strong>Trabalhos nessa página: </strong>
+                  {paginationInfo?.totalItemsCurrentPage}
+                </div>
+              </section>
+              <section>
+                <div>
+                  <strong>Total de Página: </strong>
+                  {paginationInfo?.totalPages}
+                </div>
+                <div>
+                  <strong>Total de Trabalho: </strong>
+                  {paginationInfo?.totalItems}
+                </div>
+              </section>
+            </aside>
+          </header>
+          {works?.map((work, index) => (
+            <Link key={index} to={`/dashboard/works/:${work.slug}`}>
+              <div>
+                <strong>{work.title}</strong>
+                <span>
+                  Está{' '}
+                  {work.visible ? (
+                    <>
+                      Visivel (<MdVisibility size={16} />)
+                    </>
+                  ) : (
+                    <>
+                      Oculto (<MdVisibilityOff size={16} />)
+                    </>
+                  )}{' '}
+                  ao Público
+                </span>
+                <p>{work.objective}</p>
+              </div>
+
+              <div>
+                <span>
+                  <strong>Data de Início:</strong>
+                  {work.startDate}
+                </span>
+                <div className="bar" />
+                <span>
+                  <strong>Área de Atuação(ões):</strong>
+                  {work.areaExpertise.map((a) => ` ${a.name};`)}
+                </span>
+                <div className="bar" />
+                <span>
+                  <strong>Categoria(s):</strong>
+                  {work.categories.map((c) => ` ${c.name};`)}
+                </span>
+                <div className="bar" />
+                <span>Tipo(s):{work.types.map((t) => ` ${t.name};`)}</span>
+                <div className="bar" />
+                <span>
+                  <strong>Integrantes (Login):</strong>
+                  {work.members.map((m) => ` ${m.login};`)}
+                </span>
+              </div>
+            </Link>
+          ))}
+
+          <footer>
+            <SelectPage currentPage={paginationInfo?.currentPage || 1}>
+              <ul>
+                {paginationInfo?.currentPage !== 1 && (
+                  <li>
+                    <Link
+                      to={`/dashboard/works?page=${
+                        (paginationInfo?.currentPage || 1) - 1
+                      }`}
+                    >
+                      <IoIosArrowBack size={24} />
+                    </Link>
+                  </li>
+                )}
+                {paginationInfo?.butonsPage}
+                {paginationInfo?.currentPage !== paginationInfo?.totalPages && (
+                  <li>
+                    <Link
+                      to={`/dashboard/works?page=${
+                        (paginationInfo?.currentPage || 1) + 1
+                      }`}
+                    >
+                      <IoIosArrowForward size={24} />
+                    </Link>
+                  </li>
+                )}
+              </ul>
+            </SelectPage>
+          </footer>
+        </Main>
+      </Content>
+    </Container>
+  );
+};
+
+export default DashboardWorks;

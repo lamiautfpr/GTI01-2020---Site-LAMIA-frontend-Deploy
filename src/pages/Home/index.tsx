@@ -5,7 +5,6 @@ import { GoGitBranch, GoGitCommit, GoRepo, GoStar } from 'react-icons/go';
 import ReactMarkdown from 'react-markdown';
 import { Link } from 'react-router-dom';
 import { ImageProps } from '../../../myTypes/Images';
-import { WorkListProps } from '../../../myTypes/WorkListProps';
 import { imageAreaExpertises, mission } from '../../assets/dataStatistic';
 import imgTeacherDefault from '../../assets/imgDefault/teacher.png';
 import imgWorkDefault from '../../assets/imgDefault/work1.png';
@@ -17,7 +16,7 @@ import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
 import Slider from '../../components/Slider';
-import api from '../../services/api';
+import api, { newApi } from '../../services/api';
 import {
   CardWarning,
   HeaderSection,
@@ -25,18 +24,11 @@ import {
   SectionCards,
   SectionColumn,
   SectionLine,
-  SectionVip,
   SectionNews,
+  SectionVip,
 } from './style';
 
-interface StatisticsProps {
-  countRepositories: number;
-  countCommits: number;
-  countBranches: number;
-  countStars: number;
-}
-
-interface AreasExpertiseProps {
+interface IAreasExpertiseProps {
   id: number;
   name: string;
   description?: string | null;
@@ -49,8 +41,7 @@ interface PartnerProps {
   linkPage?: string | null;
 }
 
-interface AdvisorsProps {
-  id: number;
+interface IAdvisorsProps {
   name: string;
   description: string;
   avatar: ImageProps;
@@ -66,45 +57,63 @@ interface NewsProps {
   pictures: ImageProps[];
 }
 
+interface IWorkListProps {
+  slug: string;
+  title: string;
+  objective: string;
+  coverUrl: string;
+}
+
 const Home: React.FC = () => {
-  const [areaExpertises, setAreaExpertises] = useState<AreasExpertiseProps[]>(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isUsedNewAPI, _] = useState<boolean>(
+    !!process.env.REACT_APP_NEW_API_FLAG,
+  );
+
+  const [areaExpertises, setAreaExpertises] = useState<IAreasExpertiseProps[]>(
     [],
   );
 
   const [partners, setPartners] = useState<PartnerProps[]>([]);
 
-  const [lastWork, setLastWork] = useState<WorkListProps[]>([]);
+  const [lastWork, setLastWork] = useState<IWorkListProps[]>([]);
 
-  const [advisors, setAdvisors] = useState<AdvisorsProps[]>([]);
+  const [advisors, setAdvisors] = useState<IAdvisorsProps[]>([]);
   const [news, setNews] = useState<NewsProps[]>([]);
 
   useEffect(() => {
-    api.get<AreasExpertiseProps[]>(`area-expertises`).then((response) => {
-      setAreaExpertises(response.data);
-    });
-
-    api.get<PartnerProps[]>(`partners`).then((response) => {
-      setPartners(response.data);
-    });
-
-    api
-      .get<WorkListProps[]>(`last-work`, {
+    newApi
+      .get(`/works`, {
         params: {
-          limit: 3,
+          orderBy: 'createAt',
+          direction: 'DESC',
+          perPage: 3,
         },
       })
       .then((response) => {
-        setLastWork(response.data);
+        setLastWork(response.data.works);
       });
 
-    api.get<AdvisorsProps[]>(`members/Orientador`).then((response) => {
-      setAdvisors(response.data);
+    newApi
+      .get<IAreasExpertiseProps[]>(`/works/areas-expertise`)
+      .then((response) => {
+        setAreaExpertises(response.data);
+      });
+
+    newApi.get(`members/patents/Orientador`).then((response) => {
+      setAdvisors(response.data.members);
     });
 
-    api.get(`news`).then((response) => {
-      setNews(response.data.news);
-    });
-  }, []);
+    if (!isUsedNewAPI) {
+      api.get<PartnerProps[]>(`partners`).then((response) => {
+        setPartners(response.data);
+      });
+
+      api.get(`news`).then((response) => {
+        setNews(response.data.news);
+      });
+    }
+  }, [isUsedNewAPI]);
 
   return (
     <>
@@ -113,34 +122,38 @@ const Home: React.FC = () => {
       <NavBar page="home" />
 
       <Main>
-        <SectionNews title="News" id="News">
-          <HeaderSection>
-            <h2>Notícias</h2>
-          </HeaderSection>
-          <Slider className="slider-news">
-            {news.map((n) => (
-              <div className="slider-news-item" key={n.id}>
-                <div>
-                  <img src={n.coverUrl} alt={n.title} />
-                  <div>
-                    <h2>{n.title}</h2>
-                    <p>{n.content.split('\\n')[0]}</p>
+        {!isUsedNewAPI && (
+          <>
+            <SectionNews title="News" id="News">
+              <HeaderSection>
+                <h2>Notícias</h2>
+              </HeaderSection>
+              <Slider className="slider-news">
+                {news.map((n) => (
+                  <div className="slider-news-item" key={n.id}>
+                    <div>
+                      <img src={n.coverUrl} alt={n.title} />
+                      <div>
+                        <h2>{n.title}</h2>
+                        <p>{n.content.split('\\n')[0]}</p>
+                      </div>
+                    </div>
+                    <Link to={`news/${n.id}`}>
+                      Todas Notícias
+                      <BsChevronDoubleRight />
+                    </Link>
                   </div>
-                </div>
-                <Link to={`news/${n.id}`}>
-                  Todas Notícias
-                  <BsChevronDoubleRight />
-                </Link>
-              </div>
-            ))}
-          </Slider>
+                ))}
+              </Slider>
 
-          <Link to="/news">
-            Mais Noticias
-            <BsChevronDoubleDown />
-          </Link>
-        </SectionNews>
-        <hr />
+              <Link to="/news">
+                Mais Noticias
+                <BsChevronDoubleDown />
+              </Link>
+            </SectionNews>
+            <hr />
+          </>
+        )}
         <SectionLine id="Mission">
           <HeaderSection>
             <h2>História e Missão</h2>
@@ -160,24 +173,15 @@ const Home: React.FC = () => {
           {lastWork.length > 0 ? (
             <div>
               {lastWork.map((work) => (
-                <Link to={`/work/${work.id}`} key={work.id}>
-                  <img
-                    src={
-                      work.pictures?.length > 0
-                        ? work.pictures[0].src
-                        : imgWorkDefault
-                    }
-                    alt={
-                      work.pictures.length > 0
-                        ? work.pictures[0].name
-                        : 'Capa do Projeto'
-                    }
-                  />
+                <Link to={`/work/${work.slug}`} key={work.slug}>
+                  <img src={work.coverUrl || imgWorkDefault} alt={work.title} />
                   <header>
                     <h2>{work.title}</h2>
                   </header>
                   <p>
-                    {work.objective.length <= 130
+                    {!work.objective
+                      ? 'Estamos preparando a melhor texto para este trabalho...'
+                      : work.objective.length <= 130
                       ? work.objective
                       : `${work.objective?.slice(0, 130)}...`}
                   </p>
@@ -253,40 +257,44 @@ const Home: React.FC = () => {
           </div>
         </SectionColumn>
         <hr />
-        <SectionVip id="Partners">
-          <header>
-            <h2>Parceiros</h2>
-            {partners.length > 0 && (
-              <a href="mailto:naves@utfpr.edu.br">seja um parceiro</a>
-            )}
-          </header>
-          {partners.length > 0 ? (
-            <div>
-              {partners.map((partner) => (
-                <a
-                  href={
-                    partner.linkPage ||
-                    'https://www.lamia.sh.utfpr.edu.br/#Partners'
-                  }
-                  key={partner.id}
-                  target="bank"
-                >
-                  {partner.logoUrl ? (
-                    <img src={partner.logoUrl} alt={partner.name} />
-                  ) : (
-                    <h2>{partner.name}</h2>
-                  )}
-                </a>
-              ))}
-            </div>
-          ) : (
-            <CardWarning textColor="#f0f0f0">
-              <img src={imgDoPartner} alt="logoLex" />
-              <a href="mailto:naves@utfpr.edu.br">seja um parceiro</a>
-            </CardWarning>
-          )}
-        </SectionVip>
-        <hr />
+        {!isUsedNewAPI && (
+          <>
+            <SectionVip id="Partners">
+              <header>
+                <h2>Parceiros</h2>
+                {partners.length > 0 && (
+                  <a href="mailto:naves@utfpr.edu.br">seja um parceiro</a>
+                )}
+              </header>
+              {partners.length > 0 ? (
+                <div>
+                  {partners.map((partner) => (
+                    <a
+                      href={
+                        partner.linkPage ||
+                        'https://www.lamia.sh.utfpr.edu.br/#Partners'
+                      }
+                      key={partner.id}
+                      target="bank"
+                    >
+                      {partner.logoUrl ? (
+                        <img src={partner.logoUrl} alt={partner.name} />
+                      ) : (
+                        <h2>{partner.name}</h2>
+                      )}
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <CardWarning textColor="#f0f0f0">
+                  <img src={imgDoPartner} alt="logoLex" />
+                  <a href="mailto:naves@utfpr.edu.br">seja um parceiro</a>
+                </CardWarning>
+              )}
+            </SectionVip>
+            <hr />
+          </>
+        )}
         <SectionColumn id="Advisors">
           <HeaderSection>
             <h2>Orientadores</h2>
@@ -295,7 +303,7 @@ const Home: React.FC = () => {
             <div>
               <>
                 {advisors.map((advisor) => (
-                  <Link to={`/${advisor.login}`} key={advisor.id}>
+                  <Link to={`/${advisor.login}`} key={advisor.login}>
                     <img
                       src={
                         advisor.avatar ? advisor.avatar.src : imgTeacherDefault

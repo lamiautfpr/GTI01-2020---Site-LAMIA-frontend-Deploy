@@ -14,7 +14,7 @@ import getValidationErrors from '../../utils/getValidationErrors';
 import { Container, Content, Header } from './styles';
 
 interface ISingInFormData {
-  login: string;
+  username: string;
   password: string;
 }
 
@@ -28,7 +28,7 @@ const Login: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          login: Yup.string().required(
+          username: Yup.string().required(
             'Como deseja logar sem email ou Login? ',
           ),
           password: Yup.string().required('Como deseja logar sem senha? '),
@@ -38,8 +38,8 @@ const Login: React.FC = () => {
           abortEarly: false,
         });
 
-        const { login, password } = data;
-        signIn({ login, password });
+        const { username, password } = data;
+        signIn({ username, password });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -66,7 +66,7 @@ const Login: React.FC = () => {
         <Form ref={formRef} onSubmit={handleSubmit}>
           <Input
             icon={MdMail}
-            name="login"
+            name="username"
             type="text"
             placeholder="E-mail ou Login"
             activeColor={tertiaryColor}

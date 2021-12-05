@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FaChevronRight, FaListUl, FaRegClipboard } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { SelectItem } from '../../../../myTypes/SelectItem';
 import { WorkListProps } from '../../../../myTypes/WorkListProps';
 import imgWorkDefault from '../../../assets/imgDefault/work1.png';
 import Footer from '../../../components/Footer';
@@ -9,13 +8,23 @@ import Header from '../../../components/Header';
 import NavBar from '../../../components/NavBar';
 import SelectBox from '../../../components/SelectBox';
 import Separator from '../../../components/Separator';
-import api from '../../../services/api';
+import { newApi } from '../../../services/api';
 import { Main, Projects, SectionFilters } from '../style';
 
-interface CategoryProps {
-  name: string;
+interface ISelectItem {
+  value: string;
+  label: string;
   description: string | null;
-  types: SelectItem[];
+}
+
+interface IWorksFilters {
+  id: string;
+  name: string;
+  description?: string;
+}
+
+interface ICategoryProps extends IWorksFilters {
+  types: ISelectItem[];
 }
 
 const page = 'Produtos';
@@ -25,27 +34,29 @@ const List: React.FC = () => {
   const [allWorks, setAllWorks] = useState<WorkListProps[]>([]);
   const [works, setWorks] = useState<WorkListProps[]>([]);
 
-  const [category, setCategory] = useState<CategoryProps>({} as CategoryProps);
-  const [areas, setAreas] = useState<SelectItem[]>([
+  const [category, setCategory] = useState<ICategoryProps>(
+    {} as ICategoryProps,
+  );
+  const [areas, setAreas] = useState<ISelectItem[]>([
     {
-      value: 0,
+      value: 'all',
       label: 'Todas',
       description: null,
     },
   ]);
 
   // filters
-  const [areaSelected, setAreaSelected] = useState<SelectItem>(
-    {} as SelectItem,
+  const [areaSelected, setAreaSelected] = useState<ISelectItem>(
+    {} as ISelectItem,
   );
-  const [typeSelected, setTypeSelected] = useState<SelectItem[]>([]);
+  const [typeSelected, setTypeSelected] = useState<ISelectItem[]>([]);
 
   // Functions for list works
   const changeWorkList = useCallback(
-    (area: SelectItem, types: SelectItem[]): void => {
+    (area: ISelectItem, types: ISelectItem[]): void => {
       if (!area.value) {
-        const defaultArea: SelectItem = {
-          value: 0,
+        const defaultArea: ISelectItem = {
+          value: 'all',
           label: 'Todas',
           description: null,
         };
@@ -54,23 +65,23 @@ const List: React.FC = () => {
         setAreaSelected(area);
       }
 
-      if (area.value === 0 && types.length < 1) {
+      if (area.value === 'all' && types.length < 1) {
         // there is no filter
         setWorks(allWorks);
-      } else if (area.value === 0 && types) {
+      } else if (area.value === 'all' && types) {
         // only type filter exists
         setWorks(
           allWorks.filter((work) => {
             return work.types.some((t) =>
-              types.some((tSelected) => tSelected.value === t.value),
+              types.some((tSelected) => tSelected.value === t.id),
             );
           }),
         );
-      } else if (area.value !== 0 && types.length < 1) {
+      } else if (area.value !== 'all' && types.length < 1) {
         // only area filter exists
         setWorks(
           allWorks.filter((work) => {
-            return work.areaExpertise.some((a) => a.value === area.value);
+            return work.areaExpertise.some((a) => a.id === area.value);
           }),
         );
       } else {
@@ -79,12 +90,12 @@ const List: React.FC = () => {
           allWorks
             .filter((work) => {
               // Filter Area
-              return work.areaExpertise.some((a) => a.value === area.value);
+              return work.areaExpertise.some((a) => a.id === area.value);
             })
             .filter((work) => {
               // Filter TypesWorks
               return work.types.some((t) =>
-                types.some((tSelected) => tSelected.value === t.value),
+                types.some((tSelected) => tSelected.value === t.id),
               );
             }),
         );
@@ -94,7 +105,7 @@ const List: React.FC = () => {
   );
 
   const setTypeWorks = useCallback(
-    (itemsSelected: SelectItem[]): void => {
+    (itemsSelected: ISelectItem[]): void => {
       if (!itemsSelected || itemsSelected.length < 1) {
         setTypeSelected([]);
         changeWorkList(areaSelected, []);
@@ -107,7 +118,7 @@ const List: React.FC = () => {
   );
 
   const setAreaExpensive = useCallback(
-    (item: SelectItem): void => {
+    (item: ISelectItem): void => {
       setAreaSelected(item);
       changeWorkList(item, typeSelected);
     },
@@ -116,20 +127,42 @@ const List: React.FC = () => {
 
   // Functions for get list works
   useEffect(() => {
-    api.get(`category-works/${page}`).then((response) => {
+    newApi.get(`works/categories/${page}`).then((response) => {
       setCategory(response.data);
       setAllWorks(response.data.works);
       setWorks(response.data.works);
     });
 
-    api.get(`area-expertises`).then((response) => {
-      const defaultArea: SelectItem = {
-        value: 0,
+    newApi.get(`works/types`).then((response) => {
+      setCategory((oldCategory) => {
+        const newCategory = {
+          ...oldCategory,
+          types: response.data.map((type) => ({
+            value: type.id,
+            label: type.name,
+            description: type?.description,
+          })),
+        };
+
+        return newCategory;
+      });
+    });
+
+    newApi.get(`works/areas-expertise`).then((response) => {
+      const defaultArea: ISelectItem = {
+        value: 'all',
         label: 'Todas',
         description: null,
       };
 
-      setAreas([...response.data.concat(defaultArea)]);
+      setAreas([
+        ...response.data.map((expertiseArea) => ({
+          value: expertiseArea.id,
+          label: expertiseArea.name,
+          description: expertiseArea.description,
+        })),
+        defaultArea,
+      ]);
     });
   }, []);
 
@@ -168,7 +201,7 @@ const List: React.FC = () => {
 
         <Projects>
           {works.map((work) => (
-            <Link key={work.id} to={`/work/${work.id}`}>
+            <Link key={work.id} to={`/work/${work.slug}`}>
               <img
                 src={
                   work.pictures?.length > 0
@@ -184,20 +217,20 @@ const List: React.FC = () => {
               <div>
                 <strong>
                   {work.title}
-                  <span>{work.dateBegin}</span>
+                  <span>{work.startDate}</span>
                 </strong>
                 <div>
                   <div>
                     <span>
                       <FaRegClipboard size={14} />
                       {work.types.map((type) => (
-                        <span key={type.value}>{`${type.label}; `}</span>
+                        <span key={type.id}>{`${type.name}; `}</span>
                       ))}
                     </span>
                     <span>
                       <FaListUl size={14} />
                       {work.areaExpertise.map((ae) => (
-                        <span key={ae.value}>{`${ae.label}; `}</span>
+                        <span key={ae.id}>{`${ae.name}; `}</span>
                       ))}
                     </span>
                   </div>

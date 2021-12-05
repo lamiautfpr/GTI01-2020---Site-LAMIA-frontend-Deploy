@@ -1,21 +1,27 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
-import api from '../services/api';
-import { ImageProps } from '../../myTypes/Images';
-import { SelectItem } from '../../myTypes/SelectItem';
+import { newApi } from '../services/api';
 import { useToast } from './Toast';
+
+interface IWorksFilters {
+  id: string;
+  name: string;
+  description?: string;
+}
+
+export const hasPermission = ['Administrador', 'Coordenador', 'Orientador'];
 
 export interface IMembersProps {
   id: number;
-  login: string;
-  quoteName: string;
   name: string;
   email: string;
-  description: string;
-  office: SelectItem;
-  avatar?: ImageProps;
+  login: string;
   linkedin?: string | null;
   gitHub?: string | null;
   lattes?: string | null;
+  quoteName: string;
+  description: string;
+  avatar?: string;
+  patent: IWorksFilters;
 }
 
 interface IAuthState {
@@ -24,7 +30,7 @@ interface IAuthState {
 }
 
 interface ISignInCredentials {
-  login: string;
+  username: string;
   password: string;
 }
 
@@ -54,19 +60,19 @@ export const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(
-    async ({ login, password }) => {
+    async ({ username, password }) => {
       try {
-        const response = await api.post('sessions', {
-          login,
+        const response = await newApi.post('auth/login', {
+          username,
           password,
         });
 
-        const { token, member } = response.data;
+        const { auth, member } = response.data;
 
-        localStorage.setItem('@LAMIA:token', token);
+        localStorage.setItem('@LAMIA:token', auth.accessToken);
         localStorage.setItem('@LAMIA:member', JSON.stringify(member));
 
-        setData({ token, member });
+        setData({ token: auth.accessToken, member });
       } catch (error) {
         addToast({
           type: 'error',
