@@ -3,13 +3,14 @@ import { FaChevronRight, FaListUl, FaRegClipboard } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { WorkListProps } from '../../../../myTypes/WorkListProps';
 import imgWorkDefault from '../../../assets/imgDefault/work1.png';
+import emojiSad from '../../../assets/imgWarning/emojiSad.png';
 import Footer from '../../../components/Footer';
 import Header from '../../../components/Header';
 import NavBar from '../../../components/NavBar';
 import SelectBox from '../../../components/SelectBox';
 import Separator from '../../../components/Separator';
 import { newApi } from '../../../services/api';
-import { Main, Projects, SectionFilters } from '../style';
+import { CardWarning, Main, Projects, SectionFilters } from '../style';
 
 interface ISelectItem {
   value: string;
@@ -168,7 +169,7 @@ const List: React.FC = () => {
 
   return (
     <>
-      <Header title="LAMIA - Projetos" />
+      <Header title={`LAMIA - ${page}`} />
 
       <NavBar page="publications" />
 
@@ -200,6 +201,12 @@ const List: React.FC = () => {
         <Separator />
 
         <Projects>
+          {works.length === 0 && (
+            <CardWarning>
+              <h1>Nenhum {page} foi encontrado</h1>
+              <img src={emojiSad} alt="Nós estamos tristes" />
+            </CardWarning>
+          )}
           {works.map((work) => (
             <Link key={work.id} to={`/work/${work.slug}`}>
               <img

@@ -30,6 +30,7 @@ interface PatentsProps extends OptionTypeBase {
   isOpen?: boolean;
   description: string | null;
   members: MembersListProps[];
+  name: string;
 }
 
 const ListProjects: React.FC = () => {
@@ -37,10 +38,10 @@ const ListProjects: React.FC = () => {
 
   const handleOffice = useCallback(
     (index) => {
-      const office = patents[index];
+      const patent = patents[index];
 
-      office.isOpen = !office.isOpen;
-      setPatents([...patents, (patents[index] = office)]);
+      patent.isOpen = !patent.isOpen;
+      setPatents([...patents, (patents[index] = patent)]);
       setPatents(patents.filter((_, i) => i !== patents.length));
     },
     [patents],
@@ -55,38 +56,40 @@ const ListProjects: React.FC = () => {
         },
       })
       .then((response) => {
+        console.log(response.data);
+
         setPatents(response.data);
       });
   }, []);
 
   return (
     <>
-      <Header title="LAMIA - Projetos" />
+      <Header title="LAMIA - Integrantes" />
 
       <NavBar page="members" />
 
       <Main>
-        {patents.map((office, index) => (
+        {patents.map((patent, index) => (
           <Section
             key={`${index}`}
-            isOpen={!!office.isOpen}
-            height={office.members.length}
+            isOpen={!!patent.isOpen}
+            height={patent.members.length}
           >
             <header onClick={() => handleOffice(index)}>
               <div>
                 <FaMedal size={28} />
-                <h2>{office.label}</h2>
+                <h2>{patent.name}</h2>
                 <div className="bar" />
-                {office.isOpen ? (
+                {patent.isOpen ? (
                   <MdKeyboardArrowDown size={28} />
                 ) : (
                   <MdKeyboardArrowLeft size={28} />
                 )}
               </div>
-              <p>{office.description}</p>
+              <p>{patent.description}</p>
             </header>
             <Projects>
-              {office.members.map((member) => (
+              {patent.members.map((member) => (
                 <Link key={member.login} to={`/${member.login}`}>
                   <img
                     src={member.avatar ? member.avatar : imgMemberDefault}

@@ -93,10 +93,8 @@ const DashboardMembers: React.FC = () => {
   const [patents, setPatents] = useState<PatentsProps[]>([]);
   const [editable, setEditable] = useState(false);
   const [isvisibleModal, setIsvisibleModal] = useState(false);
-  const [
-    memberResetPassword,
-    setMemberResetPassword,
-  ] = useState<MemberResetPassword | null>(null);
+  const [memberResetPassword, setMemberResetPassword] =
+    useState<MemberResetPassword | null>(null);
   const [member, setMember] = useState<MemberEditableProps | undefined>(
     undefined,
   );
@@ -368,7 +366,7 @@ const DashboardMembers: React.FC = () => {
               disabled={!!member}
               value={member?.name}
             />
-            {!!process.env.REACT_APP_NEW_API_FLAG && (
+            {!process.env.REACT_APP_NEW_API_FLAG && (
               <Input
                 icon={FaUserNinja}
                 name="login"
@@ -422,7 +420,7 @@ const DashboardMembers: React.FC = () => {
             <header onClick={() => handlePatent(index)}>
               <div>
                 <FaMedal size={28} />
-                <h2>{patent.label}</h2>
+                <h2>{patent.name}</h2>
                 <div className="bar" />
                 {patent.isOpen ? (
                   <MdKeyboardArrowDown size={28} />
