@@ -48,20 +48,25 @@ const ProjectView: React.FC = () => {
   const [work, setWork] = useState<WorkListProps | null>(null);
 
   useEffect(() => {
-    newApi.get(`works/${params.slug}`).then((response) => {
-      setWork({
-        ...response.data,
-        worksMember: response.data.members.map((member) => ({
-          responsibility: 'Membro',
-          memberData: {
-            name: member.name,
-            login: member.login,
-            avatar: member.avatar,
-          },
-        })),
+    newApi
+      .get(`works/${params.slug}`)
+      .then((response) => {
+        setWork({
+          ...response.data,
+          worksMember: response.data.members.map((member) => ({
+            responsibility: 'Membro',
+            memberData: {
+              name: member.name,
+              login: member.login,
+              avatar: member.avatar,
+            },
+          })),
+        });
+        setGetApi(true);
+      })
+      .catch(() => {
+        setGetApi(true);
       });
-      setGetApi(true);
-    });
   }, [params.slug]);
 
   const openLightbox = useCallback((event, { index }) => {
